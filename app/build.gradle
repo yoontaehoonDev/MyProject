@@ -5,6 +5,12 @@ plugins {
     id 'application'
 }
 
+eclipse {
+    project {
+        name = "MyProject"
+    }
+}
+
 repositories {
     jcenter()
 }
