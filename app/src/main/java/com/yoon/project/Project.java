@@ -38,10 +38,25 @@ public class Project {
 	static int cruiseCount = 0;
 	static int patriotCount = 0;
 
+	static int choice;
 	static int missileNumber;
 
 	static String response;
 	static String nation;
+
+	static void choice() {
+		System.out.println("--------------------");
+		System.out.println("- 1. 미사일 개발   -");
+		System.out.println("- 2. 미사일 목록   -");
+		System.out.println("- 3. 미사일 발사   -");
+		System.out.println("- 4. 국가 현황     -");
+		System.out.println("- 5. 프로그램 종료 -");
+		System.out.println("--------------------");
+		System.out.println();
+		System.out.print("번호 선택 : ");
+		choice = scanner.nextInt();
+		System.out.println();
+	}
 
 	static void addMissile() {
 		System.out.println("[미사일 개발]");
@@ -635,17 +650,8 @@ public class Project {
 
 
 		while(true) {
-			System.out.println("--------------------");
-			System.out.println("- 1. 미사일 개발   -");
-			System.out.println("- 2. 미사일 목록   -");
-			System.out.println("- 3. 미사일 발사   -");
-			System.out.println("- 4. 국가 현황     -");
-			System.out.println("- 5. 프로그램 종료 -");
-			System.out.println("--------------------");
-			System.out.println();
-			System.out.print("번호 선택 : ");
-			int choice = scanner.nextInt();
-			System.out.println();
+
+			choice();
 
 			if (choice == 1) {
 
