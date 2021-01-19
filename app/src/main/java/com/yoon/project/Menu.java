@@ -2,7 +2,7 @@ package com.yoon.project;
 
 public class Menu {
 
-  static int choice;
+  static int id;
 
   static void choice() {
     System.out.println("--------------------");
@@ -13,7 +13,7 @@ public class Menu {
     System.out.println("- 5. 프로그램 종료 -");
     System.out.println("--------------------");
     System.out.println();
-    choice = Prompt.inputInt("번호 선택 : ");
+    id = Prompt.inputInt("번호 선택 : ");
     System.out.println();
   }
 }

@@ -26,7 +26,7 @@ public class MissileLaunch {
     }
     else {
       System.out.println("[미사일 발사]\n");
-      MissileList.list();
+      MissileDevelopment.list();
       launch = Prompt.inputInt("미사일 번호 선택 : ");
 
       launch--;
