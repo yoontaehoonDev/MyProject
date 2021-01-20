@@ -1,5 +1,7 @@
 package com.yoon.project;
 
+import com.yoon.util.Prompt;
+
 public class Menu {
 
   static int id;
