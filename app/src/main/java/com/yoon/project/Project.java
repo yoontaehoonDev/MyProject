@@ -10,6 +10,8 @@ public class Project {
 		final int MI_LIST = 2;
 		final int MI_LAUNCH = 3;
 		final int Co_Status = 4;
+		MissileHandler MissileList = new MissileHandler();
+		CountryStatus Status = new CountryStatus();
 
 		while(true) {
 
@@ -17,23 +19,23 @@ public class Project {
 
 			if (Menu.id == MI_DEV) {
 
-				MissileHandler.add();
+				MissileList.add();
 
 			}
 			else if(Menu.id == MI_LIST) {
 
-				MissileHandler.list();
+				MissileList.list();
 
 			}
 
 			else if (Menu.id == MI_LAUNCH) {
 
-				MissileHandler.launch();
+				MissileList.launch();
 
 			}
 			else if (Menu.id == Co_Status) {
 
-				CountryStatus.show();
+				Status.show();
 
 			}
 			else {

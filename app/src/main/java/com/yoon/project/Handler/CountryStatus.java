@@ -4,7 +4,7 @@ public class CountryStatus {
 
 	static final int TOTAL = 17;
 
-	public static void show() {
+	public void show() {
 		for (int i = 0; i < TOTAL; i++) {
 			if (MissileHandler.population[i] < 0) {
 				System.out.printf("%s : 멸망\n", MissileHandler.nations[i]);
