@@ -1,6 +1,5 @@
 package com.yoon.project.Handler;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Timer;
@@ -27,7 +26,6 @@ public class MissileHandler {
 	static int biochemistryDamage = 2837194;
 	static int bombDamage = 134728;
 	static String nation;
-	static Date launchingTime;
 	static int i;
 	static int missileNumber;
 	static String response;
