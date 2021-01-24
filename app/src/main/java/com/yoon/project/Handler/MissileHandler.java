@@ -1,5 +1,11 @@
 package com.yoon.project.Handler;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.yoon.project.domain.Missile;
 import com.yoon.util.Prompt;
 
@@ -21,10 +27,11 @@ public class MissileHandler {
 	static int biochemistryDamage = 2837194;
 	static int bombDamage = 134728;
 	static String nation;
-
+	static Date launchingTime;
 	static int i;
 	static int missileNumber;
 	static String response;
+	static int count;
 
 	Missile[] missiles = new Missile[MAX];
 	int devCount = 0;
@@ -32,6 +39,7 @@ public class MissileHandler {
 	int cruiseCount = 0;
 	int patriotCount = 0;
 	int flag = 0;
+
 	public void add() {
 		System.out.println("[미사일 개발]\n");
 
@@ -99,6 +107,7 @@ public class MissileHandler {
 	}
 
 	public void launch() {
+
 		if (this.icbmCount == 0 && this.cruiseCount == 0 && this.patriotCount == 0) {
 			System.out.println("미사일이 부족합니다.\n");
 		}
@@ -134,6 +143,7 @@ public class MissileHandler {
 						}
 					}
 				}
+				Timer();
 				flag = 0;
 				damage(flag);
 				isSame(nation, flag);
@@ -156,6 +166,7 @@ public class MissileHandler {
 						}
 					}
 				}
+				Timer();
 				flag = 0;
 				damage(flag);
 				isSame(nation, flag);
@@ -176,6 +187,7 @@ public class MissileHandler {
 						}
 					}
 				}
+				Timer();
 				flag = 0;
 				damage(flag);
 				isSame(nation, flag);
@@ -228,6 +240,7 @@ public class MissileHandler {
 
 			}
 		}
+		System.out.println();
 	}
 
 	public void armed(Missile m) {
@@ -258,4 +271,34 @@ public class MissileHandler {
 		}
 
 	}
+	public void Timer() {
+		System.out.println();
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat date = new SimpleDateFormat("발사 시간 : yyyy년 MM월 dd일 HH시 mm분 ss초\n");
+		String TTL = date.format(cal.getTime());
+		System.out.println(TTL);
+
+
+		count = 5;
+		Timer timer = new Timer();
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				if(count >= 0) {
+					System.out.printf("발사 카운트 : %d초\n", count);
+					count--;
+				}
+				else {
+					timer.cancel();
+				}
+			}
+		}; timer.schedule(task, 2000, 1000);
+
+		try {
+			Thread.sleep(8000);
+		} catch (InterruptedException e) {
+			System.out.println("Damn it" + e.getMessage());
+		}
+	}
+
 }
