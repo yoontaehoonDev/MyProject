@@ -8,6 +8,8 @@ public class App {
     Scanner scanner = new Scanner(System.in);
     System.out.println("[2030 Project]");
 
+
+
     String menu = scanner.nextLine();
 
     switch(menu) {

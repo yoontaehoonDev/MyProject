@@ -24,20 +24,45 @@ public class MemberHandler {
 
   public void login() {
     if(logCount == 0) {
-      String memberId = Prompt.inputString("아이디 입력 : ");
-      idVerify();
+      while(true) {
+        String id = Prompt.inputString("아이디 입력 : ");
+        int idCheck = idVerify(id);
+        if(idCheck != -1) {
+          String password = Prompt.inputString("비밀번호 입력 : ");
+          boolean pswCheck = pswVerify(password, idCheck);
+          if(pswCheck) {
+            System.out.println("로그인 성공");
+          }
+        };
+
+        logCount = 1;
+
+        return;
+      }
+    }
+    else {
+      System.out.println("이미 로그인 상태 입니다.");
     }
   }
 
   public void logout() {
-
+    logCount = 0;
   }
 
-  public void idVerify() {
-
+  int idVerify(String id) {
+    for(int i = 0; i < this.memberCount; i++) {
+      Member m = members[i];
+      if(id.equalsIgnoreCase(m.id)) {
+        return i;
+      }
+    }
+    return -1;
   }
 
-  public void pswVerify() {
-
+  boolean pswVerify(String password, int i) {
+    if(password.equals(members[i].psw)) {
+      return true;
+    }
+    return false;
   }
 }
