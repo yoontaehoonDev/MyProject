@@ -77,8 +77,7 @@ public class MemberHandler {
   public void add() {
     Member m = new Member();
     m.number = uniqueNumber++;
-    m.id = minimumLength("아이디 입력 : ");
-
+    m.id = isSame("아이디 입력 : ");
     m.password = minimumLength("비밀번호 입력 : ");
     m.name = Prompt.inputString("성명 입력 : ");
     m.email = emailFormat("이메일 입력 : ");
@@ -195,6 +194,7 @@ public class MemberHandler {
       System.out.println("[1. 정보 수정]  [2. 회원 탈퇴]");
       String match = Prompt.inputString("입력 : ");
       if(match.equals("1")) {
+        System.out.println("[개인정보 수정]");
         name = Prompt.inputString("정말로 수정하시겠습니까? [Y/N] : ");
         if(name.equalsIgnoreCase("y")) {
           update();
@@ -205,6 +205,7 @@ public class MemberHandler {
         }
       }
       else if (match.equals("2")){
+        System.out.println("[회원 탈퇴]");
         name = Prompt.inputString("정말로 탈퇴하시겠습니까? [Y/N] : ");
         if(name.equalsIgnoreCase("y")) {
           delete();
@@ -224,7 +225,7 @@ public class MemberHandler {
     }
   }
   public void update() {
-    System.out.println("[개인정보 수정]");
+
     Member m = memberNumber;
     String currentId = Prompt.inputString(String.format("현재 아이디 : %s - 수정할 아이디 : ", m.id));
     String currentPassword = Prompt.inputString(String.format("현재 비밀번호 : %s - 수정할 비밀번호 : ", m.password));
@@ -242,7 +243,6 @@ public class MemberHandler {
 
   public void delete() {
     if(logCount == 1) {
-      System.out.println("[회원 탈퇴]");
 
       if(currentNode == first) {
         first = currentNode.next;
@@ -267,16 +267,32 @@ public class MemberHandler {
     }
   }
 
-  String isSame(String id) {
-    for(Node cursor = first; cursor != null; cursor = cursor.next) {
-      Member m = cursor.member;
-      if(id.equalsIgnoreCase(m.id)) {
-        return "이미 가입된 아이디 입니다.";
+  String isSame(String message) {
+    String id;
+    while(true) {
+      int flag = 0;
+      id = Prompt.inputString(message);
+      if(id.length() < 8) {
+        System.out.println();
+        System.out.println("8자리 이상 입력하세요.");
+        flag = 1;
+      }
+      else {
+        for(Node cursor = first; cursor != null; cursor = cursor.next) {
+          Member m = cursor.member;
+          if(id.equalsIgnoreCase(m.id)) {
+            System.out.println("이미 사용중인 아이디 입니다.\n");
+            flag = 1;
+            break;
+          }
+        }
+      }
+      if(flag == 0) {
+        break;
       }
     }
-    return "사용 가능한 아이디 입니다.";
+    return id;
   }
-
   Member verifyId(String id) {
     for(Node cursor = first; cursor != null; cursor = cursor.next) {
       Member m = cursor.member;
@@ -322,6 +338,7 @@ public class MemberHandler {
       }
     }
   }
+
   String emailFormat(String name) {
     while(true) {
       String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
