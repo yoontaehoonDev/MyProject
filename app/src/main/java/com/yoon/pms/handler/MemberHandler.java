@@ -6,13 +6,21 @@ import com.yoon.util.Prompt;
 
 public class MemberHandler {
 
-  static final int DEFAULT_CAPACITY = 3;
+  static class Node {
+    Member member;
+    Node prev;
+    Node next;
+  }
 
   public static int logCount = 0;
   public static int adminNumber = 0;
-  public static int memberNumber;
   public static int authorization = 0;
-  Member[] members = new Member[DEFAULT_CAPACITY];
+
+  Node first;
+  Node last;
+  Node currentNode;
+  Member memberNumber;
+
   int memberCount = 0;
   int uniqueNumber = 1;
 
@@ -70,21 +78,26 @@ public class MemberHandler {
     Member m = new Member();
     m.number = uniqueNumber++;
     m.id = minimumLength("아이디 입력 : ");
+
     m.password = minimumLength("비밀번호 입력 : ");
     m.name = Prompt.inputString("성명 입력 : ");
     m.email = emailFormat("이메일 입력 : ");
     m.phone = phoneFormat("핸드폰 번호 입력 : ");
     m.registeredDate = new java.sql.Date(System.currentTimeMillis());
 
-    if(this.memberCount >= this.members.length) {
-      Member[] arr = new Member[this.memberCount + (this.memberCount >> 2)];
-      for(int i = 0; i < this.memberCount; i++) {
-        arr[i] = members[i];
-      }
-      members = arr;
+    if(first == null) {
+      first = new Node();
+      first.member = m;
+      last = first;
+    }
+    else {
+      last.next = new Node();
+      last.next.prev = last;
+      last = last.next;
+      last.member = m;
     }
 
-    this.members[this.memberCount++] = m;
+    this.memberCount++;
     System.out.println("회원가입이 완료되었습니다.\n");
 
   }
@@ -107,8 +120,8 @@ public class MemberHandler {
   public void list() {
     if(adminNumber == 1) {
       System.out.println("[회원 목록]");
-      for(int i = 0; i < this.memberCount; i++) {
-        Member m = this.members[i];
+      for(Node cursor = first; cursor != null; cursor = cursor.next) {
+        Member m = cursor.member;
         System.out.printf("고유번호 : [%d] ID : [%s] Password : [%s] 이름 : [%s] 이메일 : [%s] 휴대폰 번호 : [%s] 가입일 : [%s]\n",
             m.number, m.id, m.password, m.name, m.email, m.phone, m.registeredDate);
       }
@@ -130,15 +143,19 @@ public class MemberHandler {
           System.out.println("메인 메뉴로 돌아갑니다.");
           return;
         }
-        int idCheck = verifyId(id);
-        if(idCheck != -1) {
+
+        Member idCheck = verifyId(id);
+
+        if(idCheck != null) {
           while(true) {
             password = Prompt.inputString("비밀번호 입력(엔터 - 나가기) : ");
             if(password.length() == 0) {
               System.out.println("메인 메뉴로 돌아갑니다.");
               return;
             }
+
             pswCheck = verifyPassword(password, idCheck);
+
             if(pswCheck) {
               System.out.println("로그인 성공");
               authorization = 1;
@@ -160,23 +177,24 @@ public class MemberHandler {
       System.out.println("현재 회원이 없습니다.\n");
     }
   }
+
   public void logout() {
     logCount = 0;
     authorization = 1;
-    memberNumber = -1;
+    memberNumber = null;
 
   }
 
   public void setting() {
     if(logCount == 1) {
       String name;
-      Member m = this.members[memberNumber];
+      Member m = memberNumber;
       System.out.println("[설정]");
       System.out.printf("내 아이디 : %s 내 이름 : %s 내 이메일 : %s 내 휴대폰번호 : %s\n",
           m.id, m.name, m.email, m.phone);
       System.out.println("[1. 정보 수정]  [2. 회원 탈퇴]");
-      int num = Prompt.inputInt("입력 : ");
-      if(num == 1) {
+      String match = Prompt.inputString("입력 : ");
+      if(match.equals("1")) {
         name = Prompt.inputString("정말로 수정하시겠습니까? [Y/N] : ");
         if(name.equalsIgnoreCase("y")) {
           update();
@@ -186,7 +204,7 @@ public class MemberHandler {
           return;
         }
       }
-      else if (num == 2){
+      else if (match.equals("2")){
         name = Prompt.inputString("정말로 탈퇴하시겠습니까? [Y/N] : ");
         if(name.equalsIgnoreCase("y")) {
           delete();
@@ -207,7 +225,7 @@ public class MemberHandler {
   }
   public void update() {
     System.out.println("[개인정보 수정]");
-    Member m = members[memberNumber];
+    Member m = memberNumber;
     String currentId = Prompt.inputString(String.format("현재 아이디 : %s - 수정할 아이디 : ", m.id));
     String currentPassword = Prompt.inputString(String.format("현재 비밀번호 : %s - 수정할 비밀번호 : ", m.password));
     String currentName = Prompt.inputString(String.format("현재 이름 : %s - 수정할 이름 : ", m.name));
@@ -226,35 +244,71 @@ public class MemberHandler {
     if(logCount == 1) {
       System.out.println("[회원 탈퇴]");
 
-      for(int i = memberNumber+1; i < this.memberCount; i++) {
-        members[i].number--;
-        this.members[i-1] = this.members[i];
+      if(currentNode == first) {
+        first = currentNode.next;
       }
-      this.members[--this.memberCount] = null;
+      else {
+        currentNode.prev.next = currentNode.next;
+        if(currentNode.next != null) {
+          currentNode.next.prev = currentNode.prev;
+        }
+      }
+      if(currentNode == last) {
+        last = currentNode.prev;
+      }
+
+      logCount = 0;
+      this.memberCount--;
+
+      System.out.println("계정이 탈퇴 처리되었습니다. 그동안 이용해주셔서 감사합니다.\n");
     }
     else {
       System.out.println("로그인 후, 이용 가능합니다.");
     }
   }
 
-  int verifyId(String id) {
-    for(int i = 0; i < this.memberCount; i++) {
-      Member m = members[i];
+  String isSame(String id) {
+    for(Node cursor = first; cursor != null; cursor = cursor.next) {
+      Member m = cursor.member;
       if(id.equalsIgnoreCase(m.id)) {
-        return i;
+        return "이미 가입된 아이디 입니다.";
       }
     }
-    return -1;
+    return "사용 가능한 아이디 입니다.";
   }
 
-  boolean verifyPassword(String password, int i) {
-    if(password.equals(members[i].password)) {
+  Member verifyId(String id) {
+    for(Node cursor = first; cursor != null; cursor = cursor.next) {
+      Member m = cursor.member;
+      if(m.id.equalsIgnoreCase(id)) {
+        currentNode = cursor;
+        return m;
+      }
+    }
+    return null;
+  }
+
+  boolean verifyPassword(String password, Member m) {
+    if(password.equals(m.password)) {
       return true;
     }
     return false;
   }
 
+  //  삭제 계획
+  //  Member findBy(int index) {
+  //    for(Node cursor = first; cursor != null; cursor = cursor.next) {
+  //      Member m = cursor.member;
+  //      if(index == m.number) {
+  //        return m;
+  //      }
+  //    }
+  //    return null;
+  //  }
+
   // ID 중복 방지 함수 작성
+
+
 
   String minimumLength(String name) {
     while(true) {
