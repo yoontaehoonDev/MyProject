@@ -31,14 +31,23 @@ public class MemberHandler {
 			System.out.println("- 메뉴 / 회원 -");
 			if(adminNumber == 1) {
 				System.out.printf("%d. 회원 목록\n", i++);
+				System.out.printf("%d. 제품 리스트\n", i++);
 				System.out.printf("%d. 관리자 로그아웃\n", i++);
 			}
 			else {
 				if(logCount == 0) {
 					System.out.printf("%d. 회원가입\n", i++);
 					System.out.printf("%d. 로그인\n", i++);
+					System.out.printf("%d. 제품 등록\n", i++);
+					System.out.printf("%d. 제품 조회\n", i++);
+					System.out.printf("%d. 게시판\n", i++);
+					System.out.printf("%d. 고객센터\n", i++);
 				}
 				if(logCount == 1) {
+					System.out.printf("%d. 제품 등록\n", i++);
+					System.out.printf("%d. 제품 조회\n", i++);
+					System.out.printf("%d. 게시판\n", i++);
+					System.out.printf("%d. 고객센터\n", i++);
 					System.out.printf("%d. 설정\n", i++);
 					System.out.printf("%d. 로그아웃\n", i++);
 				}
