@@ -39,6 +39,17 @@ public class MemberList {
 		return arr;
 	}
 
+	void find(int number) {
+		Node cursor;
+		for(cursor = first; cursor != null; cursor = cursor.next) {
+			Member m = cursor.member;
+			if(number == m.number) {
+				currentNode = cursor;
+				delete();
+			}
+		}
+	}
+
 	void delete() {
 
 		if(currentNode == first) {
@@ -82,17 +93,6 @@ public class MemberList {
 			}
 		}
 		return id;
-	}
-
-	void find(int number) {
-		for(Node cursor = first; cursor != null; cursor = cursor.next) {
-			Member m = cursor.member;
-			if(number == m.number) {
-				delete();
-			}
-		}
-
-
 	}
 
 	Member verifyId(String id) {

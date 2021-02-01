@@ -10,7 +10,7 @@ public class MemberHandler {
 	public static int logCount = 0;
 	public static int adminNumber = 0;
 	public static boolean authorization = false;
-	MemberList memberList;
+	public MemberList memberList = new MemberList();
 
 
 	int uniqueNumber = 1;
@@ -117,9 +117,9 @@ public class MemberHandler {
 
 			System.out.println();
 			System.out.println("1. [회원 강제탈퇴] 2. [나가기]");
-			int setting = Prompt.inputInt("번호를 선택하세요 : ");
-			if(setting == 1) {
-				int num = Prompt.inputInt("삭제할 회원 번호를 입력하세요 : ");
+			String setting = Prompt.inputString("번호를 선택하세요 : ");
+			if(setting.equals("1")) {
+				int num = Prompt.inputInt("탈퇴시킬 회원 번호를 입력하세요 : ");
 				memberList.find(num);
 
 			}
@@ -181,6 +181,7 @@ public class MemberHandler {
 
 	public void logout() {
 		logCount = 0;
+		memberList.currentNode = null;
 		authorization = false;
 		memberList.memberNumber = null;
 
@@ -229,17 +230,12 @@ public class MemberHandler {
 	public void update() {
 
 		Member m = memberList.memberNumber;
-		String currentId = Prompt.inputString(String.format("현재 아이디 : %s - 수정할 아이디 : ", m.id));
-		String currentPassword = Prompt.inputString(String.format("현재 비밀번호 : %s - 수정할 비밀번호 : ", m.password));
-		String currentName = Prompt.inputString(String.format("현재 이름 : %s - 수정할 이름 : ", m.name));
-		String currentEmail = Prompt.inputString(String.format("현재 이메일 : %s - 수정할 이메일 : ", m.email));
-		String currentPhone = Prompt.inputString(String.format("현재 전화번호 : %s - 수정할 전화번호 : ", m.phone));
+		m.id = memberList.isSame("수정할 ID : ");
+		m.password = memberList.minimumLength("수정할 Password : ");
+		m.name = Prompt.inputString("수정할 이름 : ");
+		m.email = memberList.emailFormat("수정할 E-Mail : ");
+		m.phone = memberList.phoneFormat("수정할 핸드폰 번호 : ");
 
-		m.id = currentId;
-		m.password = currentPassword;
-		m.name = currentName;
-		m.email = currentEmail;
-		m.phone = currentPhone;
 		System.out.println("[개인정보 수정 완료]");
 	}
 
