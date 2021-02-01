@@ -1,28 +1,18 @@
 package com.yoon.pms.handler;
 
-import java.util.regex.Pattern;
-
 import com.yoon.pms.domain.Member;
 import com.yoon.util.Prompt;
 
 public class MemberHandler {
 
-	static class Node {
-		Member member;
-		Node prev;
-		Node next;
-	}
+
 
 	public static int logCount = 0;
 	public static int adminNumber = 0;
-	public static int authorization = 0;
+	public static boolean authorization = false;
+	MemberList memberList;
 
-	Node first;
-	Node last;
-	Node currentNode;
-	Member memberNumber;
 
-	int memberCount = 0;
 	int uniqueNumber = 1;
 
 	public void service() {
@@ -87,26 +77,14 @@ public class MemberHandler {
 	public void add() {
 		Member m = new Member();
 		m.number = uniqueNumber++;
-		m.id = isSame("아이디 입력 : ");
-		m.password = minimumLength("비밀번호 입력 : ");
+		m.id = memberList.isSame("아이디 입력 : ");
+		m.password = memberList.minimumLength("비밀번호 입력 : ");
 		m.name = Prompt.inputString("성명 입력 : ");
-		m.email = emailFormat("이메일 입력 : ");
-		m.phone = phoneFormat("핸드폰 번호 입력 : ");
+		m.email = memberList.emailFormat("이메일 입력 : ");
+		m.phone = memberList.phoneFormat("핸드폰 번호 입력 : ");
 		m.registeredDate = new java.sql.Date(System.currentTimeMillis());
 
-		if(first == null) {
-			first = new Node();
-			first.member = m;
-			last = first;
-		}
-		else {
-			last.next = new Node();
-			last.next.prev = last;
-			last = last.next;
-			last.member = m;
-		}
-
-		this.memberCount++;
+		memberList.add(m);
 		System.out.println("회원가입이 완료되었습니다.\n");
 
 	}
@@ -129,17 +107,21 @@ public class MemberHandler {
 	public void list() {
 		if(adminNumber == 1) {
 			System.out.println("[회원 목록]");
-			for(Node cursor = first; cursor != null; cursor = cursor.next) {
-				Member m = cursor.member;
-				System.out.printf("고유번호 : [%d] ID : [%s] Password : [%s] 이름 : [%s] 이메일 : [%s] 휴대폰 번호 : [%s] 가입일 : [%s]\n",
+
+			Member[] members = memberList.toArray();
+
+			for(Member m : members) {
+				System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  이름 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]  가입일자 : [%s]\n", 
 						m.number, m.id, m.password, m.name, m.email, m.phone, m.registeredDate);
 			}
+
 			System.out.println();
 			System.out.println("1. [회원 강제탈퇴] 2. [나가기]");
 			int setting = Prompt.inputInt("번호를 선택하세요 : ");
 			if(setting == 1) {
-				System.out.println("삭제할 회원 번호를 입력하세요 : ");
-				// 연결리스트 이용
+				int num = Prompt.inputInt("삭제할 회원 번호를 입력하세요 : ");
+				memberList.find(num);
+
 			}
 			else {
 				System.out.println("메뉴로 돌아갑니다.");
@@ -152,7 +134,7 @@ public class MemberHandler {
 	}
 
 	public void login() {
-		if(memberCount != 0 && logCount == 0) {
+		if(memberList.memberCount != 0 && logCount == 0) {
 			while(true) {
 				String id, password;
 				boolean pswCheck;
@@ -163,7 +145,7 @@ public class MemberHandler {
 					return;
 				}
 
-				Member idCheck = verifyId(id);
+				Member idCheck = memberList.verifyId(id);
 
 				if(idCheck != null) {
 					while(true) {
@@ -173,13 +155,13 @@ public class MemberHandler {
 							return;
 						}
 
-						pswCheck = verifyPassword(password, idCheck);
+						pswCheck = memberList.verifyPassword(password, idCheck);
 
 						if(pswCheck) {
 							System.out.println("로그인 성공");
-							authorization = 1;
-							memberNumber = idCheck;
+							authorization = true;
 							logCount = 1;
+							memberList.memberNumber = idCheck;
 							return;
 						}
 						else {
@@ -199,15 +181,15 @@ public class MemberHandler {
 
 	public void logout() {
 		logCount = 0;
-		authorization = 1;
-		memberNumber = null;
+		authorization = false;
+		memberList.memberNumber = null;
 
 	}
 
 	public void setting() {
 		if(logCount == 1) {
 			String name;
-			Member m = memberNumber;
+			Member m = memberList.memberNumber;
 			System.out.println("[설정]");
 			System.out.printf("내 아이디 : %s 내 이름 : %s 내 이메일 : %s 내 휴대폰번호 : %s\n",
 					m.id, m.name, m.email, m.phone);
@@ -246,7 +228,7 @@ public class MemberHandler {
 	}
 	public void update() {
 
-		Member m = memberNumber;
+		Member m = memberList.memberNumber;
 		String currentId = Prompt.inputString(String.format("현재 아이디 : %s - 수정할 아이디 : ", m.id));
 		String currentPassword = Prompt.inputString(String.format("현재 비밀번호 : %s - 수정할 비밀번호 : ", m.password));
 		String currentName = Prompt.inputString(String.format("현재 이름 : %s - 수정할 이름 : ", m.name));
@@ -264,73 +246,16 @@ public class MemberHandler {
 	public void delete() {
 		if(logCount == 1) {
 
-			if(currentNode == first) {
-				first = currentNode.next;
-			}
-			else {
-				currentNode.prev.next = currentNode.next;
-				if(currentNode.next != null) {
-					currentNode.next.prev = currentNode.prev;
-				}
-			}
-			if(currentNode == last) {
-				last = currentNode.prev;
-			}
-
+			memberList.delete();
 			logCount = 0;
-			this.memberCount--;
 
-			System.out.println("계정이 탈퇴 처리되었습니다. 그동안 이용해주셔서 감사합니다.\n");
+			System.out.println("계정 탈퇴 처리가 완료되었습니다. 그동안 이용해주셔서 감사합니다.\n");
 		}
 		else {
 			System.out.println("로그인 후, 이용 가능합니다.");
 		}
 	}
 
-	String isSame(String message) {
-		String id;
-		while(true) {
-			int flag = 0;
-			id = Prompt.inputString(message);
-			if(id.length() < 8) {
-				System.out.println();
-				System.out.println("8자리 이상 입력하세요.");
-				flag = 1;
-			}
-			else {
-				for(Node cursor = first; cursor != null; cursor = cursor.next) {
-					Member m = cursor.member;
-					if(id.equalsIgnoreCase(m.id)) {
-						System.out.println("이미 사용중인 아이디 입니다.\n");
-						flag = 1;
-						break;
-					}
-				}
-			}
-			if(flag == 0) {
-				break;
-			}
-		}
-		return id;
-	}
-
-	Member verifyId(String id) {
-		for(Node cursor = first; cursor != null; cursor = cursor.next) {
-			Member m = cursor.member;
-			if(m.id.equalsIgnoreCase(id)) {
-				currentNode = cursor;
-				return m;
-			}
-		}
-		return null;
-	}
-
-	boolean verifyPassword(String password, Member m) {
-		if(password.equals(m.password)) {
-			return true;
-		}
-		return false;
-	}
 
 	//  삭제 계획
 	//  Member findBy(int index) {
@@ -343,42 +268,7 @@ public class MemberHandler {
 	//    return null;
 	//  }
 
-	String minimumLength(String name) {
-		while(true) {
-			String info = Prompt.inputString(name);
-			if(info.length() < 8) {
-				System.out.println();
-				System.out.println("8자리 이상 입력하세요.");
-			}
-			else {
-				return info;
-			}
-		}
-	}
 
-	String emailFormat(String name) {
-		while(true) {
-			String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
-			String email = Prompt.inputString(name);
-			if(Pattern.matches(pattern, email)) {
-				return email;
-			}
-			else {
-				System.out.println("E-Mail 형식(abc@abc.abc)이 아닙니다.");
-			}
-		}
-	}
-	String phoneFormat(String name) {
-		while(true) {
-			String pattern = "^\\d{3}-\\d{3,4}-\\d{4}$";
-			String phone = Prompt.inputString(name);
-			if(Pattern.matches(pattern, phone)) {
-				return phone;
-			}
-			else {
-				System.out.println("전화번호 형식(000-0000-0000)이 아닙니다.");
-			}
-		}
-	}
+
 
 }
