@@ -125,7 +125,7 @@ public class MemberHandler {
 
       }
       else {
-        System.out.println("메뉴로 돌아갑니다.");
+        System.out.println("메뉴로 돌아갑니다.\n");
         return;
       }
     }
@@ -142,7 +142,7 @@ public class MemberHandler {
 
         id = Prompt.inputString("아이디 입력(엔터 - 나가기) : ");
         if(id.length() == 0) {
-          System.out.println("메인 메뉴로 돌아갑니다.");
+          System.out.println("메인 메뉴로 돌아갑니다.\n");
           return;
         }
 
@@ -152,26 +152,26 @@ public class MemberHandler {
           while(true) {
             password = Prompt.inputString("비밀번호 입력(엔터 - 나가기) : ");
             if(password.length() == 0) {
-              System.out.println("메인 메뉴로 돌아갑니다.");
+              System.out.println("메인 메뉴로 돌아갑니다.\n");
               return;
             }
 
             pswCheck = memberList.verifyPassword(password, idCheck);
 
             if(pswCheck) {
-              System.out.println("로그인 성공");
+              System.out.println("로그인 성공\n");
               authorization = true;
               logCount = 1;
               memberList.memberNumber = idCheck;
               return;
             }
             else {
-              System.out.println("비밀번호가 틀렸습니다.");
+              System.out.println("비밀번호가 틀렸습니다.\n");
             }
           }
         }
         else {
-          System.out.println("존재하지 않는 아이디 입니다.");
+          System.out.println("존재하지 않는 아이디 입니다.\n");
         }
       }
     }
@@ -195,7 +195,7 @@ public class MemberHandler {
       System.out.println("[설정]");
       System.out.printf("내 아이디 : %s 내 이름 : %s 내 이메일 : %s 내 휴대폰번호 : %s\n",
           m.getId(), m.getName(), m.getEmail(), m.getPhone());
-      System.out.println("[1. 정보 수정]  [2. 회원 탈퇴]  [3. 뒤로가기]");
+      System.out.println("[1. 정보 수정]  [2. 회원 탈퇴]  [3. 뒤로가기]\n");
       String match = Prompt.inputString("입력 : ");
       if(match.equals("1")) {
         System.out.println("[개인정보 수정]");
@@ -204,7 +204,7 @@ public class MemberHandler {
           update();
         }
         else {
-          System.out.println("메뉴 / 회원 으로 돌아갑니다.");
+          System.out.println("메뉴 / 회원 으로 돌아갑니다.\n");
           return;
         }
       }
@@ -215,17 +215,17 @@ public class MemberHandler {
           delete();
         }
         else {
-          System.out.println("메뉴 / 회원 으로 돌아갑니다.");
+          System.out.println("메뉴 / 회원 으로 돌아갑니다.\n");
           return;
         }
       }
       else {
-        System.out.println("설정에서 나갑니다.");
+        System.out.println("설정에서 나갑니다.\n");
         return;
       }
     }
     else {
-      System.out.println("로그인 후 이용 가능합니다.");
+      System.out.println("로그인 후 이용 가능합니다.\n");
     }
   }
   public void update() {
@@ -237,15 +237,7 @@ public class MemberHandler {
     m.setEmail(memberList.emailFormat("수정할 E-Mail : "));
     m.setPhone(memberList.phoneFormat("수정할 핸드폰 번호 : "));
 
-    /*
-    m.id = memberList.isSame("수정할 ID : ");
-    m.password = memberList.minimumLength("수정할 Password : ");
-    m.name = Prompt.inputString("수정할 이름 : ");
-    m.email = memberList.emailFormat("수정할 E-Mail : ");
-    m.phone = memberList.phoneFormat("수정할 핸드폰 번호 : ");
-     */
-
-    System.out.println("[개인정보 수정 완료]");
+    System.out.println("[개인정보 수정 완료]\n");
   }
 
   public void delete() {
@@ -256,23 +248,8 @@ public class MemberHandler {
       System.out.println("계정 탈퇴 처리가 완료되었습니다. 그동안 이용해주셔서 감사합니다.\n");
     }
     else {
-      System.out.println("로그인 후, 이용 가능합니다.");
+      System.out.println("로그인 후, 이용 가능합니다.\n");
     }
   }
-
-
-  //  삭제 계획
-  //  Member findBy(int index) {
-  //    for(Node cursor = first; cursor != null; cursor = cursor.next) {
-  //      Member m = cursor.member;
-  //      if(index == m.number) {
-  //        return m;
-  //      }
-  //    }
-  //    return null;
-  //  }
-
-
-
 
 }

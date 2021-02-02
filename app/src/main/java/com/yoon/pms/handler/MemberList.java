@@ -50,7 +50,10 @@ public class MemberList {
       }
     }
     if(flag == 0) {
-      System.out.println("회원 번호가 존재하지 않습니다.");
+      System.out.println("회원 번호가 존재하지 않습니다.\n");
+    }
+    else {
+      System.out.println("회원 탈퇴 처리가 완료되었습니다.\n");
     }
   }
 
