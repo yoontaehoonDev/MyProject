@@ -1,15 +1,20 @@
 package com.yoon.pms.handler;
 
 import com.yoon.pms.domain.Member;
+import com.yoon.util.List;
 import com.yoon.util.Prompt;
 
 public class MemberHandler {
 
 	public static int logCount = 0;
 	public static int adminNumber = 0;
-	public static boolean authorization = false;
-	public MemberList memberList = new MemberList();
+	public static boolean boardAuthorization = false;
+	private List memberList = new List();
+	Member memberNumber;
 
+	public List getMemberList() {
+		return this.memberList;
+	}
 
 	int uniqueNumber = 1;
 
@@ -75,10 +80,10 @@ public class MemberHandler {
 	public void add() {
 		Member m = new Member();
 
-		m.number = uniqueNumber++;
-		m.setId(memberList.isSame("아이디 입력 : "));
+		m.setNumber(uniqueNumber++);
+		m.setId(isSame("아이디 입력 : "));
 		m.setPassword(memberList.minimumLength("비밀번호 입력 : "));
-		memberList.checkPassword(m.getPassword());
+		checkPassword(m.getPassword());
 		m.setName(Prompt.inputString("성명 입력 : "));
 		m.setEmail(memberList.emailFormat("이메일 입력 : "));
 		m.setPhone(memberList.phoneFormat("핸드폰 번호 입력 : "));
@@ -90,7 +95,7 @@ public class MemberHandler {
 	}
 
 	public void login() {
-		if(memberList.memberCount != 0 && logCount == 0) {
+		if(memberList.size != 0 && logCount == 0) {
 			while(true) {
 				String id, password;
 				boolean pswCheck;
@@ -101,7 +106,7 @@ public class MemberHandler {
 					return;
 				}
 
-				Member idCheck = memberList.verifyId(id);
+				Member idCheck = verifyId(id);
 
 				if(idCheck != null) {
 					while(true) {
@@ -111,13 +116,13 @@ public class MemberHandler {
 							return;
 						}
 
-						pswCheck = memberList.verifyPassword(password, idCheck);
+						pswCheck = verifyPassword(password, idCheck);
 
 						if(pswCheck) {
 							System.out.println("로그인 성공\n");
 							logCount = 1;
-							authorization = true;
-							memberList.memberNumber = idCheck;
+							boardAuthorization = true;
+							memberNumber = idCheck;
 							return;
 						}
 						else {
@@ -137,15 +142,14 @@ public class MemberHandler {
 
 	public void logout() {
 		logCount = 0;
-		memberList.currentNode = null;
-		memberList.memberNumber = null;
-		authorization = false;
+		memberNumber = null;
+		boardAuthorization = false;
 	}
 
 	public void setting() {
 		if(logCount == 1) {
 			String name;
-			Member m = memberList.memberNumber;
+			Member m = memberNumber;
 			System.out.println("[설정]");
 			System.out.printf("내 아이디 : %s 내 이름 : %s 내 이메일 : %s 내 휴대폰번호 : %s\n",
 					m.getId(), m.getName(), m.getEmail(), m.getPhone());
@@ -165,6 +169,7 @@ public class MemberHandler {
 				System.out.println("[회원 탈퇴]");
 				name = Prompt.inputString("정말로 탈퇴하시겠습니까? [Y/N] : ");
 				if(name.equalsIgnoreCase("y")) {
+
 					delete();
 				}
 				else {
@@ -181,8 +186,8 @@ public class MemberHandler {
 	}
 	public void update() {
 
-		Member m = memberList.memberNumber;
-		m.setId(memberList.isSame("수정할 ID : "));
+		Member m = memberNumber;
+		m.setId(isSame("수정할 ID : "));
 		m.setPassword(memberList.minimumLength("수정할 Password : "));
 		m.setName(Prompt.inputString("수정할 이름 : "));
 		m.setEmail(memberList.emailFormat("수정할 E-Mail : "));
@@ -191,15 +196,26 @@ public class MemberHandler {
 		System.out.println("[개인정보 수정 완료]\n");
 	}
 
-	public void delete() {
+	private void delete() {
 		if(logCount == 1) {
-			memberList.delete();
+			Member member = memberNumber;
+			memberList.delete(member);
 			logCount = 0;
 
 			System.out.println("계정 탈퇴 처리가 완료되었습니다. 그동안 이용해주셔서 감사합니다.\n");
 		}
 		else {
-			System.out.println("로그인 후, 이용 가능합니다.\n");
+			int num = Prompt.inputInt("탈퇴시킬 회원 번호를 입력하세요 : ");
+			Member member = findByNo(num);
+
+			if(member == null) {
+				System.out.println("회원 번호가 존재하지 않습니다.\n");
+				return;
+			}
+			else {
+				memberList.delete(member);
+				System.out.println("회원 탈퇴 처리가 완료되었습니다.\n");
+			}
 		}
 	}
 
@@ -223,17 +239,16 @@ public class MemberHandler {
 		if(adminNumber == 1) {
 
 			System.out.println("[회원 목록]");
+			Object[] list = memberList.toArray();
 
-			Member[] members = memberList.toArray();
-
-			for(Member m : members) {
+			for(Object obj : list) {
+				Member m = (Member)obj;
 				System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  이름 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]  가입일자 : [%s]\n", 
-						m.number, m.getId(), m.getPassword(), m.getName(), m.getEmail(), m.getPhone(), m.getRegisteredDate());
+						m.getNumber(), m.getId(), m.getPassword(), m.getName(), m.getEmail(), m.getPhone(), m.getRegisteredDate());
 			}
 
-			if(memberList.memberCount == 0) {
-				System.out.println("회원이 없습니다."
-						+ "메뉴로 돌아갑니다.\n");
+			if(memberList.size == 0) {
+				System.out.println("회원이 없습니다. \n메뉴로 돌아갑니다.\n");
 				return;
 			}
 
@@ -241,9 +256,7 @@ public class MemberHandler {
 			System.out.println("1. [회원 강제탈퇴] 2. [나가기]");
 			String setting = Prompt.inputString("번호를 선택하세요 : ");
 			if(setting.equals("1")) {
-				int num = Prompt.inputInt("탈퇴시킬 회원 번호를 입력하세요 : ");
-				memberList.get(num);
-
+				delete();
 			}
 			else {
 				System.out.println("메뉴로 돌아갑니다.\n");
@@ -254,13 +267,75 @@ public class MemberHandler {
 			System.out.println("관리자 권한이 필요합니다.\n");
 		}
 	}
-	/* 로그 코드
-	public void log() {
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat date = new SimpleDateFormat("접속 시간 : yyyy년 MM월 dd일 HH시 mm분 ss초\n");
-		String TTL = date.format(cal.getTime());
-		System.out.println(TTL);
 
+	private String isSame(String message) {
+		String id;
+		while(true) {
+			int flag = 0;
+			id = Prompt.inputString(message);
+			if(id.length() < 8) {
+				System.out.println();
+				System.out.println("8자리 이상 입력하세요.");
+				flag = 1;
+			}
+			else {
+				Object[] list = memberList.toArray();
+				for(Object obj : list) {
+					Member m = (Member) obj;
+					if(id.equalsIgnoreCase(m.getId())) {
+						System.out.println("이미 사용중인 아이디 입니다.\n");
+						flag = 1;
+						break;
+					}
+				}
+			}
+			if(flag == 0) {
+				break;
+			}
+		}
+		return id;
 	}
-	 */
+
+	private Member verifyId(String id) {
+		Object[] list = memberList.toArray();
+		for(Object obj : list) {
+			Member m = (Member)obj;
+			if(m.getId().equalsIgnoreCase(id)) {
+				return m;
+			}
+		}
+
+		return null;
+	}
+
+	private boolean verifyPassword(String password, Member m) {
+		if(password.equals(m.getPassword())) {
+			return true;
+		}
+		return false;
+	}
+
+	private void checkPassword(String originalPassword) {
+		while(true) {
+			String password = memberList.minimumLength("비밀번호 확인 : ");
+			if(password.equals(originalPassword)) {
+				return;
+			}
+			else {
+				System.out.println("현재 비밀번호와 일치하지 않습니다.\n");
+			}
+		}
+	}
+
+	private Member findByNo(int memberNo) {
+		Object[] list = memberList.toArray();
+		for(Object obj : list) {
+			Member m = (Member)obj;
+			if(memberNo == m.getNumber()) {
+				return m;
+			}
+		}
+		return null;
+	}
+
 }
