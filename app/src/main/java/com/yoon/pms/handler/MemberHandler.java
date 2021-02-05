@@ -11,7 +11,7 @@ public class MemberHandler {
 	private int logCount = 0;
 	private int adminNumber = 0;
 	private List memberList = new List();
-	public Member memberNumber;
+	public static Member memberNumber;
 
 	int memberIndex = 1;
 
@@ -31,7 +31,7 @@ public class MemberHandler {
 					System.out.printf("%d. 게시판\n", i++);
 					System.out.printf("%d. 고객센터\n", i);
 				}
-				if(logCount == 1) {
+				else if(logCount == 1) {
 					System.out.printf("%d. 제품 등록\n", i++);
 					System.out.printf("%d. 제품 조회\n", i++);
 					System.out.printf("%d. 게시판\n", i++);
@@ -86,7 +86,8 @@ public class MemberHandler {
 		m.setPhone(phoneFormat("핸드폰 번호 입력 : "));
 		m.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 
-		memberList.add(m);
+		this.memberList.add(m);
+		this.memberList.size++;
 		System.out.println("회원가입이 완료되었습니다.\n");
 
 	}
@@ -326,6 +327,7 @@ public class MemberHandler {
 		return nickname;
 	}
 
+	/* 작성자 찾기 보류
 	public String findByWriter() {
 		Object[] list = memberList.toArray();
 		for(Object obj : list) {
@@ -336,6 +338,7 @@ public class MemberHandler {
 		}
 		return null;
 	}
+	 */
 
 	private Member verifyId(String id) {
 		Object[] list = memberList.toArray();

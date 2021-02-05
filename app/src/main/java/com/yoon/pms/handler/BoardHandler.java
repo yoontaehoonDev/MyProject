@@ -8,10 +8,12 @@ public class BoardHandler {
 
 	public static boolean boardAuthorization = false;
 	private List boardList = new List();
-	private MemberHandler memberHandler;
+	private List commentList = new List();
 
 	int boardIndex = 1;
 	int boardCount = 0;
+	int commentCount = 0;
+	Board currentIndex;
 	public static int likeCount = 0;
 
 	public void service() {
@@ -45,9 +47,6 @@ public class BoardHandler {
 			case "글보기":
 				this.detail();
 				break;
-			case "글삭제":
-				this.delete();
-				break;
 			case "뒤로가기":
 				System.out.println("초기 화면으로 전환합니다.\n");
 				return;
@@ -58,18 +57,16 @@ public class BoardHandler {
 
 	public void add() {
 		if(boardAuthorization == true) {
-			System.out.println("■ 메뉴 / 게시판 / 게시글 작성 \n■");
+			System.out.println("■ 메뉴 / 게시판 / 게시글 작성 ■");
 			Board b = new Board();
-
 			b.setNumber(boardIndex++);
 			b.setTitle(Prompt.inputString("제목 입력 : "));
 			b.setContent(Prompt.inputString("내용 입력 : "));
-			b.setWriter(memberHandler.memberNumber.getNickname());
+			b.setWriter(MemberHandler.memberNumber.getNickname());
 			b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
-
-			boardList.add(b);
-			System.out.println("글 작성 완료");
+			this.boardList.add(b);
 			this.boardCount++;
+			System.out.println("글 작성 완료");
 		}
 		else {
 			System.out.println("글쓰기 권한이 없습니다.");
@@ -95,6 +92,10 @@ public class BoardHandler {
 	//		int num = Prompt.inputInt(")
 	//	}
 
+	public void comment() {
+
+	}
+
 
 	public void detail() {
 		if(this.boardCount == 0) {
@@ -106,9 +107,8 @@ public class BoardHandler {
 		System.out.println("■ 메뉴 / 게시판 / 게시글 보기 ■\n");
 		int num = Prompt.inputInt("게시글 번호 입력 : ");
 
-
-		String writer =	memberHandler.findByWriter();
 		Board board = findByNum(num);
+
 		if (board == null) {
 			System.out.println("해당 번호의 게시글이 없습니다.");
 			return;
@@ -123,12 +123,32 @@ public class BoardHandler {
 		System.out.printf("추천수 : %d\n", board.getLike());
 		System.out.printf("조회수: %d\n", board.getView());
 
-
-		if(int a == 0) {
-			System.out.println("1. [수정]  2. [삭제]");
-			String message = Prompt.inputString("선택 : ");
+		for(int i = 0; i < commentCount; i++) {
+			System.out.printf("%d. 닉네임 : %s  댓글 : %s\n", i+1, board.getCommentWriter(), board.getComment());
 		}
 
+
+		if(board.getWriter().equals(MemberHandler.memberNumber.getNickname())) {
+			Board b = board;
+			while(true) {
+				System.out.println("1. [수정]  2. [삭제]");
+				String choice = Prompt.inputString("선택 : ");
+				if(choice.equals("1")) {
+					update(b);
+					break;
+				}
+				else if(choice.equals("2")) {
+					delete(b);
+					break;
+				}
+				else {
+					System.out.println("잘못 누르셨습니다.\n");
+				}
+			}
+
+		}
+
+		/* 추천 기능 보류
 		String message = Prompt.inputString("이 게시글을 추천하시겠습니까? [Y/N] : ");
 		if(likeCount == 0) {
 			if(message.equalsIgnoreCase("y")) {
@@ -143,19 +163,26 @@ public class BoardHandler {
 		else {
 			System.out.println("이미 추천하셨습니다.");
 		}
+		 */
 
 	}
 
-	public void update() {
-		System.out.println("■ 메뉴 / 게시판 / 게시글 수정 ■\n");
+	public void update(Board b) {
+		System.out.println("■ 메뉴 / 게시판 / 게시글 수정 ■");
 
+		b.setTitle(Prompt.inputString("수정할 제목 : "));
+		b.setContent(Prompt.inputString("수정할 내용 : "));
+
+		System.out.println("수정 완료");
 
 	}
 
-	public void delete() {
-
+	public void delete(Board b) {
+		System.out.println("■ 메뉴 / 게시판 / 게시글 삭제 ■");
+		boardList.delete(b);
+		boardCount--;
+		System.out.println("게시글이 삭제되었습니다.");
 	}
-
 
 	private Board findByNum(int boardNum) {
 		Object[] list = boardList.toArray();
