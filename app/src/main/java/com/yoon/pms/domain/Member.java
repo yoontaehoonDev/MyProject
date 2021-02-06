@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class Member {
 	private int number;
+	private int hash;
 	private String id;
 	private String password;
 	private String nickname;
@@ -11,18 +12,20 @@ public class Member {
 	private String email;
 	private String phone;
 
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + hash;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((nickname == null) ? 0 : nickname.hashCode());
 		result = prime * result + number;
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
-		result = prime * result + ((registeredDate == null) ? 0 : registeredDate.hashCode());
 		return result;
 	}
 	@Override
@@ -38,6 +41,8 @@ public class Member {
 			if (other.email != null)
 				return false;
 		} else if (!email.equals(other.email))
+			return false;
+		if (hash != other.hash)
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -66,11 +71,6 @@ public class Member {
 				return false;
 		} else if (!phone.equals(other.phone))
 			return false;
-		if (registeredDate == null) {
-			if (other.registeredDate != null)
-				return false;
-		} else if (!registeredDate.equals(other.registeredDate))
-			return false;
 		return true;
 	}
 	public String getNickname() {
@@ -79,7 +79,12 @@ public class Member {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-
+	public int getHash() {
+		return hash;
+	}
+	public void setHash(int hash) {
+		this.hash = hash;
+	}
 	public int getNumber() {
 		return number;
 	}

@@ -75,7 +75,7 @@ public class MemberHandler {
 	public void add() {
 		System.out.println("■ 메뉴 / 회원 / 회원가입 ■\n");
 		Member m = new Member();
-
+		m.setHash(m.hashCode());
 		m.setNumber(memberIndex++);
 		m.setId(findById("아이디 입력 : "));
 		m.setPassword(minimumLength("비밀번호 입력 : "));
@@ -87,7 +87,6 @@ public class MemberHandler {
 		m.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 
 		this.memberList.add(m);
-		this.memberList.size++;
 		System.out.println("회원가입이 완료되었습니다.\n");
 
 	}
@@ -155,7 +154,7 @@ public class MemberHandler {
 			System.out.println("[설정]");
 			System.out.printf("내 아이디 : [%s]  내 닉네임 : [%s]  내 이름 : [%s] 내 이메일 : [%s] 내 휴대폰번호 : [%s]\n",
 					m.getId(), m.getNickname(), m.getName(), m.getEmail(), m.getPhone());
-			System.out.println("[1. 정보 수정]  [2. 회원 탈퇴]  [3. 뒤로가기]\n");
+			System.out.println("[1. 정보 수정]  [2. 내 글 보기]  [3. 회원 탈퇴]  [3. 뒤로가기]\n");
 			String match = Prompt.inputString("입력 : ");
 			if(match.equals("1")) {
 				System.out.println("[개인정보 수정]");
@@ -167,7 +166,12 @@ public class MemberHandler {
 					System.out.println("메뉴 / 회원 으로 돌아갑니다.\n");
 				}
 			}
-			else if (match.equals("2")){
+			else if (match.equals("2")) {
+				System.out.println("[내 글 보기]");
+
+			}
+
+			else if (match.equals("3")){
 				System.out.println("[회원 탈퇴]");
 				name = Prompt.inputString("정말로 탈퇴하시겠습니까? [Y/N] : ");
 				if(name.equalsIgnoreCase("y")) {
@@ -194,9 +198,11 @@ public class MemberHandler {
 		m.setName(Prompt.inputString("수정할 이름 : "));
 		m.setEmail(emailFormat("수정할 E-Mail : "));
 		m.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
-
 		System.out.println("[개인정보 수정 완료]\n");
+		BoardHandler.changeCount = 1;
+
 	}
+
 
 	private void delete() {
 		if(logCount == 1) {

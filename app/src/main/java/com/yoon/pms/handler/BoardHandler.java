@@ -11,12 +11,15 @@ public class BoardHandler {
 	private List commentList = new List();
 
 	int boardIndex = 1;
-	int boardCount = 0;
 	int commentCount = 0;
 	Board currentIndex;
 	public static int likeCount = 0;
+	public static int changeCount = 0;
 
 	public void service() {
+		if(changeCount == 1) {
+			changeWriter();
+		}
 		while(true) {
 			int i = 1;
 			System.out.println("■ 메뉴 / 게시판 ■\n");
@@ -64,8 +67,9 @@ public class BoardHandler {
 			b.setContent(Prompt.inputString("내용 입력 : "));
 			b.setWriter(MemberHandler.memberNumber.getNickname());
 			b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
+			b.setId(MemberHandler.memberNumber.getHash());
 			this.boardList.add(b);
-			this.boardCount++;
+
 			System.out.println("글 작성 완료");
 		}
 		else {
@@ -74,7 +78,7 @@ public class BoardHandler {
 	}
 
 	public void list() {
-		if(this.boardCount == 0) {
+		if(boardList.size == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
@@ -98,7 +102,7 @@ public class BoardHandler {
 
 
 	public void detail() {
-		if(this.boardCount == 0) {
+		if(boardList.size == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
@@ -123,12 +127,11 @@ public class BoardHandler {
 		System.out.printf("추천수 : %d\n", board.getLike());
 		System.out.printf("조회수: %d\n", board.getView());
 
-		for(int i = 0; i < commentCount; i++) {
-			System.out.printf("%d. 닉네임 : %s  댓글 : %s\n", i+1, board.getCommentWriter(), board.getComment());
-		}
+		//		for(int i = 0; i < commentCount; i++) {
+		//			System.out.printf("%d. 닉네임 : %s  댓글 : %s\n", i+1, board.getCommentWriter(), board.getComment());
+		//		}
 
-
-		if(board.getWriter().equals(MemberHandler.memberNumber.getNickname())) {
+		if(board.getId() == MemberHandler.memberNumber.getHash()) {
 			Board b = board;
 			while(true) {
 				System.out.println("1. [수정]  2. [삭제]");
@@ -143,9 +146,9 @@ public class BoardHandler {
 				}
 				else {
 					System.out.println("잘못 누르셨습니다.\n");
+					break;
 				}
 			}
-
 		}
 
 		/* 추천 기능 보류
@@ -180,7 +183,6 @@ public class BoardHandler {
 	public void delete(Board b) {
 		System.out.println("■ 메뉴 / 게시판 / 게시글 삭제 ■");
 		boardList.delete(b);
-		boardCount--;
 		System.out.println("게시글이 삭제되었습니다.");
 	}
 
@@ -193,6 +195,17 @@ public class BoardHandler {
 			}
 		}
 		return null;
+	}
+
+	public void changeWriter() {
+		Object[] list = boardList.toArray();
+		for(Object obj : list) {
+			Board b = (Board)obj;
+			if(b.getId() == MemberHandler.memberNumber.getHash()) {
+				b.setWriter(MemberHandler.memberNumber.getNickname());
+			}
+		}
+		changeCount = 0;
 	}
 
 }
