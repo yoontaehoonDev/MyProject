@@ -15,6 +15,10 @@ public class MemberHandler {
 
 	int memberIndex = 1;
 
+	@Override
+	public int hashCode() {
+		return memberIndex++;
+	}
 	public void service() {
 		while(true) {
 			int i = 1;
