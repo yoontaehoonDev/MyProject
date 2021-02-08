@@ -24,10 +24,13 @@ public class App {
 
     loop:
       while(true) {
-        System.out.println("- 메뉴 -");
-        System.out.println("1. 회원");
-        System.out.println("2. 제품");
-        System.out.println("3. 게시판\n");
+        int i = 1;
+        System.out.println("■ 메뉴 ■");
+        System.out.println("1. 회원가입");
+        System.out.println("2. 로그인");
+        System.out.println("3. 자유 게시판");
+        System.out.println("4. 익명 게시판");
+        System.out.println("5. 신고 게시판\n");
         String menu = Prompt.inputString("메뉴 입력 : ");
 
         if(menu.length() == 0) {

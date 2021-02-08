@@ -11,7 +11,9 @@ public class MemberHandler {
   private int logCount = 0;
   private int adminNumber = 0;
   private List memberList = new List();
+  private BoardHandler boardList = new BoardHandler();
   public static Member memberNumber;
+
 
   int memberIndex = 1;
   int memberHash = 1;
@@ -26,21 +28,21 @@ public class MemberHandler {
       System.out.println("■ 메뉴 / 회원 ■");
       if(adminNumber == 1) {
         System.out.printf("%d. 회원 목록\n", i++);
-        System.out.printf("%d. 게시판관리\n", i++);
+        System.out.printf("%d. 게시판 관리\n", i++);
         System.out.printf("%d. 관리자 로그아웃\n", i);
       }
       else {
         if(logCount == 0) {
           System.out.printf("%d. 회원가입\n", i++);
           System.out.printf("%d. 로그인\n", i++);
-          System.out.printf("%d. 게시판\n", i++);
-          System.out.printf("%d. 고객센터\n", i);
+          System.out.printf("%d. 자유 게시판\n", i++);
+          System.out.printf("%d. 익명 게시판\n", i++);
+          System.out.printf("%d. 신고 게시판\n", i);
         }
         else if(logCount == 1) {
-          System.out.printf("%d. 제품 등록\n", i++);
-          System.out.printf("%d. 제품 조회\n", i++);
-          System.out.printf("%d. 게시판\n", i++);
-          System.out.printf("%d. 고객센터\n", i++);
+          System.out.printf("%d. 자유 게시판\n", i++);
+          System.out.printf("%d. 익명 게시판\n", i++);
+          System.out.printf("%d. 신고 게시판\n", i++);
           System.out.printf("%d. 설정\n", i++);
           System.out.printf("%d. 로그아웃\n", i);
         }
@@ -70,6 +72,9 @@ public class MemberHandler {
         case "설정":
           this.setting();
           break;
+        case "게시판":
+          boardList.service();
+          break;
         case "뒤로가기":
           System.out.println("초기 화면으로 전환합니다.\n");
           return;
@@ -78,7 +83,7 @@ public class MemberHandler {
   }
 
   public void add() {
-    System.out.println("■ 메뉴 / 회원 / 회원가입 ■");
+    System.out.println("■ 메뉴 - 회원 - 회원가입 ■");
     Member m = new Member();
     m.setHash(hashCode());
     m.setNumber(memberIndex++);
@@ -97,7 +102,7 @@ public class MemberHandler {
   }
 
   public void login() {
-    System.out.println("■ 메뉴 / 회원 / 로그인 ■");
+    System.out.println("■ 메뉴 - 회원 - 로그인 ■");
     if(memberList.size != 0 && logCount == 0) {
       while(true) {
         String id, password;
@@ -153,7 +158,7 @@ public class MemberHandler {
 
   public void setting() {
     if(logCount == 1) {
-      System.out.println("■ 메뉴 / 회원 / 설정 ■");
+      System.out.println("■ 메뉴 - 회원 - 설정 ■");
       String name;
       Member m = memberNumber;
       System.out.println("[설정]");
@@ -234,7 +239,7 @@ public class MemberHandler {
 
   public void adminLogin() {
     if(logCount == 0 && adminNumber == 0) {
-      System.out.println("■ 메뉴 / 관리자 ■");
+      System.out.println("■ 메뉴 - 관리자 ■");
       adminNumber = 1;
       System.out.println("관리자 로그인\n");
     }
@@ -251,7 +256,7 @@ public class MemberHandler {
 
   public void list() {
     if(adminNumber == 1) {
-      System.out.println("■ 메뉴 / 회원 / 목록 ■");
+      System.out.println("■ 메뉴 - 관리자 - 회원목록 ■");
       System.out.println("[회원 목록]");
       ListIterator iterator = new ListIterator(this.memberList);
       while(iterator.hasNext()) {
