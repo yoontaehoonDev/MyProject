@@ -1,43 +1,80 @@
 package com.yoon.pms;
 
-import java.util.Scanner;
 import com.yoon.pms.handler.BoardHandler;
 import com.yoon.pms.handler.MemberHandler;
 import com.yoon.pms.handler.ProductHandler;
+import com.yoon.util.AbstractIterator;
 import com.yoon.util.Prompt;
+import com.yoon.util.Queue;
+import com.yoon.util.QueueIterator;
+import com.yoon.util.Stack;
+import com.yoon.util.StackIterator;
 
 public class App {
 
-  public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
+  static Stack commandStack = new Stack();
+  static Queue commandQueue = new Queue();
+
+  public static void main(String[] args) throws CloneNotSupportedException {
     System.out.println("[2030 Project]");
 
     MemberHandler memberHandler = new MemberHandler();
     ProductHandler productHandler = new ProductHandler();
     BoardHandler boardHandler = new BoardHandler();
 
-    while(true) {
-      System.out.println("- 메뉴 -");
-      System.out.println("1. 회원");
-      System.out.println("2. 제품");
-      System.out.println("3. 게시판\n");
-      String menu = Prompt.inputString("메뉴 입력 : ");
+    loop:
+      while(true) {
+        System.out.println("- 메뉴 -");
+        System.out.println("1. 회원");
+        System.out.println("2. 제품");
+        System.out.println("3. 게시판\n");
+        String menu = Prompt.inputString("메뉴 입력 : ");
 
-      switch(menu) {
-        case "member":
-          memberHandler.service();
-          break;
-        case "board":
-          boardHandler.service();
-          break;
-        case "FAQ":
-          break;
-        case "고객센터":
-          break;
-        case "종료":
-          System.out.println("프로그램 종료");
-          return;
+        if(menu.length() == 0) {
+          continue;
+        }
 
+        commandStack.push(menu);
+        commandQueue.offer(menu);
+
+        switch(menu) {
+          case "member":
+            memberHandler.service();
+            break;
+          case "board":
+            boardHandler.service();
+            break;
+          case "shistory":
+            printCommandHistory(new StackIterator(commandStack.clone()));
+            break;
+          case "qhistory":
+            printCommandHistory(new QueueIterator(commandQueue.clone()));
+            break;
+          case "FAQ":
+            break;
+          case "고객센터":
+            break;
+          case "종료":
+            System.out.println("프로그램 종료");
+            break loop;
+          default:
+            System.out.println("실행할 수 없는 명령어입니다.");
+        }
+
+      }
+    Prompt.close();
+  }
+
+  static void printCommandHistory(AbstractIterator iterator) {
+
+    int count = 0;
+    while (iterator.hasNext()) {
+      System.out.println(iterator.next());
+      if ((++count % 5) == 0) {
+        String input = Prompt.inputString(": ");
+        if (input.equalsIgnoreCase("q")) {
+          break;
+        }
       }
     }
   }
