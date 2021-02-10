@@ -85,16 +85,39 @@ public class MemberHandler {
   public void add() {
     System.out.println("■ 메뉴 - 회원 - 회원가입 ■");
     Member m = new Member();
-    m.setHash(hashCode());
-    m.setNumber(memberIndex++);
-    m.setId(findById("아이디 입력 : "));
-    m.setPassword(minimumLength("비밀번호 입력 : "));
-    checkPassword(m.getPassword());
-    m.setNickname(findByNickname("닉네임 입력 : "));
-    m.setName(Prompt.inputString("성명 입력 : "));
-    m.setEmail(emailFormat("이메일 입력 : "));
-    m.setPhone(phoneFormat("핸드폰 번호 입력 : "));
-    m.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
+    while(true) {
+      String choice = Prompt.inputString("1. 사업자  2. 고객");
+      if(choice.equals("1")) {
+        m.setHash(hashCode());
+        m.setNumber(memberIndex++);
+        m.setId(findById("아이디 입력 : "));
+        m.setPassword(minimumLength("비밀번호 입력 : "));
+        checkPassword(m.getPassword());
+        m.setName(Prompt.inputString("성명 입력 : "));
+        m.setEmail(emailFormat("이메일 입력 : "));
+        m.setPhone(phoneFormat("핸드폰 번호 입력 : "));
+        m.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
+
+        break;
+      }
+      else if (choice.equals("2")) {
+        m.setHash(hashCode());
+        m.setNumber(memberIndex++);
+        m.setId(findById("아이디 입력 : "));
+        m.setPassword(minimumLength("비밀번호 입력 : "));
+        checkPassword(m.getPassword());
+        m.setNickname(findByNickname("닉네임 입력 : "));
+        m.setName(Prompt.inputString("성명 입력 : "));
+        m.setEmail(emailFormat("이메일 입력 : "));
+        m.setPhone(phoneFormat("핸드폰 번호 입력 : "));
+        m.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
+
+        break;
+      }
+      else {
+        System.out.println("잘못 누르셨습니다.");
+      }
+    }
 
     this.memberList.add(m);
     System.out.println("회원가입이 완료되었습니다.\n");
