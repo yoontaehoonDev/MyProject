@@ -26,7 +26,7 @@ public class Member {
 	private String businessName;
 	private String businessNumber;
 	private String businessHour;
-	private String menuCategory;
+	private String category;
 	private String menu;
 	private String menuExplaination;
 	private String explaination;
@@ -49,7 +49,7 @@ public class Member {
 		result = prime * result + hash;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((menu == null) ? 0 : menu.hashCode());
-		result = prime * result + ((menuCategory == null) ? 0 : menuCategory.hashCode());
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
 		result = prime * result + ((menuExplaination == null) ? 0 : menuExplaination.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((nickname == null) ? 0 : nickname.hashCode());
@@ -119,10 +119,10 @@ public class Member {
 				return false;
 		} else if (!menu.equals(other.menu))
 			return false;
-		if (menuCategory == null) {
-			if (other.menuCategory != null)
+		if (category == null) {
+			if (other.category != null)
 				return false;
-		} else if (!menuCategory.equals(other.menuCategory))
+		} else if (!category.equals(other.category))
 			return false;
 		if (menuExplaination == null) {
 			if (other.menuExplaination != null)
@@ -239,11 +239,11 @@ public class Member {
 	public void setBusinessHour(String businessHour) {
 		this.businessHour = businessHour;
 	}
-	public String getMenuCategory() {
-		return menuCategory;
+	public String getCategory() {
+		return category;
 	}
-	public void setMenuCategory(String menuCategory) {
-		this.menuCategory = menuCategory;
+	public void setCategory(String Category) {
+		this.category = Category;
 	}
 	public String getMenu() {
 		return menu;

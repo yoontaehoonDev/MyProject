@@ -4,7 +4,8 @@ import java.sql.Date;
 
 public class Board {
 	private int id;
-	private int number;
+	private int buyerNumber;
+	private int sellerNumber;
 	private String title;
 	private String content;
 	private String writer;
@@ -19,14 +20,15 @@ public class Board {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((comment == null) ? 0 : comment.hashCode());
+		result = prime * result + buyerNumber;
 		result = prime * result + ((commentWriter == null) ? 0 : commentWriter.hashCode());
 		result = prime * result + id;
-		result = prime * result + number;
+		result = prime * result + sellerNumber;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((writer == null) ? 0 : writer.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -36,10 +38,7 @@ public class Board {
 		if (getClass() != obj.getClass())
 			return false;
 		Board other = (Board) obj;
-		if (comment == null) {
-			if (other.comment != null)
-				return false;
-		} else if (!comment.equals(other.comment))
+		if (buyerNumber != other.buyerNumber)
 			return false;
 		if (commentWriter == null) {
 			if (other.commentWriter != null)
@@ -48,7 +47,7 @@ public class Board {
 			return false;
 		if (id != other.id)
 			return false;
-		if (number != other.number)
+		if (sellerNumber != other.sellerNumber)
 			return false;
 		if (title == null) {
 			if (other.title != null)
@@ -68,11 +67,17 @@ public class Board {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getNumber() {
-		return number;
+	public int getBuyerNumber() {
+		return buyerNumber;
 	}
-	public void setNumber(int number) {
-		this.number = number;
+	public void setBuyerNumber(int buyerNumber) {
+		this.buyerNumber = buyerNumber;
+	}
+	public int getSellerNumber() {
+		return sellerNumber;
+	}
+	public void setSellerNumber(int sellerNumber) {
+		this.sellerNumber = sellerNumber;
 	}
 	public String getTitle() {
 		return title;
@@ -122,8 +127,5 @@ public class Board {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-
-
-
 
 }

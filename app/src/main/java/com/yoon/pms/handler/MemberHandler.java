@@ -12,7 +12,8 @@ public class MemberHandler {
 	private boolean logCount = false;
 	private int adminNumber = 0;
 	private List memberList = new List();
-	private BoardHandler boardList = new BoardHandler();
+	private BuyerBoardHandler buyerBoardList = new BuyerBoardHandler();
+	private SellerBoardHandler sellerBoardList = new SellerBoardHandler();
 	public static Member memberNumber;
 
 	int times = 0;
@@ -50,8 +51,7 @@ public class MemberHandler {
 					Member m = memberNumber;
 					if(m.isDivision() == true) {
 						System.out.printf("%d. 주문 목록\n", i++);
-						System.out.printf("%d. 자유 게시판\n", i++);
-						System.out.printf("%d. 익명 게시판\n", i++);
+						System.out.printf("%d. 판매자 게시판\n", i++);
 						System.out.printf("%d. 신고 게시판\n", i++);
 						System.out.printf("%d. 설정\n", i++);
 						System.out.printf("%d. 로그아웃\n", i);
@@ -59,8 +59,7 @@ public class MemberHandler {
 					else {
 						System.out.printf("%d. 주문하기\n", i++);
 						System.out.printf("%d. 주문현황\n", i++);
-						System.out.printf("%d. 자유 게시판\n", i++);
-						System.out.printf("%d. 익명 게시판\n", i++);
+						System.out.printf("%d. 구매자 게시판\n", i++);
 						System.out.printf("%d. 신고 게시판\n", i++);
 						System.out.printf("%d. 설정\n", i++);
 						System.out.printf("%d. 로그아웃\n", i);
@@ -92,8 +91,11 @@ public class MemberHandler {
 			case "설정":
 				this.setting();
 				break;
-			case "게시판":
-				boardList.service();
+			case "구매자게시판":
+				buyerBoardList.service();
+				break;
+			case "판매자게시판":
+				sellerBoardList.service();
 				break;
 			case "뒤로가기":
 				System.out.println("초기 화면으로 전환합니다.\n");
@@ -120,7 +122,7 @@ public class MemberHandler {
 				m.setBusinessName(Prompt.inputString("상호명 : "));
 				m.setBusinessNumber(Prompt.inputString("사업자 등록 번호 : "));
 				m.setBusinessHour(Prompt.inputString("영업 시간 : "));
-				category(m);
+				category(m); // 업종 입력 메소드
 				m.setMenu(Prompt.inputString("메뉴명 입력 : "));
 				m.setMenuExplaination(Prompt.inputString("메뉴 설명 : "));
 				//				while(true) {
@@ -152,7 +154,6 @@ public class MemberHandler {
 				m.setPhone(phoneFormat("핸드폰 번호 입력 : "));
 				m.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 				buyerCount++;
-
 				break;
 			}
 			else {
@@ -166,9 +167,38 @@ public class MemberHandler {
 	}
 
 	public void login() {
-		System.out.println("■ 메뉴 - 회원 - 로그인 ■");
+
+
 		if(memberList.size != 0 && logCount == false) {
+			System.out.println("■ 메뉴 - 회원 - 로그인 ■");
+			int flag;
 			while(true) {
+				System.out.println("1. 구매자 로그인  2. 판매자 로그인\n");
+				String choice = Prompt.inputString("선택 : ");
+				if(choice.equals("1")) {
+					flag = 1;
+					break;
+				}
+				else if (choice.equals("2")) {
+					flag = 0;
+					break;
+				}
+				else {
+					System.out.println("잘못 입력하셨습니다.");
+				}
+			}
+
+
+			while(true) {
+				if(flag == 0 && sellerCount == 0) {
+					System.out.println("판매자 회원이 존재하지 않습니다.\n");
+					break;
+				}
+				else if(flag == 1 && buyerCount == 0) {
+					System.out.println("구매자 회원이 존재하지 않습니다.\n");
+					break;
+				}
+
 				String id, password;
 				boolean pswCheck;
 
@@ -193,7 +223,13 @@ public class MemberHandler {
 						if(pswCheck) {
 							System.out.println("로그인 성공\n");
 							logCount = true;
-							BoardHandler.boardAuthorization = true;
+							if(flag == 1) {
+								BuyerBoardHandler.boardAuthorization = true;
+							}
+							else {
+								SellerBoardHandler.boardAuthorization = true;
+							}
+
 							memberNumber = idCheck;
 							return;
 						}
@@ -215,8 +251,8 @@ public class MemberHandler {
 	public void logout() {
 		logCount = false;
 		memberNumber = null;
-		BoardHandler.boardAuthorization = false;
-		BoardHandler.likeCount = 0;
+		BuyerBoardHandler.boardAuthorization = false;
+		BuyerBoardHandler.likeCount = 0;
 		System.out.println("로그아웃\n");
 	}
 
@@ -266,14 +302,27 @@ public class MemberHandler {
 	public void update() {
 
 		Member m = memberNumber;
-		m.setId(findById("수정할 ID : "));
-		m.setPassword(minimumLength("수정할 Password : "));
-		m.setNickname(findByNickname("수정할 닉네임 : "));
-		m.setName(Prompt.inputString("수정할 이름 : "));
-		m.setEmail(emailFormat("수정할 E-Mail : "));
-		m.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
+
+		if(m.isDivision() == true) {
+			m.setId(findById("수정할 ID : "));
+			m.setPassword(minimumLength("수정할 Password : "));
+			m.setName(Prompt.inputString("수정할 이름 : "));
+			m.setEmail(emailFormat("수정할 E-Mail : "));
+			m.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
+			System.out.println("가게 관련 정보 변경은 고객센터로 연락 바랍니다.");
+		}
+		else {
+			m.setId(findById("수정할 ID : "));
+			m.setPassword(minimumLength("수정할 Password : "));
+			m.setName(Prompt.inputString("수정할 이름 : "));
+			m.setNickname(findByNickname("수정할 닉네임 : "));
+			m.setEmail(emailFormat("수정할 E-Mail : "));
+			m.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
+		}
+
+
 		System.out.println("[개인정보 수정 완료]\n");
-		BoardHandler.changeCount = 1;
+		BuyerBoardHandler.changeCount = 1;
 
 	}
 
@@ -375,7 +424,7 @@ public class MemberHandler {
 						System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  소유주 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]\n", 
 								m.getSellerNumber(), m.getId(), m.getPassword(), m.getName(), m.getEmail(), m.getPhone());
 						System.out.printf("상호명 : [%s]  사업자등록번호 : [%s]  영업시간 : [%s]  업종 : [%s]\n",
-								m.getBusinessName(), m.getBusinessNumber(), m.getBusinessHour(), m.getMenuCategory());
+								m.getBusinessName(), m.getBusinessNumber(), m.getBusinessHour(), m.getCategory());
 					}
 				}
 				System.out.println();
@@ -538,7 +587,7 @@ public class MemberHandler {
 		}
 	}
 	public void category(Member m) {
-		System.out.println("[메뉴 카테고리 선택]");
+		System.out.println("[업종 선택]");
 		Loop:
 			while(true) {
 				System.out.println("1. 한식 2. 양식 3. 일식 4. 중식 5. 분식");
@@ -550,19 +599,19 @@ public class MemberHandler {
 				}
 
 				switch(choice) {
-				case "1": m.setMenuCategory("한식"); break Loop;
-				case "2": m.setMenuCategory("양식"); break Loop;
-				case "3": m.setMenuCategory("일식"); break Loop;
-				case "4": m.setMenuCategory("중식"); break Loop;
-				case "5": m.setMenuCategory("분식"); break Loop;
-				case "6": m.setMenuCategory("치킨"); break Loop;
-				case "7": m.setMenuCategory("피자"); break Loop;
-				case "8": m.setMenuCategory("디저트"); break Loop;
-				case "9": m.setMenuCategory("야식"); break Loop;
+				case "1": m.setCategory("한식"); break Loop;
+				case "2": m.setCategory("양식"); break Loop;
+				case "3": m.setCategory("일식"); break Loop;
+				case "4": m.setCategory("중식"); break Loop;
+				case "5": m.setCategory("분식"); break Loop;
+				case "6": m.setCategory("치킨"); break Loop;
+				case "7": m.setCategory("피자"); break Loop;
+				case "8": m.setCategory("디저트"); break Loop;
+				case "9": m.setCategory("야식"); break Loop;
 				default: System.out.println("다시 선택하세요.\n");
 				}
 			}
-		System.out.println("메뉴 카테고리 선택 완료\n");
+		System.out.println("업종 선택 완료\n");
 	}
 
 }
