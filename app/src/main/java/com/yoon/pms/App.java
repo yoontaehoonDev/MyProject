@@ -33,9 +33,7 @@ public class App {
 				System.out.println("5. 신고 게시판\n");
 				String menu = Prompt.inputString("메뉴 입력 : ");
 
-				if(menu.length() == 0) {
-					continue;
-				}
+
 
 				commandStack.push(menu);
 				commandQueue.offer(menu);
