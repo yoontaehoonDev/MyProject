@@ -30,39 +30,42 @@ public class MemberHandler {
 
 	public void service() {
 		while(true) {
-			int i = 1;
 			System.out.println("■ 메뉴 / 회원 ■");
 			if(adminNumber == 1) {
-				System.out.printf("%d. 고객 목록\n", i++);
-				System.out.printf("%d. 가게 목록\n", i++);
-				System.out.printf("%d. 게시판 관리\n", i++);
-				System.out.printf("%d. 관리자 로그아웃\n", i);
+				System.out.println("1. 회원 목록");
+				System.out.println("2. 게시판 관리");
+				System.out.println("3. 관리자 로그아웃");
 			}
 			else {
 				if(logCount == false) {
-					System.out.printf("%d. 회원가입\n", i++);
-					System.out.printf("%d. 로그인\n", i++);
-					System.out.printf("%d. 주문하기\n", i++);
-					System.out.printf("%d. 자유 게시판\n", i++);
-					System.out.printf("%d. 익명 게시판\n", i++);
-					System.out.printf("%d. 신고 게시판\n", i);
+					System.out.println("1. 회원가입");
+					System.out.println("2. 로그인");
+					System.out.println("3. 주문하기");
+					System.out.println("4. 구매자 게시판");
+					System.out.println("5. 판매자 게시판");
+					System.out.println("6. 신고 게시판");
+					System.out.println("7. 고객센터");
+
 				}
 				else if(logCount == true) {
 					Member m = memberNumber;
 					if(m.isDivision() == true) {
-						System.out.printf("%d. 주문 목록\n", i++);
-						System.out.printf("%d. 판매자 게시판\n", i++);
-						System.out.printf("%d. 신고 게시판\n", i++);
-						System.out.printf("%d. 설정\n", i++);
-						System.out.printf("%d. 로그아웃\n", i);
+						System.out.println("1. 주문 목록");
+						System.out.println("2. 판매자 게시판");
+						System.out.println("3. 신고 게시판");
+						System.out.println("4. 고객센터");
+						System.out.println("5. 설정");
+						System.out.println("6. 로그아웃");
 					}
 					else {
-						System.out.printf("%d. 주문하기\n", i++);
-						System.out.printf("%d. 주문현황\n", i++);
-						System.out.printf("%d. 구매자 게시판\n", i++);
-						System.out.printf("%d. 신고 게시판\n", i++);
-						System.out.printf("%d. 설정\n", i++);
-						System.out.printf("%d. 로그아웃\n", i);
+						System.out.println("1. 주문하기");
+						System.out.println("2. 주문현황");
+						System.out.println("3. 구매자 게시판");
+						System.out.println("4. 신고 게시판");
+						System.out.println("5. 고객센터");
+						System.out.println("6. 설정");
+						System.out.println("7. 로그아웃");
+
 					}
 				}
 			}
@@ -308,8 +311,8 @@ public class MemberHandler {
 			m.setPassword(minimumLength("수정할 Password : "));
 			m.setName(Prompt.inputString("수정할 이름 : "));
 			m.setEmail(emailFormat("수정할 E-Mail : "));
-			m.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
-			System.out.println("가게 관련 정보 변경은 고객센터로 연락 바랍니다.");
+			m.setPhone(phoneFormat("수정할 핸드폰 번호 : \n"));
+			System.out.println("가게 관련 정보 변경은 고객센터(1542-1542)로 연락 바랍니다.");
 		}
 		else {
 			m.setId(findById("수정할 ID : "));
@@ -318,11 +321,12 @@ public class MemberHandler {
 			m.setNickname(findByNickname("수정할 닉네임 : "));
 			m.setEmail(emailFormat("수정할 E-Mail : "));
 			m.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
+			BuyerBoardHandler.changeCount = 1;
 		}
 
 
 		System.out.println("[개인정보 수정 완료]\n");
-		BuyerBoardHandler.changeCount = 1;
+
 
 	}
 

@@ -86,7 +86,7 @@ public class BuyerBoardHandler {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
-		System.out.println("■ 메뉴 - 게시판 - 게시글 목록 ■");
+		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 목록 ■");
 		Object[] list = buyerBoardList.toArray();
 		for(Object obj : list) {
 			Board b = (Board)obj;
@@ -106,7 +106,7 @@ public class BuyerBoardHandler {
 		}
 		list();
 		System.out.println("---------------------------------------");
-		System.out.println("■ 메뉴 - 게시판 - 게시글 보기 ■");
+		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 보기 ■");
 		int num = Prompt.inputInt("게시글 번호 입력 : ");
 
 		Board board = findByNum(num);
@@ -169,7 +169,7 @@ public class BuyerBoardHandler {
 	}
 
 	public void update(Board b) {
-		System.out.println("■ 메뉴 - 게시판 - 게시글 수정 ■");
+		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 수정 ■");
 
 		b.setTitle(Prompt.inputString("수정할 제목 : "));
 		b.setContent(Prompt.inputString("수정할 내용 : "));
@@ -179,7 +179,7 @@ public class BuyerBoardHandler {
 	}
 
 	public void delete(Board b) {
-		System.out.println("■ 메뉴 - 게시판 - 게시글 삭제 ■");
+		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 삭제 ■");
 		buyerBoardList.delete(b);
 		System.out.println("게시글이 삭제되었습니다.");
 	}

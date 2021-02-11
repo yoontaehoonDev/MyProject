@@ -12,12 +12,8 @@ public class SellerBoardHandler {
 	int boardIndex = 1;
 	int commentCount = 0;
 	public static int likeCount = 0;
-	public static int changeCount = 0;
 
 	public void service() {
-		if(changeCount == 1) {
-			changeWriter();
-		}
 		while(true) {
 			int i = 1;
 			System.out.println("■ 메뉴 - 판매자 전용 게시판 ■");
@@ -63,7 +59,7 @@ public class SellerBoardHandler {
 	public void add() {
 		Board b = new Board();
 		if(boardAuthorization == true && MemberHandler.memberNumber.isDivision() == true) {
-			System.out.println("■ 메뉴 - 게시판 - 게시글 작성 ■");
+			System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 작성 ■");
 			b.setSellerNumber(boardIndex++);
 			b.setTitle(Prompt.inputString("제목 입력 : "));
 			b.setContent(Prompt.inputString("내용 입력 : "));
@@ -84,7 +80,7 @@ public class SellerBoardHandler {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
-		System.out.println("■ 메뉴 - 게시판 - 게시글 목록 ■");
+		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 목록 ■");
 		Object[] list = sellerBoardList.toArray();
 		for(Object obj : list) {
 			Board b = (Board)obj;
@@ -105,7 +101,7 @@ public class SellerBoardHandler {
 		}
 		list();
 		System.out.println("---------------------------------------");
-		System.out.println("■ 메뉴 - 게시판 - 게시글 보기 ■");
+		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 보기 ■");
 		int num = Prompt.inputInt("게시글 번호 입력 : ");
 
 		Board board = findByNum(num);
@@ -168,7 +164,7 @@ public class SellerBoardHandler {
 	}
 
 	public void update(Board b) {
-		System.out.println("■ 메뉴 - 게시판 - 게시글 수정 ■");
+		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 수정 ■");
 
 		b.setTitle(Prompt.inputString("수정할 제목 : "));
 		b.setContent(Prompt.inputString("수정할 내용 : "));
@@ -178,7 +174,7 @@ public class SellerBoardHandler {
 	}
 
 	public void delete(Board b) {
-		System.out.println("■ 메뉴 - 게시판 - 게시글 삭제 ■");
+		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 삭제 ■");
 		sellerBoardList.delete(b);
 		System.out.println("게시글이 삭제되었습니다.");
 	}
@@ -194,6 +190,7 @@ public class SellerBoardHandler {
 		return null;
 	}
 
+	/* 미사용
 	public void changeWriter() {
 		Object[] list = sellerBoardList.toArray();
 		for(Object obj : list) {
@@ -204,5 +201,6 @@ public class SellerBoardHandler {
 		}
 		changeCount = 0;
 	}
+	 */
 
 }
