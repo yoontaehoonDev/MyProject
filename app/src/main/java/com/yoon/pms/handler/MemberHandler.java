@@ -11,20 +11,21 @@ import com.yoon.util.Prompt;
 public class MemberHandler {
 
 	private boolean logCount = false;
-	private int logStatus = -1;
 	private int adminNumber = 0;
 	private List buyerMemberList = new List();
 	private List sellerMemberList = new List();
 	private BuyerBoardHandler buyerBoardList = new BuyerBoardHandler();
 	private SellerBoardHandler sellerBoardList = new SellerBoardHandler();
+	private IntegratedBoardHandler integratedBoardList = new IntegratedBoardHandler();
 	public static BuyerMember buyerMemberNumber;
 	public static SellerMember sellerMemberNumber;
+	public static int logStatus = -1;
 
 	int times = 0;
 	int buyerIndex = 1;
 	int sellerIndex = 1;
 	int buyerMemberHash = 1;
-	int sellerMemberHash = 1;
+	int sellerMemberHash = 1000;
 	int flag;
 
 
@@ -43,8 +44,9 @@ public class MemberHandler {
 					System.out.println("3. 주문하기");
 					System.out.println("4. 구매자 게시판");
 					System.out.println("5. 판매자 게시판");
-					System.out.println("6. 신고 게시판");
-					System.out.println("7. 고객센터");
+					System.out.println("6. 통합 게시판");
+					System.out.println("7. 신고 게시판");
+					System.out.println("8. 고객센터");
 
 				}
 				else if(logCount == true) {
@@ -53,19 +55,21 @@ public class MemberHandler {
 					if(s.isDivision() == true) {
 						System.out.println("1. 주문 목록");
 						System.out.println("2. 판매자 게시판");
-						System.out.println("3. 신고 게시판");
-						System.out.println("4. 고객센터");
-						System.out.println("5. 설정");
-						System.out.println("6. 로그아웃");
+						System.out.println("3. 통합 게시판");
+						System.out.println("4. 신고 게시판");
+						System.out.println("5. 고객센터");
+						System.out.println("6. 설정");
+						System.out.println("7. 로그아웃");
 					}
 					else if(b.isDivision() == true){
 						System.out.println("1. 주문하기");
 						System.out.println("2. 주문현황");
 						System.out.println("3. 구매자 게시판");
-						System.out.println("4. 신고 게시판");
-						System.out.println("5. 고객센터");
-						System.out.println("6. 설정");
-						System.out.println("7. 로그아웃");
+						System.out.println("4. 통합 게시판");
+						System.out.println("5. 신고 게시판");
+						System.out.println("6. 고객센터");
+						System.out.println("7. 설정");
+						System.out.println("8. 로그아웃");
 
 					}
 				}
@@ -100,6 +104,9 @@ public class MemberHandler {
 				break;
 			case "판매자게시판":
 				sellerBoardList.service();
+				break;
+			case "통합게시판":
+				integratedBoardList.service();
 				break;
 			case "뒤로가기":
 				System.out.println("초기 화면으로 전환합니다.\n");
@@ -211,6 +218,7 @@ public class MemberHandler {
 									logCount = true;
 									logStatus = 0;
 									buyerMemberNumber = idCheck;
+									IntegratedBoardHandler.boardAuthorization = true;
 									BuyerBoardHandler.boardAuthorization = true;
 									buyerMemberNumber.setDivision(true);
 									return;
@@ -254,6 +262,7 @@ public class MemberHandler {
 									logCount = true;
 									logStatus = 1;
 									sellerMemberNumber = idCheck;
+									IntegratedBoardHandler.boardAuthorization = true;
 									SellerBoardHandler.boardAuthorization = true;
 									sellerMemberNumber.setDivision(true);
 									return;
@@ -278,11 +287,11 @@ public class MemberHandler {
 	public void logout() {
 		logCount = false;
 		if(logStatus == 1) {
-			sellerMemberNumber = null;
+			sellerMemberNumber.setDivision(false);
 			SellerBoardHandler.boardAuthorization = false;
 		}
 		else {
-			buyerMemberNumber = null;
+			buyerMemberNumber.setDivision(false);
 			BuyerBoardHandler.boardAuthorization = false;
 		}
 
@@ -410,7 +419,7 @@ public class MemberHandler {
 
 	private void delete() {
 		if(logCount == true) {
-			if(this.logStatus == 1) {
+			if(logStatus == 1) {
 				SellerMember seller = sellerMemberNumber;
 				sellerMemberList.delete(seller);
 			}

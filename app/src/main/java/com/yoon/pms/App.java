@@ -1,6 +1,7 @@
 package com.yoon.pms;
 
 import com.yoon.pms.handler.BuyerBoardHandler;
+import com.yoon.pms.handler.IntegratedBoardHandler;
 import com.yoon.pms.handler.MemberHandler;
 import com.yoon.pms.handler.SellerBoardHandler;
 import com.yoon.util.Iterator;
@@ -21,6 +22,7 @@ public class App {
 		MemberHandler memberHandler = new MemberHandler();
 		BuyerBoardHandler buyerBoardHandler = new BuyerBoardHandler();
 		SellerBoardHandler sellerBoardHandler = new SellerBoardHandler();
+		IntegratedBoardHandler integratedBoardHandler = new IntegratedBoardHandler();
 
 		loop:
 			while(true) {
@@ -47,6 +49,9 @@ public class App {
 					break;
 				case "판매자게시판":
 					sellerBoardHandler.service();
+					break;
+				case "통합게시판":
+					integratedBoardHandler.service();
 					break;
 				case "shistory":
 					printCommandHistory(new StackIterator(commandStack.clone()));

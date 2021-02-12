@@ -19,7 +19,6 @@ public class SellerBoardHandler {
 		while(true) {
 			System.out.println("■ 메뉴 - 판매자 전용 게시판 ■");
 
-
 			if(boardAuthorization == true && MemberHandler.sellerMemberNumber.isDivision() == true) {
 				System.out.println("[판매회원 전용]");
 				System.out.println("1. 주문 목록");
@@ -76,16 +75,16 @@ public class SellerBoardHandler {
 	}
 
 	public void list() {
-		if(sellerBoardList.size == 0) {
+		if(sellerBoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 목록 ■");
 		ListIterator iterator = new ListIterator(this.sellerBoardList);
 		while(iterator.hasNext()) {
-			SellerBoard b = (SellerBoard)iterator.next();
+			SellerBoard s = (SellerBoard)iterator.next();
 			System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
-					b.getNumber(), b.getTitle(), b.getWriter(), b.getLike(), b.getView(), b.getRegisteredDate());
+					s.getNumber(), s.getTitle(), s.getWriter(), s.getLike(), s.getView(), s.getRegisteredDate());
 		}
 	}
 
@@ -95,7 +94,7 @@ public class SellerBoardHandler {
 
 
 	public void detail() {
-		if(sellerBoardList.size == 0) {
+		if(sellerBoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}

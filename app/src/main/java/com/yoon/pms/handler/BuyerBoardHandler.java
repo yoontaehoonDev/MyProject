@@ -82,7 +82,7 @@ public class BuyerBoardHandler {
 	}
 
 	public void list() {
-		if(buyerBoardList.size == 0) {
+		if(buyerBoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
@@ -103,7 +103,7 @@ public class BuyerBoardHandler {
 	}
 
 	public void detail() {
-		if(buyerBoardList.size == 0) {
+		if(buyerBoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}

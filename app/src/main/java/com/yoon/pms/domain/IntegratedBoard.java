@@ -56,6 +56,8 @@ public class IntegratedBoard {
 			return false;
 		return true;
 	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -116,8 +118,4 @@ public class IntegratedBoard {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-
-
-
-
 }
