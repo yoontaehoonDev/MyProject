@@ -1,7 +1,8 @@
 package com.yoon.pms.handler;
 
-import com.yoon.pms.domain.Board;
+import com.yoon.pms.domain.SellerBoard;
 import com.yoon.util.List;
+import com.yoon.util.ListIterator;
 import com.yoon.util.Prompt;
 
 public class SellerBoardHandler {
@@ -12,27 +13,26 @@ public class SellerBoardHandler {
 	int boardIndex = 1;
 	int commentCount = 0;
 	public static int likeCount = 0;
+	public static int changeCount = 0;
 
 	public void service() {
 		while(true) {
-			int i = 1;
 			System.out.println("■ 메뉴 - 판매자 전용 게시판 ■");
 
 
-			if(boardAuthorization == true && MemberHandler.memberNumber.isDivision() == true) {
+			if(boardAuthorization == true && MemberHandler.sellerMemberNumber.isDivision() == true) {
 				System.out.println("[판매회원 전용]");
-
-				System.out.printf("%d. 게시글 작성\n", i++);
-				System.out.printf("%d. 게시글 보기\n", i++);
-				System.out.printf("%d. 게시글 목록\n", i++);
-				System.out.printf("%d. 고객센터\n", i);
+				System.out.println("1. 주문 목록");
+				System.out.println("2. 판매자 게시판");
+				System.out.println("3. 신고 게시판");
+				System.out.println("4. 고객센터");
+				System.out.println("5. 설정");
+				System.out.println("6. 로그아웃");
 			}
 
 			else {
-				System.out.println("[비회원 전용]");
-				System.out.printf("%d. 자유게시판\n", i++);
-				System.out.printf("%d. 신고게시판\n", i);
-
+				System.out.println("판매회원 전용 게시판입니다.\n");
+				return;
 			}
 
 			System.out.println();
@@ -57,16 +57,16 @@ public class SellerBoardHandler {
 	}
 
 	public void add() {
-		Board b = new Board();
-		if(boardAuthorization == true && MemberHandler.memberNumber.isDivision() == true) {
+		SellerBoard s = new SellerBoard();
+		if(boardAuthorization == true) {
 			System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 작성 ■");
-			b.setSellerNumber(boardIndex++);
-			b.setTitle(Prompt.inputString("제목 입력 : "));
-			b.setContent(Prompt.inputString("내용 입력 : "));
-			b.setWriter(MemberHandler.memberNumber.getBusinessName());
-			b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
-			b.setId(MemberHandler.memberNumber.getHash());
-			this.sellerBoardList.add(b);
+			s.setNumber(boardIndex++);
+			s.setTitle(Prompt.inputString("제목 입력 : "));
+			s.setContent(Prompt.inputString("내용 입력 : "));
+			s.setWriter(MemberHandler.sellerMemberNumber.getBusinessName()); // 체크
+			s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
+			s.setId(MemberHandler.sellerMemberNumber.getHash());
+			this.sellerBoardList.add(s);
 
 			System.out.println("글 작성 완료");
 		}
@@ -81,11 +81,11 @@ public class SellerBoardHandler {
 			return;
 		}
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 목록 ■");
-		Object[] list = sellerBoardList.toArray();
-		for(Object obj : list) {
-			Board b = (Board)obj;
+		ListIterator iterator = new ListIterator(this.sellerBoardList);
+		while(iterator.hasNext()) {
+			SellerBoard b = (SellerBoard)iterator.next();
 			System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
-					b.getSellerNumber(), b.getTitle(), b.getWriter(), b.getLike(), b.getView(), b.getRegisteredDate());
+					b.getNumber(), b.getTitle(), b.getWriter(), b.getLike(), b.getView(), b.getRegisteredDate());
 		}
 	}
 
@@ -104,7 +104,7 @@ public class SellerBoardHandler {
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 보기 ■");
 		int num = Prompt.inputInt("게시글 번호 입력 : ");
 
-		Board board = findByNum(num);
+		SellerBoard board = findByNum(num);
 
 		if (board == null) {
 			System.out.println("해당 번호의 게시글이 없습니다.");
@@ -120,21 +120,18 @@ public class SellerBoardHandler {
 		System.out.printf("추천수 : %d\n", board.getLike());
 		System.out.printf("조회수: %d\n", board.getView());
 
-		//		for(int i = 0; i < commentCount; i++) {
-		//			System.out.printf("%d. 닉네임 : %s  댓글 : %s\n", i+1, board.getCommentWriter(), board.getComment());
-		//		}
 
-		if(board.getId() == MemberHandler.memberNumber.getHash()) {
-			Board b = board;
+		if(board.getId() == MemberHandler.sellerMemberNumber.getHash()) {
+			SellerBoard s = board;
 			while(true) {
 				System.out.println("1. [수정]  2. [삭제]");
 				String choice = Prompt.inputString("선택 : ");
 				if(choice.equals("1")) {
-					update(b);
+					update(s);
 					break;
 				}
 				else if(choice.equals("2")) {
-					delete(b);
+					delete(s);
 					break;
 				}
 				else {
@@ -163,44 +160,42 @@ public class SellerBoardHandler {
 
 	}
 
-	public void update(Board b) {
+	public void update(SellerBoard s) {
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 수정 ■");
 
-		b.setTitle(Prompt.inputString("수정할 제목 : "));
-		b.setContent(Prompt.inputString("수정할 내용 : "));
+		s.setTitle(Prompt.inputString("수정할 제목 : "));
+		s.setContent(Prompt.inputString("수정할 내용 : "));
 
 		System.out.println("수정 완료");
 
 	}
 
-	public void delete(Board b) {
+	public void delete(SellerBoard s) {
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 삭제 ■");
-		sellerBoardList.delete(b);
+		sellerBoardList.delete(s);
 		System.out.println("게시글이 삭제되었습니다.");
 	}
 
-	private Board findByNum(int boardNum) {
+	private SellerBoard findByNum(int boardNum) {
 		Object[] list = sellerBoardList.toArray();
 		for (Object obj : list) {
-			Board b = (Board) obj;
-			if (b.getSellerNumber() == boardNum) {
-				return b;
+			SellerBoard s = (SellerBoard) obj;
+			if (s.getNumber() == boardNum) {
+				return s;
 			}
 		}
 		return null;
 	}
 
-	/* 미사용
 	public void changeWriter() {
 		Object[] list = sellerBoardList.toArray();
 		for(Object obj : list) {
-			Board b = (Board)obj;
-			if(b.getId() == MemberHandler.memberNumber.getHash()) {
-				b.setWriter(MemberHandler.memberNumber.getBusinessName());
+			SellerBoard s = (SellerBoard)obj;
+			if(s.getId() == MemberHandler.sellerMemberNumber.getHash()) {
+				s.setWriter(MemberHandler.sellerMemberNumber.getBusinessName());
 			}
 		}
 		changeCount = 0;
 	}
-	 */
 
 }

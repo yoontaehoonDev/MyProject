@@ -2,10 +2,9 @@ package com.yoon.pms.domain;
 
 import java.sql.Date;
 
-public class Board {
+public class SellerBoard {
 	private int id;
-	private int buyerNumber;
-	private int sellerNumber;
+	private int number;
 	private String title;
 	private String content;
 	private String writer;
@@ -16,19 +15,18 @@ public class Board {
 	private String commentWriter;
 	private String comment;
 
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + buyerNumber;
 		result = prime * result + ((commentWriter == null) ? 0 : commentWriter.hashCode());
 		result = prime * result + id;
-		result = prime * result + sellerNumber;
+		result = prime * result + number;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((writer == null) ? 0 : writer.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -37,9 +35,7 @@ public class Board {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Board other = (Board) obj;
-		if (buyerNumber != other.buyerNumber)
-			return false;
+		SellerBoard other = (SellerBoard) obj;
 		if (commentWriter == null) {
 			if (other.commentWriter != null)
 				return false;
@@ -47,7 +43,7 @@ public class Board {
 			return false;
 		if (id != other.id)
 			return false;
-		if (sellerNumber != other.sellerNumber)
+		if (number != other.number)
 			return false;
 		if (title == null) {
 			if (other.title != null)
@@ -67,17 +63,11 @@ public class Board {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getBuyerNumber() {
-		return buyerNumber;
+	public int getNumber() {
+		return number;
 	}
-	public void setBuyerNumber(int buyerNumber) {
-		this.buyerNumber = buyerNumber;
-	}
-	public int getSellerNumber() {
-		return sellerNumber;
-	}
-	public void setSellerNumber(int sellerNumber) {
-		this.sellerNumber = sellerNumber;
+	public void setNumber(int number) {
+		this.number = number;
 	}
 	public String getTitle() {
 		return title;
@@ -127,5 +117,6 @@ public class Board {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
 
 }

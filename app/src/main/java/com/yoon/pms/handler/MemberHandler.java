@@ -2,7 +2,8 @@ package com.yoon.pms.handler;
 
 import java.util.regex.Pattern;
 
-import com.yoon.pms.domain.Member;
+import com.yoon.pms.domain.BuyerMember;
+import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.List;
 import com.yoon.util.ListIterator;
 import com.yoon.util.Prompt;
@@ -10,23 +11,22 @@ import com.yoon.util.Prompt;
 public class MemberHandler {
 
 	private boolean logCount = false;
+	private int logStatus = -1;
 	private int adminNumber = 0;
-	private List memberList = new List();
+	private List buyerMemberList = new List();
+	private List sellerMemberList = new List();
 	private BuyerBoardHandler buyerBoardList = new BuyerBoardHandler();
 	private SellerBoardHandler sellerBoardList = new SellerBoardHandler();
-	public static Member memberNumber;
+	public static BuyerMember buyerMemberNumber;
+	public static SellerMember sellerMemberNumber;
 
 	int times = 0;
 	int buyerIndex = 1;
 	int sellerIndex = 1;
-	int memberHash = 1;
-	int buyerCount = 0;
-	int sellerCount = 0;
+	int buyerMemberHash = 1;
+	int sellerMemberHash = 1;
+	int flag;
 
-	@Override
-	public int hashCode() {
-		return memberHash++;
-	}
 
 	public void service() {
 		while(true) {
@@ -48,8 +48,9 @@ public class MemberHandler {
 
 				}
 				else if(logCount == true) {
-					Member m = memberNumber;
-					if(m.isDivision() == true) {
+					BuyerMember b = buyerMemberNumber;
+					SellerMember s = sellerMemberNumber;
+					if(s.isDivision() == true) {
 						System.out.println("1. 주문 목록");
 						System.out.println("2. 판매자 게시판");
 						System.out.println("3. 신고 게시판");
@@ -57,7 +58,7 @@ public class MemberHandler {
 						System.out.println("5. 설정");
 						System.out.println("6. 로그아웃");
 					}
-					else {
+					else if(b.isDivision() == true){
 						System.out.println("1. 주문하기");
 						System.out.println("2. 주문현황");
 						System.out.println("3. 구매자 게시판");
@@ -109,25 +110,26 @@ public class MemberHandler {
 
 	public void add() {
 		System.out.println("■ 메뉴 - 회원 - 회원가입 ■");
-		Member m = new Member();
+
 		while(true) {
 			String choice = Prompt.inputString("1. 사업자  2. 고객");
 			if(choice.equals("1")) {
-				m.setDivision(true);
-				m.setHash(hashCode());
-				m.setSellerNumber(sellerIndex++);
-				m.setId(findById("아이디 입력 : "));
-				m.setPassword(minimumLength("비밀번호 입력 : "));
-				checkPassword(m.getPassword());
-				m.setName(Prompt.inputString("소유주 입력 : "));
-				m.setEmail(emailFormat("이메일 입력 : "));
-				m.setPhone(phoneFormat("핸드폰 번호 입력 : "));
-				m.setBusinessName(Prompt.inputString("상호명 : "));
-				m.setBusinessNumber(Prompt.inputString("사업자 등록 번호 : "));
-				m.setBusinessHour(Prompt.inputString("영업 시간 : "));
-				category(m); // 업종 입력 메소드
-				m.setMenu(Prompt.inputString("메뉴명 입력 : "));
-				m.setMenuExplaination(Prompt.inputString("메뉴 설명 : "));
+				SellerMember s = new SellerMember();
+				s.setDivision(false);
+				s.setHash(sellerMemberHash++);
+				s.setNumber(sellerIndex++);
+				s.setId(findBySellerId("아이디 입력 : "));
+				s.setPassword(minimumLength("비밀번호 입력 : "));
+				checkPassword(s.getPassword()); // 비밀번호 확인 메소드
+				s.setName(Prompt.inputString("소유주 입력 : "));
+				s.setEmail(emailFormat("이메일 입력 : "));
+				s.setPhone(phoneFormat("핸드폰 번호 입력 : "));
+				s.setBusinessName(Prompt.inputString("상호명 : "));
+				s.setBusinessNumber(Prompt.inputString("사업자 등록 번호 : "));
+				s.setBusinessHour(Prompt.inputString("영업 시간 : "));
+				category(s); // 업종 입력 메소드
+				s.setMenu(Prompt.inputString("메뉴명 입력 : "));
+				s.setMenuExplaination(Prompt.inputString("메뉴 설명 : "));
 				//				while(true) {
 				//					m.setMenu();
 				//					
@@ -139,24 +141,25 @@ public class MemberHandler {
 				//					m.setMenuExplaination(Prompt.inputString("메뉴 설명 : "));
 				//					times++;
 				//				}
-				m.setPrice(Prompt.inputInt("가격 : "));
-				m.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
-				sellerCount++;
+				s.setPrice(Prompt.inputInt("가격 : "));
+				s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
+				this.sellerMemberList.add(s);
 				break;
 			}
 			else if (choice.equals("2")) {
-				m.setDivision(false);
-				m.setHash(hashCode());
-				m.setBuyerNumber(buyerIndex++);
-				m.setId(findById("아이디 입력 : "));
-				m.setPassword(minimumLength("비밀번호 입력 : "));
-				checkPassword(m.getPassword());
-				m.setNickname(findByNickname("닉네임 입력 : "));
-				m.setName(Prompt.inputString("성명 입력 : "));
-				m.setEmail(emailFormat("이메일 입력 : "));
-				m.setPhone(phoneFormat("핸드폰 번호 입력 : "));
-				m.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
-				buyerCount++;
+				BuyerMember b = new BuyerMember();
+				b.setDivision(false);
+				b.setHash(buyerMemberHash++);
+				b.setNumber(buyerIndex++);
+				b.setId(findByBuyerId("아이디 입력 : "));
+				b.setPassword(minimumLength("비밀번호 입력 : "));
+				checkPassword(b.getPassword());
+				b.setNickname(findByNickname("닉네임 입력 : "));
+				b.setName(Prompt.inputString("성명 입력 : "));
+				b.setEmail(emailFormat("이메일 입력 : "));
+				b.setPhone(phoneFormat("핸드폰 번호 입력 : "));
+				b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
+				this.buyerMemberList.add(b);
 				break;
 			}
 			else {
@@ -164,85 +167,106 @@ public class MemberHandler {
 			}
 		}
 
-		this.memberList.add(m);
+
 		System.out.println("회원가입이 완료되었습니다.\n");
 
 	}
 
 	public void login() {
 
-
-		if(memberList.size != 0 && logCount == false) {
+		if(logCount == false) {
 			System.out.println("■ 메뉴 - 회원 - 로그인 ■");
-			int flag;
+			String id, password;
+			boolean pswCheck;
 			while(true) {
 				System.out.println("1. 구매자 로그인  2. 판매자 로그인\n");
 				String choice = Prompt.inputString("선택 : ");
+
 				if(choice.equals("1")) {
-					flag = 1;
-					break;
-				}
-				else if (choice.equals("2")) {
-					flag = 0;
-					break;
-				}
-				else {
-					System.out.println("잘못 입력하셨습니다.");
-				}
-			}
-
-
-			while(true) {
-				if(flag == 0 && sellerCount == 0) {
-					System.out.println("판매자 회원이 존재하지 않습니다.\n");
-					break;
-				}
-				else if(flag == 1 && buyerCount == 0) {
-					System.out.println("구매자 회원이 존재하지 않습니다.\n");
-					break;
-				}
-
-				String id, password;
-				boolean pswCheck;
-
-				id = Prompt.inputString("아이디 입력(엔터 - 나가기) : ");
-				if(id.length() == 0) {
-					System.out.println("메인 메뉴로 돌아갑니다.\n");
-					return;
-				}
-
-				Member idCheck = verifyId(id);
-
-				if(idCheck != null) {
+					if(buyerMemberList.size() == 0) {
+						System.out.println("존재하는 구매 회원이 없습니다.\n");
+						return;
+					}
 					while(true) {
-						password = Prompt.inputString("비밀번호 입력(엔터 - 나가기) : ");
-						if(password.length() == 0) {
+						id = Prompt.inputString("아이디 입력(엔터 - 나가기) : ");
+						if(id.length() == 0) {
 							System.out.println("메인 메뉴로 돌아갑니다.\n");
 							return;
 						}
 
-						pswCheck = verifyPassword(password, idCheck);
+						BuyerMember idCheck = verifyBuyerId(id);
 
-						if(pswCheck) {
-							System.out.println("로그인 성공\n");
-							logCount = true;
-							if(flag == 1) {
-								BuyerBoardHandler.boardAuthorization = true;
-							}
-							else {
-								SellerBoardHandler.boardAuthorization = true;
-							}
+						if(idCheck != null) {
+							while(true) {
+								password = Prompt.inputString("비밀번호 입력(엔터 - 나가기) : ");
+								if(password.length() == 0) {
+									System.out.println("메인 메뉴로 돌아갑니다.\n");
+									return;
+								}
 
-							memberNumber = idCheck;
-							return;
+								pswCheck = verifyBuyerPassword(password, idCheck);
+
+								if(pswCheck) {
+									System.out.println("로그인 성공\n");
+									logCount = true;
+									logStatus = 0;
+									buyerMemberNumber = idCheck;
+									BuyerBoardHandler.boardAuthorization = true;
+									buyerMemberNumber.setDivision(true);
+									return;
+								}
+								else {
+									System.out.println("비밀번호가 틀렸습니다.\n");
+								}
+							}
 						}
 						else {
-							System.out.println("비밀번호가 틀렸습니다.\n");
+							System.out.println("존재하지 않는 ID 입니다.");
 						}
 					}
 				}
-				else {
-					System.out.println("존재하지 않는 아이디 입니다.\n");
+				else if (choice.equals("2")) {
+					if(sellerMemberList.size() == 0) {
+						System.out.println("존재하는 판매 회원이 없습니다.\n");
+						return;
+					}
+					while(true) {
+						id = Prompt.inputString("아이디 입력(엔터 - 나가기) : ");
+						if(id.length() == 0) {
+							System.out.println("메인 메뉴로 돌아갑니다.\n");
+							return;
+						}
+
+						SellerMember idCheck = verifySellerId(id);
+
+						if(idCheck != null) {
+							while(true) {
+								password = Prompt.inputString("비밀번호 입력(엔터 - 나가기) : ");
+								if(password.length() == 0) {
+									System.out.println("메인 메뉴로 돌아갑니다.\n");
+									return;
+								}
+
+								pswCheck = verifySellerPassword(password, idCheck);
+
+								if(pswCheck) {
+									System.out.println("로그인 성공\n");
+									logCount = true;
+									logStatus = 1;
+									sellerMemberNumber = idCheck;
+									SellerBoardHandler.boardAuthorization = true;
+									sellerMemberNumber.setDivision(true);
+									return;
+								}
+								else {
+									System.out.println("비밀번호가 틀렸습니다.\n");
+								}
+							}
+						}
+						else {
+							System.out.println("존재하지 않는 ID 입니다.");
+						}
+					}
 				}
 			}
 		}
@@ -253,49 +277,103 @@ public class MemberHandler {
 
 	public void logout() {
 		logCount = false;
-		memberNumber = null;
-		BuyerBoardHandler.boardAuthorization = false;
-		BuyerBoardHandler.likeCount = 0;
+		if(logStatus == 1) {
+			sellerMemberNumber = null;
+			SellerBoardHandler.boardAuthorization = false;
+		}
+		else {
+			buyerMemberNumber = null;
+			BuyerBoardHandler.boardAuthorization = false;
+		}
+
 		System.out.println("로그아웃\n");
 	}
 
 	public void setting() {
+		String name, choice;
+
 		if(logCount == true) {
-			System.out.println("■ 메뉴 - 회원 - 설정 ■");
-			String name;
-			Member m = memberNumber;
-			System.out.println("[설정]");
-			System.out.printf("내 아이디 : [%s]  내 닉네임 : [%s]  내 이름 : [%s] 내 이메일 : [%s] 내 휴대폰번호 : [%s]\n",
-					m.getId(), m.getNickname(), m.getName(), m.getEmail(), m.getPhone());
-			System.out.println("[1. 정보 수정]  [2. 내 글 보기]  [3. 회원 탈퇴]  [3. 뒤로가기]\n");
-			String match = Prompt.inputString("입력 : ");
-			if(match.equals("1")) {
-				System.out.println("[개인정보 수정]");
-				name = Prompt.inputString("정말로 수정하시겠습니까? [Y/N] : ");
-				if(name.equalsIgnoreCase("y")) {
-					update();
+			if(logStatus == 1) {
+				System.out.println("■ 메뉴 - 회원 - 설정 ■");
+				SellerMember s = sellerMemberNumber;
+
+				System.out.println("[설정]");
+				System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  소유주 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]\n", 
+						s.getNumber(), s.getId(), s.getPassword(), s.getName(), s.getEmail(), s.getPhone());
+				System.out.printf("상호명 : [%s]  사업자등록번호 : [%s]  영업시간 : [%s]  업종 : [%s]\n",
+						s.getBusinessName(), s.getBusinessNumber(), s.getBusinessHour(), s.getCategory());
+
+
+				System.out.println("[1. 정보 수정]  [2. 내 글 보기]  [3. 회원 탈퇴]  [3. 뒤로가기]\n");
+
+				choice = Prompt.inputString("입력 : ");
+				if(choice.equals("1")) {
+					System.out.println("[개인정보 수정]");
+					name = Prompt.inputString("정말로 수정하시겠습니까? [Y/N] : ");
+					if(name.equalsIgnoreCase("y")) {
+						update();
+					}
+					else {
+						System.out.println("메뉴 - 회원 으로 돌아갑니다.\n");
+					}
+				}
+				else if (choice.equals("2")) {
+					System.out.println("[내 글 보기]");
+
+				}
+
+				else if (choice.equals("3")){
+					System.out.println("[회원 탈퇴]");
+					name = Prompt.inputString("정말로 탈퇴하시겠습니까? [Y/N] : ");
+					if(name.equalsIgnoreCase("y")) {
+						delete();
+					}
+					else {
+						System.out.println("메뉴 - 회원 으로 돌아갑니다.\n");
+					}
 				}
 				else {
-					System.out.println("메뉴 / 회원 으로 돌아갑니다.\n");
+					System.out.println("메뉴 - 회원 으로 돌아갑니다.\n");
 				}
-			}
-			else if (match.equals("2")) {
-				System.out.println("[내 글 보기]");
-
 			}
 
-			else if (match.equals("3")){
-				System.out.println("[회원 탈퇴]");
-				name = Prompt.inputString("정말로 탈퇴하시겠습니까? [Y/N] : ");
-				if(name.equalsIgnoreCase("y")) {
-					delete();
-				}
-				else {
-					System.out.println("메뉴 / 회원 으로 돌아갑니다.\n");
-				}
-			}
 			else {
-				System.out.println("메뉴 / 회원 으로 돌아갑니다.\n");
+				System.out.println("■ 메뉴 - 회원 - 설정 ■");
+
+				BuyerMember b = buyerMemberNumber;
+				System.out.println("[설정]");
+				System.out.printf("내 아이디 : [%s]  내 닉네임 : [%s]  내 이름 : [%s] 내 이메일 : [%s] 내 휴대폰번호 : [%s]\n",
+						b.getId(), b.getNickname(), b.getName(), b.getEmail(), b.getPhone());
+				System.out.println("[1. 정보 수정]  [2. 내 글 보기]  [3. 회원 탈퇴]  [3. 뒤로가기]\n");
+				choice = Prompt.inputString("입력 : ");
+				if(choice.equals("1")) {
+					System.out.println("[개인정보 수정]");
+					name = Prompt.inputString("정말로 수정하시겠습니까? [Y/N] : ");
+					if(name.equalsIgnoreCase("y")) {
+						update();
+					}
+					else {
+						System.out.println("메뉴 / 회원 으로 돌아갑니다.\n");
+					}
+				}
+				else if (choice.equals("2")) {
+					System.out.println("[내 글 보기]");
+
+				}
+
+				else if (choice.equals("3")){
+					System.out.println("[회원 탈퇴]");
+					name = Prompt.inputString("정말로 탈퇴하시겠습니까? [Y/N] : ");
+					if(name.equalsIgnoreCase("y")) {
+						delete();
+					}
+					else {
+						System.out.println("메뉴 - 회원 으로 돌아갑니다.\n");
+					}
+				}
+				else {
+					System.out.println("메뉴 - 회원 으로 돌아갑니다.\n");
+				}
 			}
 		}
 		else {
@@ -304,65 +382,74 @@ public class MemberHandler {
 	}
 	public void update() {
 
-		Member m = memberNumber;
+		BuyerMember b = buyerMemberNumber;
+		SellerMember s = sellerMemberNumber;
 
-		if(m.isDivision() == true) {
-			m.setId(findById("수정할 ID : "));
-			m.setPassword(minimumLength("수정할 Password : "));
-			m.setName(Prompt.inputString("수정할 이름 : "));
-			m.setEmail(emailFormat("수정할 E-Mail : "));
-			m.setPhone(phoneFormat("수정할 핸드폰 번호 : \n"));
+		if(s.isDivision() == true) {
+			s.setId(findByBuyerId("수정할 ID : "));
+			s.setPassword(minimumLength("수정할 Password : "));
+			s.setName(Prompt.inputString("수정할 이름 : "));
+			s.setEmail(emailFormat("수정할 E-Mail : "));
+			s.setPhone(phoneFormat("수정할 핸드폰 번호 : \n"));
 			System.out.println("가게 관련 정보 변경은 고객센터(1542-1542)로 연락 바랍니다.");
+			SellerBoardHandler.changeCount = 1;
 		}
-		else {
-			m.setId(findById("수정할 ID : "));
-			m.setPassword(minimumLength("수정할 Password : "));
-			m.setName(Prompt.inputString("수정할 이름 : "));
-			m.setNickname(findByNickname("수정할 닉네임 : "));
-			m.setEmail(emailFormat("수정할 E-Mail : "));
-			m.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
+		else if(b.isDivision() == true){
+			b.setId(findByBuyerId("수정할 ID : "));
+			b.setPassword(minimumLength("수정할 Password : "));
+			b.setName(Prompt.inputString("수정할 이름 : "));
+			b.setNickname(findByNickname("수정할 닉네임 : "));
+			b.setEmail(emailFormat("수정할 E-Mail : "));
+			b.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
 			BuyerBoardHandler.changeCount = 1;
 		}
 
-
 		System.out.println("[개인정보 수정 완료]\n");
-
 
 	}
 
-
 	private void delete() {
 		if(logCount == true) {
-			Member member = memberNumber;
-			memberList.delete(member);
-			if(member.isDivision() == true) {
-				this.sellerCount--;
+			if(this.logStatus == 1) {
+				SellerMember seller = sellerMemberNumber;
+				sellerMemberList.delete(seller);
 			}
 			else {
-				this.buyerCount--;
+				BuyerMember buyer = buyerMemberNumber;
+				buyerMemberList.delete(buyer);
 			}
 			logCount = false;
-
+			logStatus = -1;
 			System.out.println("계정 탈퇴 처리가 완료되었습니다. 그동안 이용해주셔서 감사합니다.\n");
 		}
 		else {
 			int num = Prompt.inputInt("탈퇴시킬 회원 번호를 입력하세요 : ");
-			Member member = findByNum(num);
+			if(flag == 0) {
+				BuyerMember buyer = findByBuyerNum(num);
 
-			if(member == null) {
-				System.out.println("회원 번호가 존재하지 않습니다.\n");
-				return;
-			}
-			else {
-				memberList.delete(member);
-				if(member.isDivision() == true) {
-					this.sellerCount--;
+				if(buyer == null) {
+					System.out.println("회원 번호가 존재하지 않습니다.\n");
+					return;
 				}
 				else {
-					this.buyerCount--;
+					buyerMemberList.delete(buyer);
+					System.out.println("회원 탈퇴 처리가 완료되었습니다.\n");
 				}
-				System.out.println("회원 탈퇴 처리가 완료되었습니다.\n");
 			}
+
+			else {
+				SellerMember seller = findBySellerNum(num);
+
+				if(seller == null) {
+					System.out.println("회원 번호가 존재하지 않습니다.\n");
+					return;
+				}
+				else {
+					sellerMemberList.delete(seller);
+					System.out.println("회원 탈퇴 처리가 완료되었습니다.\n");
+				}
+			}
+
 		}
 	}
 
@@ -386,28 +473,33 @@ public class MemberHandler {
 	public void list() {
 		if(adminNumber == 1) {
 			System.out.println("■ 메뉴 - 관리자 - 회원목록 ■");
+			if(sellerMemberList.size() == 0 && buyerMemberList.size() == 0) {
+				System.out.println("존재하는 회원이 없습니다.");
+				return;
+			}
 			System.out.println("1. 구매자 회원 목록  2. 판매자 회원 목록\n");
 			String choice = Prompt.inputString("선택 : ");
-			ListIterator iterator = new ListIterator(this.memberList);
+
 
 			if(choice.equals("1")) {
-				// 구매자 회원만 보여주려면, 
 				System.out.println("[구매자 회원 목록]");
-				if(this.buyerCount == 0) {
+				ListIterator buyerIterator = new ListIterator(this.buyerMemberList);
+				if(buyerMemberList.size() == 0) {
 					System.out.println("회원이 없습니다. \n메뉴로 돌아갑니다.\n");
 					return;
 				}
-				while(iterator.hasNext()) {
-					Member m = (Member)iterator.next();
-					if(m.isDivision() == false) {
+				while(buyerIterator.hasNext()) {
+					BuyerMember b = (BuyerMember)buyerIterator.next();
+					if(b.isDivision() == false) {
 						System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  닉네임 : [%s]  이름 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]  가입일자 : [%s]\n", 
-								m.getBuyerNumber(), m.getId(), m.getPassword(), m.getNickname(), m.getName(), m.getEmail(), m.getPhone(), m.getRegisteredDate());
+								b.getNumber(), b.getId(), b.getPassword(), b.getNickname(), b.getName(), b.getEmail(), b.getPhone(), b.getRegisteredDate());
 					}
 				}
 				System.out.println();
 				System.out.println("1. [회원 강제탈퇴] 2. [나가기]");
 				String setting = Prompt.inputString("번호를 선택하세요 : ");
 				if(setting.equals("1")) {
+					flag = 0;
 					delete();
 				}
 				else {
@@ -418,23 +510,23 @@ public class MemberHandler {
 
 			else if(choice.equals("2")) {
 				System.out.println("[판매자 회원 목록]");
-				if(this.sellerCount == 0) {
+				ListIterator sellerIterator = new ListIterator(this.sellerMemberList);
+				if(sellerMemberList.size() == 0) {
 					System.out.println("회원이 없습니다. \n메뉴로 돌아갑니다.\n");
 					return;
 				}
-				while(iterator.hasNext()) {
-					Member m = (Member)iterator.next();
-					if(m.isDivision() == true) {
-						System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  소유주 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]\n", 
-								m.getSellerNumber(), m.getId(), m.getPassword(), m.getName(), m.getEmail(), m.getPhone());
-						System.out.printf("상호명 : [%s]  사업자등록번호 : [%s]  영업시간 : [%s]  업종 : [%s]\n",
-								m.getBusinessName(), m.getBusinessNumber(), m.getBusinessHour(), m.getCategory());
-					}
+				while(sellerIterator.hasNext()) {
+					SellerMember s = (SellerMember)sellerIterator.next();
+					System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  소유주 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]\n", 
+							s.getNumber(), s.getId(), s.getPassword(), s.getName(), s.getEmail(), s.getPhone());
+					System.out.printf("상호명 : [%s]  사업자등록번호 : [%s]  영업시간 : [%s]  업종 : [%s]\n",
+							s.getBusinessName(), s.getBusinessNumber(), s.getBusinessHour(), s.getCategory());
 				}
 				System.out.println();
 				System.out.println("1. [회원 강제탈퇴] 2. [나가기]");
 				String setting = Prompt.inputString("번호를 선택하세요 : ");
 				if(setting.equals("1")) {
+					flag = 1;
 					delete();
 				}
 				else {
@@ -442,15 +534,13 @@ public class MemberHandler {
 					return;
 				}
 			}
-
-
 		}
 		else {
 			System.out.println("관리자 권한이 필요합니다.\n");
 		}
 	}
 
-	private String findById(String message) {
+	private String findByBuyerId(String message) {
 		String id;
 		while(true) {
 			int flag = 0;
@@ -461,10 +551,38 @@ public class MemberHandler {
 				flag = 1;
 			}
 			else {
-				Object[] list = memberList.toArray();
+				Object[] list = buyerMemberList.toArray();
 				for(Object obj : list) {
-					Member m = (Member) obj;
-					if(id.equalsIgnoreCase(m.getId())) {
+					BuyerMember b = (BuyerMember) obj;
+					if(id.equalsIgnoreCase(b.getId())) {
+						System.out.println("이미 사용중인 아이디 입니다.\n");
+						flag = 1;
+						break;
+					}
+				}
+			}
+			if(flag == 0) {
+				break;
+			}
+		}
+		return id;
+	}
+
+	private String findBySellerId(String message) {
+		String id;
+		while(true) {
+			int flag = 0;
+			id = Prompt.inputString(message);
+			if(id.length() < 8) {
+				System.out.println();
+				System.out.println("8자리 이상 입력하세요.");
+				flag = 1;
+			}
+			else {
+				Object[] list = sellerMemberList.toArray();
+				for(Object obj : list) {
+					SellerMember s = (SellerMember) obj;
+					if(id.equalsIgnoreCase(s.getId())) {
 						System.out.println("이미 사용중인 아이디 입니다.\n");
 						flag = 1;
 						break;
@@ -489,10 +607,10 @@ public class MemberHandler {
 				flag = 1;
 			}
 			else {
-				Object[] list = memberList.toArray();
+				Object[] list = buyerMemberList.toArray();
 				for(Object obj : list) {
-					Member m = (Member) obj;
-					if(nickname.equalsIgnoreCase(m.getNickname())) {
+					BuyerMember b = (BuyerMember) obj;
+					if(nickname.equalsIgnoreCase(b.getNickname())) {
 						System.out.println("이미 사용중인 닉네임 입니다.\n");
 						flag = 1;
 						break;
@@ -506,19 +624,37 @@ public class MemberHandler {
 		return nickname;
 	}
 
-	private Member verifyId(String id) {
-		Object[] list = memberList.toArray();
+	private BuyerMember verifyBuyerId(String id) {
+		Object[] list = buyerMemberList.toArray();
 		for(Object obj : list) {
-			Member m = (Member)obj;
-			if(m.getId().equalsIgnoreCase(id)) {
-				return m;
+			BuyerMember b = (BuyerMember)obj;
+			if(b.getId().equalsIgnoreCase(id)) {
+				return b;
 			}
 		}
 		return null;
 	}
 
-	private boolean verifyPassword(String password, Member m) {
-		if(password.equals(m.getPassword())) {
+	private SellerMember verifySellerId(String id) {
+		Object[] list = sellerMemberList.toArray();
+		for(Object obj : list) {
+			SellerMember s = (SellerMember)obj;
+			if(s.getId().equalsIgnoreCase(id)) {
+				return s;
+			}
+		}
+		return null;
+	}
+
+	private boolean verifyBuyerPassword(String password, BuyerMember b) {
+		if(password.equals(b.getPassword())) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean verifySellerPassword(String password, SellerMember s) {
+		if(password.equals(s.getPassword())) {
 			return true;
 		}
 		return false;
@@ -536,18 +672,22 @@ public class MemberHandler {
 		}
 	}
 
-	private Member findByNum(int memberNum) {
-		Object[] list = memberList.toArray();
+	private BuyerMember findByBuyerNum(int buyerMemberNum) {
+		Object[] list = buyerMemberList.toArray();
 		for(Object obj : list) {
-			Member m = (Member)obj;
-			if(m.isDivision() == true) {
-				if(memberNum == m.getSellerNumber())
-					return m;
-			}
-			else {
-				if(memberNum == m.getBuyerNumber())
-					return m;
-			}
+			BuyerMember b = (BuyerMember)obj;
+			if(buyerMemberNum == b.getNumber())
+				return b;
+		}
+		return null;
+	}
+
+	private SellerMember findBySellerNum(int sellerMemberNum) {
+		Object[] list = sellerMemberList.toArray();
+		for(Object obj : list) {
+			SellerMember s = (SellerMember)obj;
+			if(sellerMemberNum == s.getNumber())
+				return s;
 		}
 		return null;
 	}
@@ -590,7 +730,7 @@ public class MemberHandler {
 			}
 		}
 	}
-	public void category(Member m) {
+	public void category(SellerMember s) {
 		System.out.println("[업종 선택]");
 		Loop:
 			while(true) {
@@ -603,15 +743,15 @@ public class MemberHandler {
 				}
 
 				switch(choice) {
-				case "1": m.setCategory("한식"); break Loop;
-				case "2": m.setCategory("양식"); break Loop;
-				case "3": m.setCategory("일식"); break Loop;
-				case "4": m.setCategory("중식"); break Loop;
-				case "5": m.setCategory("분식"); break Loop;
-				case "6": m.setCategory("치킨"); break Loop;
-				case "7": m.setCategory("피자"); break Loop;
-				case "8": m.setCategory("디저트"); break Loop;
-				case "9": m.setCategory("야식"); break Loop;
+				case "1": s.setCategory("한식"); break Loop;
+				case "2": s.setCategory("양식"); break Loop;
+				case "3": s.setCategory("일식"); break Loop;
+				case "4": s.setCategory("중식"); break Loop;
+				case "5": s.setCategory("분식"); break Loop;
+				case "6": s.setCategory("치킨"); break Loop;
+				case "7": s.setCategory("피자"); break Loop;
+				case "8": s.setCategory("디저트"); break Loop;
+				case "9": s.setCategory("야식"); break Loop;
 				default: System.out.println("다시 선택하세요.\n");
 				}
 			}
