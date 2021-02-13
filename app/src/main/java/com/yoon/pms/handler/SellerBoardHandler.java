@@ -1,6 +1,6 @@
 package com.yoon.pms.handler;
 
-import com.yoon.pms.domain.SellerBoard;
+import com.yoon.pms.domain.Board;
 import com.yoon.util.List;
 import com.yoon.util.ListIterator;
 import com.yoon.util.Prompt;
@@ -8,7 +8,7 @@ import com.yoon.util.Prompt;
 public class SellerBoardHandler {
 
 	public static boolean boardAuthorization = false;
-	private List sellerBoardList = new List();
+	private List BoardList = new List();
 
 	int boardIndex = 1;
 	int commentCount = 0;
@@ -56,7 +56,7 @@ public class SellerBoardHandler {
 	}
 
 	public void add() {
-		SellerBoard s = new SellerBoard();
+		Board s = new Board();
 		if(boardAuthorization == true) {
 			System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 작성 ■");
 			s.setNumber(boardIndex++);
@@ -65,7 +65,7 @@ public class SellerBoardHandler {
 			s.setWriter(MemberHandler.sellerMemberNumber.getBusinessName()); // 체크
 			s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 			s.setId(MemberHandler.sellerMemberNumber.getHash());
-			this.sellerBoardList.add(s);
+			this.BoardList.add(s);
 
 			System.out.println("글 작성 완료");
 		}
@@ -75,14 +75,14 @@ public class SellerBoardHandler {
 	}
 
 	public void list() {
-		if(sellerBoardList.size() == 0) {
+		if(BoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 목록 ■");
-		ListIterator iterator = new ListIterator(this.sellerBoardList);
+		ListIterator iterator = new ListIterator(this.BoardList);
 		while(iterator.hasNext()) {
-			SellerBoard s = (SellerBoard)iterator.next();
+			Board s = (Board)iterator.next();
 			System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
 					s.getNumber(), s.getTitle(), s.getWriter(), s.getLike(), s.getView(), s.getRegisteredDate());
 		}
@@ -94,7 +94,7 @@ public class SellerBoardHandler {
 
 
 	public void detail() {
-		if(sellerBoardList.size() == 0) {
+		if(BoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
@@ -103,7 +103,7 @@ public class SellerBoardHandler {
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 보기 ■");
 		int num = Prompt.inputInt("게시글 번호 입력 : ");
 
-		SellerBoard board = findByNum(num);
+		Board board = findByNum(num);
 
 		if (board == null) {
 			System.out.println("해당 번호의 게시글이 없습니다.");
@@ -121,7 +121,7 @@ public class SellerBoardHandler {
 
 
 		if(board.getId() == MemberHandler.sellerMemberNumber.getHash()) {
-			SellerBoard s = board;
+			Board s = board;
 			while(true) {
 				System.out.println("1. [수정]  2. [삭제]");
 				String choice = Prompt.inputString("선택 : ");
@@ -159,7 +159,7 @@ public class SellerBoardHandler {
 
 	}
 
-	public void update(SellerBoard s) {
+	public void update(Board s) {
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 수정 ■");
 
 		s.setTitle(Prompt.inputString("수정할 제목 : "));
@@ -169,16 +169,16 @@ public class SellerBoardHandler {
 
 	}
 
-	public void delete(SellerBoard s) {
+	public void delete(Board s) {
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 삭제 ■");
-		sellerBoardList.delete(s);
+		BoardList.delete(s);
 		System.out.println("게시글이 삭제되었습니다.");
 	}
 
-	private SellerBoard findByNum(int boardNum) {
-		Object[] list = sellerBoardList.toArray();
+	private Board findByNum(int boardNum) {
+		Object[] list = BoardList.toArray();
 		for (Object obj : list) {
-			SellerBoard s = (SellerBoard) obj;
+			Board s = (Board) obj;
 			if (s.getNumber() == boardNum) {
 				return s;
 			}
@@ -187,9 +187,9 @@ public class SellerBoardHandler {
 	}
 
 	public void changeWriter() {
-		Object[] list = sellerBoardList.toArray();
+		Object[] list = BoardList.toArray();
 		for(Object obj : list) {
-			SellerBoard s = (SellerBoard)obj;
+			Board s = (Board)obj;
 			if(s.getId() == MemberHandler.sellerMemberNumber.getHash()) {
 				s.setWriter(MemberHandler.sellerMemberNumber.getBusinessName());
 			}

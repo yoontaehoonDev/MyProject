@@ -1,6 +1,6 @@
 package com.yoon.pms.handler;
 
-import com.yoon.pms.domain.BuyerBoard;
+import com.yoon.pms.domain.Board;
 import com.yoon.util.List;
 import com.yoon.util.ListIterator;
 import com.yoon.util.Prompt;
@@ -61,7 +61,7 @@ public class BuyerBoardHandler {
 	}
 
 	public void add() {
-		BuyerBoard b = new BuyerBoard();
+		Board b = new Board();
 		if(boardAuthorization == true && MemberHandler.buyerMemberNumber.isDivision() == true) {
 			System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 작성 ■");
 
@@ -91,7 +91,7 @@ public class BuyerBoardHandler {
 
 		ListIterator iterator = new ListIterator(this.buyerBoardList);
 		while(iterator.hasNext()) {
-			BuyerBoard b = (BuyerBoard)iterator.next();
+			Board b = (Board)iterator.next();
 			System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
 					b.getNumber(), b.getTitle(), b.getWriter(), b.getLike(), b.getView(), b.getRegisteredDate());
 		}
@@ -112,7 +112,7 @@ public class BuyerBoardHandler {
 		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 보기 ■");
 		int num = Prompt.inputInt("게시글 번호 입력 : ");
 
-		BuyerBoard board = findByNum(num);
+		Board board = findByNum(num);
 
 		if (board == null) {
 			System.out.println("해당 번호의 게시글이 없습니다.");
@@ -133,7 +133,7 @@ public class BuyerBoardHandler {
 		//		}
 
 		if(board.getId() == MemberHandler.buyerMemberNumber.getHash()) {
-			BuyerBoard b = board;
+			Board b = board;
 			while(true) {
 				System.out.println("1. [수정]  2. [삭제]");
 				String choice = Prompt.inputString("선택 : ");
@@ -171,7 +171,7 @@ public class BuyerBoardHandler {
 
 	}
 
-	public void update(BuyerBoard b) {
+	public void update(Board b) {
 		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 수정 ■");
 
 		b.setTitle(Prompt.inputString("수정할 제목 : "));
@@ -181,16 +181,16 @@ public class BuyerBoardHandler {
 
 	}
 
-	public void delete(BuyerBoard b) {
+	public void delete(Board b) {
 		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 삭제 ■");
 		buyerBoardList.delete(b);
 		System.out.println("게시글이 삭제되었습니다.");
 	}
 
-	private BuyerBoard findByNum(int boardNum) {
+	private Board findByNum(int boardNum) {
 		Object[] list = buyerBoardList.toArray();
 		for (Object obj : list) {
-			BuyerBoard b = (BuyerBoard) obj;
+			Board b = (Board) obj;
 			if (b.getNumber() == boardNum) {
 				return b;
 			}
@@ -201,7 +201,7 @@ public class BuyerBoardHandler {
 	public void changeWriter() {
 		Object[] list = buyerBoardList.toArray();
 		for(Object obj : list) {
-			BuyerBoard b = (BuyerBoard)obj;
+			Board b = (Board)obj;
 			if(b.getId() == MemberHandler.buyerMemberNumber.getHash()) {
 				b.setWriter(MemberHandler.buyerMemberNumber.getNickname());
 			}

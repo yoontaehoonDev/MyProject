@@ -1,6 +1,6 @@
 package com.yoon.pms.handler;
 
-import com.yoon.pms.domain.IntegratedBoard;
+import com.yoon.pms.domain.Board;
 import com.yoon.util.List;
 import com.yoon.util.ListIterator;
 import com.yoon.util.Prompt;
@@ -8,7 +8,7 @@ import com.yoon.util.Prompt;
 public class IntegratedBoardHandler {
 
 	public static boolean boardAuthorization = false;
-	private List integratedBoardList = new List();
+	private List BoardList = new List();
 
 	int boardIndex = 1;
 	int commentCount = 0;
@@ -56,7 +56,7 @@ public class IntegratedBoardHandler {
 	}
 
 	public void add() {
-		IntegratedBoard i = new IntegratedBoard();
+		Board i = new Board();
 		if(boardAuthorization == true) {
 			System.out.println("■ 메뉴 - 통합게시판 - 게시글 작성 ■");
 			i.setNumber(boardIndex++);
@@ -72,7 +72,7 @@ public class IntegratedBoardHandler {
 			}
 			i.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 
-			this.integratedBoardList.add(i);
+			this.BoardList.add(i);
 
 			System.out.println("글 작성 완료");
 		}
@@ -82,21 +82,21 @@ public class IntegratedBoardHandler {
 	}
 
 	public void list() {
-		if(integratedBoardList.size() == 0) {
+		if(BoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
 		System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 ■");
-		ListIterator iterator = new ListIterator(this.integratedBoardList);
+		ListIterator iterator = new ListIterator(this.BoardList);
 		while(iterator.hasNext()) {
-			IntegratedBoard i = (IntegratedBoard)iterator.next();
+			Board i = (Board)iterator.next();
 			System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
 					i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
 		} // 회원 판별!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	public void detail() {
-		if(integratedBoardList.size() == 0) {
+		if(BoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.");
 			return;
 		}
@@ -106,7 +106,7 @@ public class IntegratedBoardHandler {
 		System.out.println("■ 메뉴 - 통합게시판 - 게시글 보기 ■");
 		int num = Prompt.inputInt("게시글 번호 입력 : ");
 
-		IntegratedBoard board = findByNum(num);
+		Board board = findByNum(num);
 
 		if (board == null) {
 			System.out.println("해당 번호의 게시글이 없습니다.");
@@ -127,7 +127,7 @@ public class IntegratedBoardHandler {
 		if(MemberHandler.logStatus == 0) {
 			// 구매 or 판매회원 해쉬값 수정 필요
 			if(board.getId() == MemberHandler.buyerMemberNumber.getHash()) {
-				IntegratedBoard i = board;
+				Board i = board;
 				while(true) {
 					System.out.println("1. [수정]  2. [삭제]");
 					String choice = Prompt.inputString("선택 : ");
@@ -148,7 +148,7 @@ public class IntegratedBoardHandler {
 		}
 		else if (MemberHandler.logStatus == 1) {
 			if(board.getId() == MemberHandler.sellerMemberNumber.getHash()) {
-				IntegratedBoard i = board;
+				Board i = board;
 				while(true) {
 					System.out.println("1. [수정]  2. [삭제]");
 					String choice = Prompt.inputString("선택 : ");
@@ -170,7 +170,7 @@ public class IntegratedBoardHandler {
 	}
 
 
-	public void update(IntegratedBoard i) {
+	public void update(Board i) {
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 수정 ■");
 
 		i.setTitle(Prompt.inputString("수정할 제목 : "));
@@ -179,16 +179,16 @@ public class IntegratedBoardHandler {
 		System.out.println("수정 완료");
 	}
 
-	public void delete(IntegratedBoard i) {
+	public void delete(Board i) {
 		System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 삭제 ■");
-		integratedBoardList.delete(i);
+		BoardList.delete(i);
 		System.out.println("게시글이 삭제되었습니다.");
 	}
 
-	private IntegratedBoard findByNum(int boardNum) {
-		Object[] list = integratedBoardList.toArray();
+	private Board findByNum(int boardNum) {
+		Object[] list = BoardList.toArray();
 		for (Object obj : list) {
-			IntegratedBoard i = (IntegratedBoard) obj;
+			Board i = (Board) obj;
 			if (i.getNumber() == boardNum) {
 				return i;
 			}
@@ -197,9 +197,9 @@ public class IntegratedBoardHandler {
 	}
 
 	public void changeWriter() {
-		Object[] list = integratedBoardList.toArray();
+		Object[] list = BoardList.toArray();
 		for(Object obj : list) {
-			IntegratedBoard i = (IntegratedBoard)obj;
+			Board i = (Board)obj;
 			if(i.getId() == MemberHandler.sellerMemberNumber.getHash()) {
 				i.setWriter(MemberHandler.sellerMemberNumber.getBusinessName());
 			}

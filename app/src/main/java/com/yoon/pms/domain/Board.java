@@ -2,7 +2,7 @@ package com.yoon.pms.domain;
 
 import java.sql.Date;
 
-public class SellerBoard {
+public class Board {
 	private int id;
 	private int number;
 	private String title;
@@ -35,7 +35,7 @@ public class SellerBoard {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		SellerBoard other = (SellerBoard) obj;
+		Board other = (Board) obj;
 		if (commentWriter == null) {
 			if (other.commentWriter != null)
 				return false;

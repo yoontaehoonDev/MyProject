@@ -24,8 +24,6 @@ public class MemberHandler {
 	int times = 0;
 	int buyerIndex = 1;
 	int sellerIndex = 1;
-	int buyerMemberHash = 1;
-	int sellerMemberHash = 1000;
 	int flag;
 
 
@@ -123,7 +121,7 @@ public class MemberHandler {
 			if(choice.equals("1")) {
 				SellerMember s = new SellerMember();
 				s.setDivision(false);
-				s.setHash(sellerMemberHash++);
+				s.setHash(s.hashCode());
 				s.setNumber(sellerIndex++);
 				s.setId(findBySellerId("아이디 입력 : "));
 				s.setPassword(minimumLength("비밀번호 입력 : "));
@@ -156,7 +154,7 @@ public class MemberHandler {
 			else if (choice.equals("2")) {
 				BuyerMember b = new BuyerMember();
 				b.setDivision(false);
-				b.setHash(buyerMemberHash++);
+				b.setHash(b.hashCode());
 				b.setNumber(buyerIndex++);
 				b.setId(findByBuyerId("아이디 입력 : "));
 				b.setPassword(minimumLength("비밀번호 입력 : "));
