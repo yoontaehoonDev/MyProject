@@ -397,7 +397,7 @@ public class MemberHandler {
 			s.setPassword(minimumLength("수정할 Password : "));
 			s.setName(Prompt.inputString("수정할 이름 : "));
 			s.setEmail(emailFormat("수정할 E-Mail : "));
-			s.setPhone(phoneFormat("수정할 핸드폰 번호 : \n"));
+			s.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
 			System.out.println("가게 관련 정보 변경은 고객센터(1542-1542)로 연락 바랍니다.");
 			SellerBoardHandler.changeCount = 1;
 		}

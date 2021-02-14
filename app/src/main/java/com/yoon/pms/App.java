@@ -36,7 +36,6 @@ public class App {
 				String menu = Prompt.inputString("메뉴 입력 : ");
 
 
-
 				commandStack.push(menu);
 				commandQueue.offer(menu);
 

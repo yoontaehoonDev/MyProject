@@ -73,17 +73,17 @@ public class BuyerBoardHandler {
 			b.setId(MemberHandler.buyerMemberNumber.getHash());
 			this.buyerBoardList.add(b);
 
-			System.out.println("글 작성 완료");
+			System.out.println("글 작성 완료\n");
 
 		}
 		else {
-			System.out.println("회원만 작성 가능합니다.");
+			System.out.println("회원만 작성 가능합니다.\n");
 		}
 	}
 
 	public void list() {
 		if(buyerBoardList.size() == 0) {
-			System.out.println("존재하는 게시글이 없습니다.");
+			System.out.println("존재하는 게시글이 없습니다.\n");
 			return;
 		}
 
@@ -104,7 +104,7 @@ public class BuyerBoardHandler {
 
 	public void detail() {
 		if(buyerBoardList.size() == 0) {
-			System.out.println("존재하는 게시글이 없습니다.");
+			System.out.println("존재하는 게시글이 없습니다.\n");
 			return;
 		}
 		list();
@@ -115,7 +115,7 @@ public class BuyerBoardHandler {
 		Board board = findByNum(num);
 
 		if (board == null) {
-			System.out.println("해당 번호의 게시글이 없습니다.");
+			System.out.println("해당 번호의 게시글이 없습니다.\n");
 			return;
 		}
 
@@ -177,14 +177,13 @@ public class BuyerBoardHandler {
 		b.setTitle(Prompt.inputString("수정할 제목 : "));
 		b.setContent(Prompt.inputString("수정할 내용 : "));
 
-		System.out.println("수정 완료");
+		System.out.println("수정 완료\n");
 
 	}
 
 	public void delete(Board b) {
-		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 삭제 ■");
 		buyerBoardList.delete(b);
-		System.out.println("게시글이 삭제되었습니다.");
+		System.out.println("게시글이 삭제되었습니다.\n");
 	}
 
 	private Board findByNum(int boardNum) {
