@@ -111,7 +111,7 @@ public class List {
     return this.size;
   }
 
-  static class Node {
+  public static class Node {
     Object obj;
     Node prev;
     Node next;
@@ -119,5 +119,22 @@ public class List {
     Node(Object obj) {
       this.obj = obj;
     }
+  }
+
+
+  public Iterator iterator() throws CloneNotSupportedException {
+    return new Iterator() {
+      int cursor = 0;
+
+      @Override
+      public boolean hasNext() {
+        return cursor < List.this.size();
+      }
+
+      @Override
+      public Object next() {
+        return List.this.get(cursor++);
+      }
+    };
   }
 }
