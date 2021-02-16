@@ -115,8 +115,11 @@ public class BuyerBoardHandler {
     c.setCommentId(b.getNumber());
     c.setCommentWriter(m.getNickname());
     c.setComment(Prompt.inputString("댓글 : "));
-    b.setCommentCount(commentCount++);
+
+    b.setCommentCount(b.getCommentCount() + 1);
+    c.setCommentNumber(b.getCommentCount());
     this.commentList.add(c);
+
   }
 
   public void detail() throws CloneNotSupportedException {
@@ -124,6 +127,7 @@ public class BuyerBoardHandler {
       System.out.println("존재하는 게시글이 없습니다.\n");
       return;
     }
+    String choice;
 
     list();
     System.out.println("---------------------------------------");
@@ -150,7 +154,7 @@ public class BuyerBoardHandler {
 
     while(true) {
       System.out.println("1. 댓글 작성  2. 나가기");
-      String choice = Prompt.inputString("선택 : ");
+      choice = Prompt.inputString("선택 : ");
       if(choice.equals("1")) {
         commentAdd(board);
         break;
@@ -158,6 +162,7 @@ public class BuyerBoardHandler {
       else if(choice.equals("2")) {
         break;
       }
+
       else {
         System.out.println("잘못 입력하셨습니다.");
       }
@@ -167,7 +172,7 @@ public class BuyerBoardHandler {
       Board b = board;
       while(true) {
         System.out.println("1. [수정]  2. [삭제]  3. [뒤로가기]");
-        String choice = Prompt.inputString("선택 : ");
+        choice = Prompt.inputString("선택 : ");
         if(choice.equals("1")) {
           update(b);
           break;
@@ -185,8 +190,6 @@ public class BuyerBoardHandler {
         }
       }
     }
-
-
 
 
     /* 추천 기능 보류
@@ -243,14 +246,24 @@ public class BuyerBoardHandler {
 
   private void commentList(Board b) {
     Comment[] list = commentList.toArray(new Comment[commentList.size()]);
-    int i = 1;
+    System.out.println();
+    System.out.println("■ 댓글 ■");
     for(Comment c : list) {
       if(b.getNumber() == c.getCommentId()) {
-        System.out.printf("%d. %s : %s\n", i++, c.getCommentWriter(), c.getComment());
+        System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
       }
     }
     System.out.println();
   }
+  //  대댓글 기능 보류
+  //  private Comment findByCommentNum(int commentNum) {
+  //    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+  //    for(Comment c : list) {
+  //      if(commentNum == c.getCommentNumber())
+  //        return c;
+  //    }
+  //    return null;
+  //  }
 
   private Board findByNum(int boardNum) {
 

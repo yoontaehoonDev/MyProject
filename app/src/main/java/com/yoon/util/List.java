@@ -24,6 +24,7 @@ public class List<E> {
     size++;
   }
 
+
   public Object[] toArray() {
     Object[] arr = new Object[size];
     int i = 0;
@@ -63,6 +64,8 @@ public class List<E> {
     }
     return null;
   }
+
+
 
   public boolean delete(E obj) {
     Node<E> cursor = first;
