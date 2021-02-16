@@ -1,21 +1,55 @@
 package com.yoon.pms.domain;
 
 public class Comment {
-	private String commentWriter;
-	private String comment;
+  private String commentWriter;
+  private String comment;
+  private int commentId;
 
-	public String getCommentWriter() {
-		return commentWriter;
-	}
-	public void setCommentWriter(String commentWriter) {
-		this.commentWriter = commentWriter;
-	}
-	public String getComment() {
-		return comment;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + commentId;
+    result = prime * result + ((commentWriter == null) ? 0 : commentWriter.hashCode());
+    return result;
+  }
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Comment other = (Comment) obj;
+    if (commentId != other.commentId)
+      return false;
+    if (commentWriter == null) {
+      if (other.commentWriter != null)
+        return false;
+    } else if (!commentWriter.equals(other.commentWriter))
+      return false;
+    return true;
+  }
 
+
+  public String getCommentWriter() {
+    return commentWriter;
+  }
+  public void setCommentWriter(String commentWriter) {
+    this.commentWriter = commentWriter;
+  }
+  public String getComment() {
+    return comment;
+  }
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
+  public int getCommentId() {
+    return commentId;
+  }
+  public void setCommentId(int commentId) {
+    this.commentId = commentId;
+  }
 
 }

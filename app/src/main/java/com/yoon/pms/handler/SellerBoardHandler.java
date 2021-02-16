@@ -1,6 +1,7 @@
 package com.yoon.pms.handler;
 
 import com.yoon.pms.domain.Board;
+import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Iterator;
 import com.yoon.util.List;
 import com.yoon.util.Prompt;
@@ -26,7 +27,7 @@ public class SellerBoardHandler {
         System.out.println("2. 게시글 작성");
         System.out.println("3. 게시글 목록");
         System.out.println("4. 게시글 보기");
-        System.out.println("5. 설정");
+        System.out.println("5. 내가 쓴 글");
         System.out.println("6. 로그아웃");
       }
 
@@ -178,6 +179,23 @@ public class SellerBoardHandler {
     System.out.println("게시글이 삭제되었습니다.\n");
   }
 
+
+
+  public void myList(SellerMember m) throws CloneNotSupportedException {
+    Iterator iterator = sellerBoardList.iterator();
+
+    System.out.println();
+    System.out.printf("%s 님의 게시글 목록\n", m.getBusinessName());
+
+    while(iterator.hasNext()) {
+      Board b = (Board)iterator.next();
+      if(b.getId() == m.getHash()) {
+        System.out.printf("제목 : [%s] 내용 : [%s]\n", b.getTitle(), b.getContent());
+      }
+    }
+    System.out.println();
+  }
+
   private Board findByNum(int boardNum) {
     Object[] list = sellerBoardList.toArray();
     for (Object obj : list) {
@@ -189,6 +207,7 @@ public class SellerBoardHandler {
     return null;
   }
 
+  // 상호면 변경 보류
   public void changeWriter() {
     Object[] list = sellerBoardList.toArray();
     for(Object obj : list) {

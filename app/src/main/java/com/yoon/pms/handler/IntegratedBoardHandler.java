@@ -12,6 +12,7 @@ public class IntegratedBoardHandler {
 
   int boardIndex = 1;
   int commentCount = 0;
+
   public static int likeCount = 0;
   public static int changeCount = 0;
 
@@ -19,6 +20,7 @@ public class IntegratedBoardHandler {
     if(changeCount == 1) {
       changeWriter();
     }
+
     if(MemberHandler.logStatus == 0) {
 
     }
@@ -192,6 +194,20 @@ public class IntegratedBoardHandler {
     integratedBoardList.delete(i);
     System.out.println("게시글이 삭제되었습니다.");
   }
+
+  //  public void myList()  {
+  //    if()
+  //    Object[] list = sellerBoardList.toArray();
+  //    System.out.println();
+  //    System.out.printf("%s 님의 게시글 목록\n", m.getBusinessName());
+  //    for(Object obj : list) {
+  //      Board b = (Board)obj;
+  //      if(b.getId() == m.getHash()) {
+  //        System.out.printf("제목 : [%s] 내용 : [%s]\n", b.getTitle(), b.getContent());
+  //      }
+  //    }
+  //    System.out.println();
+  //  }
 
   private Board findByNum(int boardNum) {
     Object[] list = integratedBoardList.toArray();
