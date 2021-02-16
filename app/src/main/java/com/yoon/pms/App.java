@@ -11,8 +11,8 @@ import com.yoon.util.Stack;
 
 public class App {
 
-  static Stack commandStack = new Stack();
-  static Queue commandQueue = new Queue();
+  static Stack<String> commandStack = new Stack<>();
+  static Queue<String> commandQueue = new Queue<>();
 
   public static void main(String[] args) throws CloneNotSupportedException {
     System.out.println("[2030 Project]");
@@ -70,7 +70,7 @@ public class App {
     Prompt.close();
   }
 
-  static void printCommandHistory(Iterator iterator) {
+  static void printCommandHistory(Iterator<String> iterator) {
 
     int count = 0;
     while (iterator.hasNext()) {

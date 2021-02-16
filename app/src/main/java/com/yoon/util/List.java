@@ -1,14 +1,16 @@
 package com.yoon.util;
 
-public class List {
+import java.lang.reflect.Array;
 
-  private Node first;
-  private Node last;
+public class List<E> {
+
+  private Node<E> first;
+  private Node<E> last;
 
   public int size = 0;
 
-  public void add(Object obj) {
-    Node node = new Node(obj);
+  public void add(E obj) {
+    Node<E> node = new Node<>(obj);
 
     if(last == null) {
       last = node;
@@ -25,19 +27,36 @@ public class List {
   public Object[] toArray() {
     Object[] arr = new Object[size];
     int i = 0;
-    for(Node cursor = this.first; cursor != null; cursor = cursor.next) {
+    for(Node<E> cursor = this.first; cursor != null; cursor = cursor.next) {
       arr[i++] = cursor.obj;
     }
     return arr;
   }
 
-  public Object get(int index) {
+  @SuppressWarnings("unchecked")
+  public E[] toArray(E[] arr) {
+
+    if(arr.length < size) {
+      arr = (E[])Array.newInstance(arr.getClass().getComponentType(), size);
+    }
+
+    Node<E> cursor = this.first;
+    for(int i = 0; i < size; i++) {
+      arr[i] = cursor.obj;
+      cursor = cursor.next;
+    }
+
+    return arr;
+  }
+
+
+  public E get(int index) {
     if(index < 0 || index >= this.size) {
       return null;
     }
 
     int count = 0;
-    for(Node cursor = first; cursor != null; cursor = cursor.next) {
+    for(Node<E> cursor = first; cursor != null; cursor = cursor.next) {
       if(index == count++) {
         return cursor.obj;
       }
@@ -45,8 +64,8 @@ public class List {
     return null;
   }
 
-  public boolean delete(Object obj) {
-    Node cursor = first;
+  public boolean delete(E obj) {
+    Node<E> cursor = first;
     while (cursor != null) {
       if (cursor.obj.equals(obj)) {
         this.size--;
@@ -73,15 +92,15 @@ public class List {
     return false;
   }
 
-  public Object delete (int index) {
+  public E delete (int index) {
     if(index < 0 || index >= this.size) {
       return null;
     }
 
-    Object deleted = null;
+    E deleted = null;
 
     int count = 0;
-    for(Node cursor = first; cursor != null; cursor = cursor.next) {
+    for(Node<E> cursor = first; cursor != null; cursor = cursor.next) {
       if (index == count++) {
         deleted = cursor.obj;
         this.size--;
@@ -111,19 +130,19 @@ public class List {
     return this.size;
   }
 
-  public static class Node {
-    Object obj;
-    Node prev;
-    Node next;
+  public static class Node<T> {
+    T obj;
+    Node<T> prev;
+    Node<T> next;
 
-    Node(Object obj) {
+    Node(T obj) {
       this.obj = obj;
     }
   }
 
 
-  public Iterator iterator() throws CloneNotSupportedException {
-    return new Iterator() {
+  public Iterator<E> iterator() throws CloneNotSupportedException {
+    return new Iterator<E>() {
       int cursor = 0;
 
       @Override
@@ -132,7 +151,7 @@ public class List {
       }
 
       @Override
-      public Object next() {
+      public E next() {
         return List.this.get(cursor++);
       }
     };

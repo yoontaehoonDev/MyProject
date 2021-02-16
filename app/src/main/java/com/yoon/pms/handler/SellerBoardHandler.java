@@ -9,7 +9,7 @@ import com.yoon.util.Prompt;
 public class SellerBoardHandler {
 
   public static boolean boardAuthorization = false;
-  private List sellerBoardList = new List();
+  private List<Board> sellerBoardList = new List<>();
 
   int boardIndex = 1;
   int commentCount = 0;
@@ -17,6 +17,7 @@ public class SellerBoardHandler {
   public static int changeCount = 0;
 
   public void service() throws CloneNotSupportedException {
+    SellerMember m = MemberHandler.sellerMemberNumber;
     while(true) {
       System.out.println("■ 메뉴 - 판매자 전용 게시판 ■");
 
@@ -48,6 +49,9 @@ public class SellerBoardHandler {
           break;
         case "글보기":
           this.detail();
+          break;
+        case "내글":
+          this.myList(m);
           break;
         case "뒤로가기":
           System.out.println("초기 화면으로 전환합니다.\n");
@@ -82,9 +86,9 @@ public class SellerBoardHandler {
       return;
     }
     System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 목록 ■");
-    Iterator iterator = sellerBoardList.iterator();
+    Iterator<Board> iterator = sellerBoardList.iterator();
     while(iterator.hasNext()) {
-      Board s = (Board)iterator.next();
+      Board s = iterator.next();
       System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
           s.getNumber(), s.getTitle(), s.getWriter(), s.getLike(), s.getView(), s.getRegisteredDate());
     }
@@ -182,24 +186,23 @@ public class SellerBoardHandler {
 
 
   public void myList(SellerMember m) throws CloneNotSupportedException {
-    Iterator iterator = sellerBoardList.iterator();
+    Iterator<Board> iterator = sellerBoardList.iterator();
 
     System.out.println();
     System.out.printf("%s 님의 게시글 목록\n", m.getBusinessName());
 
     while(iterator.hasNext()) {
-      Board b = (Board)iterator.next();
+      Board b = iterator.next();
       if(b.getId() == m.getHash()) {
-        System.out.printf("제목 : [%s] 내용 : [%s]\n", b.getTitle(), b.getContent());
+        System.out.printf("게시글 번호 : [%d]   제목 : [%s]   내용 : [%s]\n", b.getNumber(), b.getTitle(), b.getContent());
       }
     }
     System.out.println();
   }
 
   private Board findByNum(int boardNum) {
-    Object[] list = sellerBoardList.toArray();
-    for (Object obj : list) {
-      Board s = (Board) obj;
+    Board[] list = sellerBoardList.toArray(new Board[sellerBoardList.size()]);
+    for (Board s : list) {
       if (s.getNumber() == boardNum) {
         return s;
       }
@@ -207,11 +210,10 @@ public class SellerBoardHandler {
     return null;
   }
 
-  // 상호면 변경 보류
+  // 상호명 변경 보류
   public void changeWriter() {
-    Object[] list = sellerBoardList.toArray();
-    for(Object obj : list) {
-      Board s = (Board)obj;
+    Board[] list = sellerBoardList.toArray(new Board[sellerBoardList.size()]);
+    for(Board s : list) {
       if(s.getId() == MemberHandler.sellerMemberNumber.getHash()) {
         s.setWriter(MemberHandler.sellerMemberNumber.getBusinessName());
       }

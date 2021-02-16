@@ -11,8 +11,8 @@ public class MemberHandler {
 
   private boolean logCount = false;
   private int adminNumber = 0;
-  private List buyerMemberList = new List();
-  private List sellerMemberList = new List();
+  private List<BuyerMember> buyerMemberList = new List<>();
+  private List<SellerMember> sellerMemberList = new List<>();
   private BuyerBoardHandler buyerBoardListMenu = new BuyerBoardHandler();
   private SellerBoardHandler sellerBoardListMenu = new SellerBoardHandler();
   private IntegratedBoardHandler integratedBoardListMenu = new IntegratedBoardHandler();
@@ -147,7 +147,6 @@ public class MemberHandler {
         s.setPrice(Prompt.inputInt("가격 : "));
         s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
         this.sellerMemberList.add(s);
-        System.out.printf("현재 아이디 해쉬값 : %d\n", s.getHash());
         break;
       }
       else if (choice.equals("2")) {
@@ -164,7 +163,6 @@ public class MemberHandler {
         b.setPhone(phoneFormat("핸드폰 번호 입력 : "));
         b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
         this.buyerMemberList.add(b);
-        System.out.printf("현재 아이디 해쉬값 : %d\n", b.getHash());
         break;
       }
       else {
@@ -491,13 +489,13 @@ public class MemberHandler {
 
       if(choice.equals("1")) {
         System.out.println("[구매자 회원 목록]");
-        Iterator iterator = buyerMemberList.iterator();
+        Iterator<BuyerMember> iterator = buyerMemberList.iterator();
         if(buyerMemberList.size() == 0) {
           System.out.println("회원이 없습니다. \n메뉴로 돌아갑니다.\n");
           return;
         }
         while(iterator.hasNext()) {
-          BuyerMember b = (BuyerMember)iterator.next();
+          BuyerMember b = iterator.next();
           if(b.isDivision() == false) {
             System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  닉네임 : [%s]  이름 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]  가입일자 : [%s]\n", 
                 b.getNumber(), b.getId(), b.getPassword(), b.getNickname(), b.getName(), b.getEmail(), b.getPhone(), b.getRegisteredDate());
@@ -518,13 +516,13 @@ public class MemberHandler {
 
       else if(choice.equals("2")) {
         System.out.println("[판매자 회원 목록]");
-        Iterator iterator = sellerMemberList.iterator();
+        Iterator<SellerMember> iterator = sellerMemberList.iterator();
         if(sellerMemberList.size() == 0) {
           System.out.println("회원이 없습니다. \n메뉴로 돌아갑니다.\n");
           return;
         }
         while(iterator.hasNext()) {
-          SellerMember s = (SellerMember)iterator.next();
+          SellerMember s = iterator.next();
           System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  소유주 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]\n", 
               s.getNumber(), s.getId(), s.getPassword(), s.getName(), s.getEmail(), s.getPhone());
           System.out.printf("상호명 : [%s]  사업자등록번호 : [%s]  영업시간 : [%s]  업종 : [%s]\n",

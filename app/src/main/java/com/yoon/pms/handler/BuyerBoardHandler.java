@@ -2,6 +2,7 @@ package com.yoon.pms.handler;
 
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
+import com.yoon.pms.domain.Comment;
 import com.yoon.util.Iterator;
 import com.yoon.util.List;
 import com.yoon.util.Prompt;
@@ -9,7 +10,8 @@ import com.yoon.util.Prompt;
 public class BuyerBoardHandler {
 
   public static boolean boardAuthorization = false;
-  protected List buyerBoardList = new List();
+  protected List<Board> buyerBoardList = new List<>();
+  protected List<Comment> commentList = new List<>();
 
   int boardIndex = 1;
   int commentCount = 0;
@@ -25,7 +27,7 @@ public class BuyerBoardHandler {
       System.out.println("■ 메뉴 - 구매회원 전용 게시판 ■");
       BuyerMember m = MemberHandler.buyerMemberNumber;
 
-      if(boardAuthorization == true && MemberHandler.buyerMemberNumber.isDivision() == true) {
+      if(boardAuthorization == true && m.isDivision() == true) {
         System.out.println("[구매회원 전용]");
 
         System.out.println("1. 주문하기");
@@ -95,19 +97,15 @@ public class BuyerBoardHandler {
 
     System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 목록 ■");
 
-    Iterator iterator = buyerBoardList.iterator();
+    Iterator<Board> iterator = buyerBoardList.iterator();
     while(iterator.hasNext()) {
-      Board b = (Board)iterator.next();
+      Board b = iterator.next();
       System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
           b.getNumber(), b.getTitle(), b.getWriter(), b.getLike(), b.getView(), b.getRegisteredDate());
     }
     System.out.println();
   }
 
-  public void comment() {
-
-
-  }
 
   public void detail() throws CloneNotSupportedException {
     if(buyerBoardList.size() == 0) {
@@ -119,6 +117,7 @@ public class BuyerBoardHandler {
     System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 보기 ■");
     int num = Prompt.inputInt("게시글 번호 입력 : ");
 
+    BuyerMember m = MemberHandler.buyerMemberNumber;
     Board board = findByNum(num);
 
     if (board == null) {
@@ -134,12 +133,16 @@ public class BuyerBoardHandler {
     System.out.printf("등록일: %s\n", board.getRegisteredDate());
     System.out.printf("추천수 : %d\n", board.getLike());
     System.out.printf("조회수: %d\n", board.getView());
+    commentList(m);
 
-    //		for(int i = 0; i < commentCount; i++) {
-    //			System.out.printf("%d. 닉네임 : %s  댓글 : %s\n", i+1, board.getCommentWriter(), board.getComment());
-    //		}
 
-    if(board.getId() == MemberHandler.buyerMemberNumber.getHash()) {
+    Comment c = new Comment();
+    c.setCommentId(m.getHash());
+    c.setCommentWriter(m.getNickname());
+    c.setComment(Prompt.inputString("댓글 입력 : "));
+    board.setCommentCount(commentCount++);
+
+    if(board.getId() == m.getHash()) {
       Board b = board;
       while(true) {
         System.out.println("1. [수정]  2. [삭제]  3. [뒤로가기]");
@@ -198,36 +201,31 @@ public class BuyerBoardHandler {
 
   public void myList(BuyerMember m) throws CloneNotSupportedException  {
 
-
-    Iterator iterator = buyerBoardList.iterator();
+    Iterator<Board> iterator = buyerBoardList.iterator();
 
     System.out.println();
     System.out.printf("%s 님의 게시글 목록\n", m.getNickname());
 
     while(iterator.hasNext()) {
-      Board b = (Board)iterator.next();
+      Board b = iterator.next();
       if(b.getId() == m.getHash()) {
-        System.out.printf("제목 : [%s] 내용 : [%s]\n", b.getTitle(), b.getContent());
+        System.out.printf("게시글 번호 : [%d]   제목 : [%s]   내용 : [%s]\n", b.getNumber(), b.getTitle(), b.getContent());
       }
     }
     System.out.println();
+  }
 
-    //    Object[] list = buyerBoardList.toArray();
-    //    System.out.println();
-    //    System.out.printf("%s 님의 게시글 목록\n", m.getNickname());
-    //    for(Object obj : list) {
-    //      Board b = (Board)obj;
-    //      if(b.getId() == m.getHash()) {
-    //        System.out.printf("제목 : [%s] 내용 : [%s]\n", b.getTitle(), b.getContent());
-    //      }
-    //    }
-    //    System.out.println();
+  private void commentList(BuyerMember m) {
+    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+    for(Comment c : list) {
+      //      if()
+    }
   }
 
   private Board findByNum(int boardNum) {
-    Object[] list = buyerBoardList.toArray();
-    for (Object obj : list) {
-      Board b = (Board) obj;
+
+    Board[] list = buyerBoardList.toArray(new Board[buyerBoardList.size()]);
+    for (Board b : list) {
       if (b.getNumber() == boardNum) {
         return b;
       }
@@ -236,9 +234,8 @@ public class BuyerBoardHandler {
   }
 
   private void changeWriter() {
-    Object[] list = buyerBoardList.toArray();
-    for(Object obj : list) {
-      Board b = (Board)obj;
+    Board[] list = buyerBoardList.toArray(new Board[buyerBoardList.size()]);
+    for(Board b : list) {
       if(b.getId() == MemberHandler.buyerMemberNumber.getHash()) {
         b.setWriter(MemberHandler.buyerMemberNumber.getNickname());
       }

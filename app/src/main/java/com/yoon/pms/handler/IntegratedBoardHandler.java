@@ -8,10 +8,12 @@ import com.yoon.util.Prompt;
 public class IntegratedBoardHandler {
 
   public static boolean boardAuthorization = false;
-  private List integratedBoardList = new List();
+  private List<Board> integratedBoardList = new List<>();
 
   int boardIndex = 1;
   int commentCount = 0;
+  int buyerNum = 0;
+  int sellerNum = 1;
 
   public static int likeCount = 0;
   public static int changeCount = 0;
@@ -21,6 +23,7 @@ public class IntegratedBoardHandler {
       changeWriter();
     }
 
+    /*
     if(MemberHandler.logStatus == 0) {
 
     }
@@ -30,6 +33,7 @@ public class IntegratedBoardHandler {
     else {
 
     }
+     */
     while(true) {
       System.out.println("■ 메뉴 - 통합 게시판 ■");
 
@@ -70,10 +74,12 @@ public class IntegratedBoardHandler {
       if(MemberHandler.logStatus == 0) {
         i.setWriter(MemberHandler.buyerMemberNumber.getNickname());
         i.setId(MemberHandler.buyerMemberNumber.getHash());
+        i.setOwner(buyerNum);
       }
       else if (MemberHandler.logStatus == 1) {
         i.setWriter(MemberHandler.sellerMemberNumber.getBusinessName());
         i.setId(MemberHandler.sellerMemberNumber.getHash());
+        i.setOwner(sellerNum);
       }
       i.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 
@@ -91,14 +97,56 @@ public class IntegratedBoardHandler {
       System.out.println("존재하는 게시글이 없습니다.");
       return;
     }
-    System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 ■");
-    Iterator iterator = integratedBoardList.iterator();
-    while(iterator.hasNext()) {
-      Board i = (Board)iterator.next();
-      System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
-          i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
-    } // 회원 판별!!!!!!!!!!!!!!!!!!!!!!!!!!
+    System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 ■\n");
 
+    Iterator<Board> iterator = integratedBoardList.iterator();
+
+    while(true) {
+      System.out.println("1. 모든 게시글  2. 구매회원 게시글  3. 판매회원 게시글");
+
+      String choice = Prompt.inputString("선택 : ");
+
+      if(choice.equals("1")) {
+        System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 통합 게시글 ■\n");
+        while(iterator.hasNext()) {
+          Board i = iterator.next();
+          if(i.getOwner() == buyerNum) {
+            System.out.print("[구매회원] ");
+          }
+          else {
+            System.out.print("[판매회원] ");
+          }
+          System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
+              i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
+        }
+        break;
+      }
+      else if(choice.equals("2")) {
+        System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 구매회원 게시글 ■\n");
+        while(iterator.hasNext()) {
+          Board i = iterator.next();
+          if(i.getOwner() == buyerNum) {
+            System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
+                i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
+          }
+        }
+        break;
+      }
+      else if(choice.equals("3")) {
+        System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 판매회원 게시글 ■\n");
+        while(iterator.hasNext()) {
+          Board i = iterator.next();
+          if(i.getOwner() == sellerNum) {
+            System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
+                i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
+          }  
+        }
+        break;
+      }
+      else {
+        System.out.println("잘못 입력하셨습니다.");
+      }
+    }
     System.out.println();
   }
 
