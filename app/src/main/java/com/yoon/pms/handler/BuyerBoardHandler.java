@@ -22,10 +22,10 @@ public class BuyerBoardHandler {
     if(changeCount == 1) {
       changeWriter();
     }
-
+    BuyerMember m = MemberHandler.buyerMemberNumber;
     while(true) {
       System.out.println("■ 메뉴 - 구매회원 전용 게시판 ■");
-      BuyerMember m = MemberHandler.buyerMemberNumber;
+
 
       if(boardAuthorization == true && m.isDivision() == true) {
         System.out.println("[구매회원 전용]");
@@ -70,15 +70,17 @@ public class BuyerBoardHandler {
 
   public void add() {
     Board b = new Board();
-    if(boardAuthorization == true && MemberHandler.buyerMemberNumber.isDivision() == true) {
+    BuyerMember m = MemberHandler.buyerMemberNumber;
+    //BuyerMember m = MemberHandler.buyerMemberNumber;
+    if(boardAuthorization == true && m.isDivision() == true) {
       System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 작성 ■");
 
       b.setNumber(boardIndex++);
       b.setTitle(Prompt.inputString("제목 입력 : "));
       b.setContent(Prompt.inputString("내용 입력 : "));
-      b.setWriter(MemberHandler.buyerMemberNumber.getNickname());
+      b.setWriter(m.getNickname());
       b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
-      b.setId(MemberHandler.buyerMemberNumber.getHash());
+      b.setId(m.getHash());
       this.buyerBoardList.add(b);
 
       System.out.println("글 작성 완료\n");
@@ -87,6 +89,7 @@ public class BuyerBoardHandler {
     else {
       System.out.println("회원만 작성 가능합니다.\n");
     }
+
   }
 
   public void list() throws CloneNotSupportedException {
@@ -106,12 +109,22 @@ public class BuyerBoardHandler {
     System.out.println();
   }
 
+  public void commentAdd(Board b) {
+    BuyerMember m = MemberHandler.buyerMemberNumber;
+    Comment c = new Comment();
+    c.setCommentId(b.getNumber());
+    c.setCommentWriter(m.getNickname());
+    c.setComment(Prompt.inputString("댓글 : "));
+    b.setCommentCount(commentCount++);
+    this.commentList.add(c);
+  }
 
   public void detail() throws CloneNotSupportedException {
     if(buyerBoardList.size() == 0) {
       System.out.println("존재하는 게시글이 없습니다.\n");
       return;
     }
+
     list();
     System.out.println("---------------------------------------");
     System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 보기 ■");
@@ -133,14 +146,22 @@ public class BuyerBoardHandler {
     System.out.printf("등록일: %s\n", board.getRegisteredDate());
     System.out.printf("추천수 : %d\n", board.getLike());
     System.out.printf("조회수: %d\n", board.getView());
-    commentList(m);
+    commentList(board);
 
-
-    Comment c = new Comment();
-    c.setCommentId(m.getHash());
-    c.setCommentWriter(m.getNickname());
-    c.setComment(Prompt.inputString("댓글 입력 : "));
-    board.setCommentCount(commentCount++);
+    while(true) {
+      System.out.println("1. 댓글 작성  2. 나가기");
+      String choice = Prompt.inputString("선택 : ");
+      if(choice.equals("1")) {
+        commentAdd(board);
+        break;
+      }
+      else if(choice.equals("2")) {
+        break;
+      }
+      else {
+        System.out.println("잘못 입력하셨습니다.");
+      }
+    }
 
     if(board.getId() == m.getHash()) {
       Board b = board;
@@ -156,6 +177,7 @@ public class BuyerBoardHandler {
           break;
         }
         else if(choice.equals("3")) {
+          System.out.println("■ 메뉴 - 구매회원 전용 게시판 ■ 으로 이동합니다.");
           break;
         }
         else {
@@ -163,6 +185,9 @@ public class BuyerBoardHandler {
         }
       }
     }
+
+
+
 
     /* 추천 기능 보류
 		String message = Prompt.inputString("이 게시글을 추천하시겠습니까? [Y/N] : ");
@@ -203,6 +228,7 @@ public class BuyerBoardHandler {
 
     Iterator<Board> iterator = buyerBoardList.iterator();
 
+
     System.out.println();
     System.out.printf("%s 님의 게시글 목록\n", m.getNickname());
 
@@ -215,11 +241,15 @@ public class BuyerBoardHandler {
     System.out.println();
   }
 
-  private void commentList(BuyerMember m) {
+  private void commentList(Board b) {
     Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+    int i = 1;
     for(Comment c : list) {
-      //      if()
+      if(b.getNumber() == c.getCommentId()) {
+        System.out.printf("%d. %s : %s\n", i++, c.getCommentWriter(), c.getComment());
+      }
     }
+    System.out.println();
   }
 
   private Board findByNum(int boardNum) {
@@ -234,10 +264,11 @@ public class BuyerBoardHandler {
   }
 
   private void changeWriter() {
+    BuyerMember m = MemberHandler.buyerMemberNumber;
     Board[] list = buyerBoardList.toArray(new Board[buyerBoardList.size()]);
     for(Board b : list) {
-      if(b.getId() == MemberHandler.buyerMemberNumber.getHash()) {
-        b.setWriter(MemberHandler.buyerMemberNumber.getNickname());
+      if(b.getId() == m.getHash()) {
+        b.setWriter(m.getNickname());
       }
     }
     changeCount = 0;
