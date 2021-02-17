@@ -1,17 +1,17 @@
 package com.yoon.pms.handler;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
-import com.yoon.util.Iterator;
-import com.yoon.util.List;
 import com.yoon.util.Prompt;
 
 public class BuyerBoardHandler {
 
   public static boolean boardAuthorization = false;
-  protected List<Board> buyerBoardList = new List<>();
-  protected List<Comment> commentList = new List<>();
+  protected LinkedList<Board> buyerBoardList = new LinkedList<>();
+  protected LinkedList<Comment> commentList = new LinkedList<>();
 
   int boardIndex = 1;
   int commentCount = 0;
@@ -19,6 +19,11 @@ public class BuyerBoardHandler {
   public static int changeCount = 0;
 
   public void service() throws CloneNotSupportedException {
+    if(MemberHandler.logStatus == -1) {
+      System.out.println("로그인 후 이용 가능합니다.\n");
+      return;
+    }
+
     if(changeCount == 1) {
       changeWriter();
     }
@@ -71,7 +76,6 @@ public class BuyerBoardHandler {
   public void add() {
     Board b = new Board();
     BuyerMember m = MemberHandler.buyerMemberNumber;
-    //BuyerMember m = MemberHandler.buyerMemberNumber;
     if(boardAuthorization == true && m.isDivision() == true) {
       System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 작성 ■");
 
@@ -122,6 +126,27 @@ public class BuyerBoardHandler {
 
   }
 
+  public void nestedCommentAdd(Board b, int index) {
+
+    Comment i = findByCommentNum(index);
+    if(i == null) {
+      System.out.println("선택하신 댓글이 존재하지 않습니다.\n");
+      return;
+    }
+
+    BuyerMember m = MemberHandler.buyerMemberNumber;
+    Comment c = new Comment();
+
+    c.setCommentId(b.getNumber());
+    c.setCommentWriter(m.getNickname());
+    c.setComment(Prompt.inputString("대댓글 : "));
+
+    b.setCommentCount(b.getCommentCount() + 1);
+    c.setCommentNumber(b.getCommentCount());
+    this.commentList.add(i.getCommentNumber() + 1, c); // 대댓글 정렬
+
+  }
+
   public void detail() throws CloneNotSupportedException {
     if(buyerBoardList.size() == 0) {
       System.out.println("존재하는 게시글이 없습니다.\n");
@@ -156,10 +181,32 @@ public class BuyerBoardHandler {
       System.out.println("1. 댓글 작성  2. 나가기");
       choice = Prompt.inputString("선택 : ");
       if(choice.equals("1")) {
-        commentAdd(board);
+        while(true) {
+          System.out.println("1. 댓글  2. 대댓글  3. 나가기");
+          choice = Prompt.inputString("선택 : ");
+          if(choice.equals("1")) {
+            commentAdd(board);
+            break;
+          }
+          else if (choice.equals("2")) {
+            commentList(board);
+            int index = Prompt.inputInt("댓글 번호 선택 : ");
+            nestedCommentAdd(board, index);
+
+
+          }
+          else if (choice.equals("3")) {
+            break;
+          }
+          else {
+            System.out.println("다시 입력하세요.");
+          }
+          break;
+        }
         break;
       }
       else if(choice.equals("2")) {
+
         break;
       }
 
@@ -223,7 +270,7 @@ public class BuyerBoardHandler {
 
   public void delete(Board b) {
 
-    buyerBoardList.delete(b);
+    buyerBoardList.remove(b);
     System.out.println("게시글이 삭제되었습니다.\n");
   }
 
@@ -255,15 +302,15 @@ public class BuyerBoardHandler {
     }
     System.out.println();
   }
-  //  대댓글 기능 보류
-  //  private Comment findByCommentNum(int commentNum) {
-  //    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
-  //    for(Comment c : list) {
-  //      if(commentNum == c.getCommentNumber())
-  //        return c;
-  //    }
-  //    return null;
-  //  }
+
+  private Comment findByCommentNum(int commentNum) {
+    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+    for(Comment c : list) {
+      if(commentNum == c.getCommentNumber())
+        return c;
+    }
+    return null;
+  }
 
   private Board findByNum(int boardNum) {
 

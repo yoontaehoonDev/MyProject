@@ -1,15 +1,17 @@
 package com.yoon.pms.handler;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import com.yoon.pms.domain.Board;
+import com.yoon.pms.domain.Comment;
 import com.yoon.pms.domain.SellerMember;
-import com.yoon.util.Iterator;
-import com.yoon.util.List;
 import com.yoon.util.Prompt;
 
 public class SellerBoardHandler {
 
   public static boolean boardAuthorization = false;
-  private List<Board> sellerBoardList = new List<>();
+  private LinkedList<Board> sellerBoardList = new LinkedList<>();
+  private LinkedList<Comment> commentList = new LinkedList<>();
 
   int boardIndex = 1;
   int commentCount = 0;
@@ -17,6 +19,15 @@ public class SellerBoardHandler {
   public static int changeCount = 0;
 
   public void service() throws CloneNotSupportedException {
+    if(MemberHandler.logStatus == -1) {
+      System.out.println("로그인 후 이용 가능합니다.\n");
+      return;
+    }
+
+    if(changeCount == 1) {
+      changeWriter();
+    }
+
     SellerMember m = MemberHandler.sellerMemberNumber;
     while(true) {
       System.out.println("■ 메뉴 - 판매자 전용 게시판 ■");
@@ -95,7 +106,16 @@ public class SellerBoardHandler {
     System.out.println();
   }
 
-  public void comment() {
+  public void commentAdd(Board b) {
+    SellerMember m = MemberHandler.sellerMemberNumber;
+    Comment c = new Comment();
+    c.setCommentId(b.getNumber());
+    c.setCommentWriter(m.getBusinessName());
+    c.setComment(Prompt.inputString("댓글 : "));
+
+    b.setCommentCount(b.getCommentCount() + 1);
+    c.setCommentNumber(b.getCommentCount());
+    this.commentList.add(c);
 
   }
 
@@ -106,6 +126,8 @@ public class SellerBoardHandler {
       return;
     }
     list();
+
+    String choice;
     System.out.println("---------------------------------------");
     System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 보기 ■");
     int num = Prompt.inputInt("게시글 번호 입력 : ");
@@ -125,13 +147,29 @@ public class SellerBoardHandler {
     System.out.printf("등록일: %s\n", board.getRegisteredDate());
     System.out.printf("추천수 : %d\n", board.getLike());
     System.out.printf("조회수: %d\n", board.getView());
+    commentList(board);
 
+    while(true) {
+      System.out.println("1. 댓글 작성  2. 나가기");
+      choice = Prompt.inputString("선택 : ");
+      if(choice.equals("1")) {
+        commentAdd(board);
+        break;
+      }
+      else if(choice.equals("2")) {
+        break;
+      }
+
+      else {
+        System.out.println("잘못 입력하셨습니다.");
+      }
+    }
 
     if(board.getId() == MemberHandler.sellerMemberNumber.getHash()) {
       Board s = board;
       while(true) {
         System.out.println("1. [수정]  2. [삭제]  3. [뒤로가기]");
-        String choice = Prompt.inputString("선택 : ");
+        choice = Prompt.inputString("선택 : ");
         if(choice.equals("1")) {
           update(s);
           break;
@@ -179,10 +217,21 @@ public class SellerBoardHandler {
   }
 
   public void delete(Board s) {
-    sellerBoardList.delete(s);
+    sellerBoardList.remove(s);
     System.out.println("게시글이 삭제되었습니다.\n");
   }
 
+  private void commentList(Board b) {
+    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+    System.out.println();
+    System.out.println("■ 댓글 ■");
+    for(Comment c : list) {
+      if(b.getNumber() == c.getCommentId()) {
+        System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
+      }
+    }
+    System.out.println();
+  }
 
 
   public void myList(SellerMember m) throws CloneNotSupportedException {

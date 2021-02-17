@@ -1,24 +1,35 @@
 package com.yoon.pms.handler;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import com.yoon.pms.domain.Board;
-import com.yoon.util.Iterator;
-import com.yoon.util.List;
+import com.yoon.pms.domain.BuyerMember;
+import com.yoon.pms.domain.Comment;
+import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Prompt;
 
 public class IntegratedBoardHandler {
 
   public static boolean boardAuthorization = false;
-  private List<Board> integratedBoardList = new List<>();
+  private LinkedList<Board> integratedBoardList = new LinkedList<>();
+  private LinkedList<Comment> commentList = new LinkedList<>();
 
   int boardIndex = 1;
   int commentCount = 0;
   int buyerNum = 0;
   int sellerNum = 1;
+  int flag;
 
   public static int likeCount = 0;
   public static int changeCount = 0;
 
   public void service() throws CloneNotSupportedException {
+
+    if(MemberHandler.logStatus == -1) {
+      System.out.println("로그인 후 이용 가능합니다.\n");
+      return;
+    }
+
     if(changeCount == 1) {
       changeWriter();
     }
@@ -61,7 +72,6 @@ public class IntegratedBoardHandler {
           return;
       }
     }
-
   }
 
   public void add() {
@@ -97,6 +107,9 @@ public class IntegratedBoardHandler {
       System.out.println("존재하는 게시글이 없습니다.");
       return;
     }
+
+    int count;
+
     System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 ■\n");
 
     Iterator<Board> iterator = integratedBoardList.iterator();
@@ -109,6 +122,7 @@ public class IntegratedBoardHandler {
       if(choice.equals("1")) {
         System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 통합 게시글 ■\n");
         while(iterator.hasNext()) {
+          count = 0;
           Board i = iterator.next();
           if(i.getOwner() == buyerNum) {
             System.out.print("[구매회원] ");
@@ -122,24 +136,34 @@ public class IntegratedBoardHandler {
         break;
       }
       else if(choice.equals("2")) {
+        count = 0;
         System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 구매회원 게시글 ■\n");
         while(iterator.hasNext()) {
           Board i = iterator.next();
           if(i.getOwner() == buyerNum) {
             System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
                 i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
+            count = 1;
           }
+        }
+        if(count == 0) {
+          System.out.println("구매회원 게시글이 존재하지 않습니다.");
         }
         break;
       }
       else if(choice.equals("3")) {
+        count = 0;
         System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 판매회원 게시글 ■\n");
         while(iterator.hasNext()) {
           Board i = iterator.next();
           if(i.getOwner() == sellerNum) {
             System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
                 i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
+            count = 1;
           }  
+        }
+        if(count == 0) {
+          System.out.println("판매회원 게시글이 존재하지 않습니다.");
         }
         break;
       }
@@ -150,11 +174,34 @@ public class IntegratedBoardHandler {
     System.out.println();
   }
 
+  public void commentAdd(Board b) {
+    SellerMember seller = MemberHandler.sellerMemberNumber;
+    BuyerMember buyer = MemberHandler.buyerMemberNumber;
+    Comment c = new Comment();
+    if(flag == 0) { 
+      c.setCommentId(b.getNumber());
+      c.setCommentWriter(buyer.getNickname());
+      c.setComment(Prompt.inputString("댓글 : "));
+    }
+    else if (flag == 1) {
+      c.setCommentId(b.getNumber());
+      c.setCommentWriter(seller.getBusinessName());
+      c.setComment(Prompt.inputString("댓글 : "));
+    }
+
+    b.setCommentCount(b.getCommentCount() + 1);
+    c.setCommentNumber(b.getCommentCount());
+    this.commentList.add(c);
+    flag = -1;
+  }
+
   public void detail() throws CloneNotSupportedException {
     if(integratedBoardList.size() == 0) {
       System.out.println("존재하는 게시글이 없습니다.");
       return;
     }
+
+    String choice;
     list();
 
     System.out.println("---------------------------------------");
@@ -177,7 +224,30 @@ public class IntegratedBoardHandler {
     System.out.printf("추천수 : %d\n", board.getLike());
     System.out.printf("조회수: %d\n", board.getView());
 
-    // 댓글 반복문으로 출력
+    commentList(board);
+
+    while(true) {
+      if(MemberHandler.logStatus == 0) {
+        flag = 0;
+      }
+      else if(MemberHandler.logStatus == 1) {
+        flag = 1;
+      }
+      System.out.println("1. 댓글 작성  2. 나가기");
+      choice = Prompt.inputString("선택 : ");
+      if(choice.equals("1")) {
+        commentAdd(board);
+        break;
+      }
+      else if(choice.equals("2")) {
+        break;
+      }
+
+      else {
+        System.out.println("잘못 입력하셨습니다.");
+      }
+    }
+
 
     if(MemberHandler.logStatus == 0) {
       // 구매 or 판매회원 해쉬값 수정 필요
@@ -185,7 +255,7 @@ public class IntegratedBoardHandler {
         Board i = board;
         while(true) {
           System.out.println("1. [수정]  2. [삭제]  3. [뒤로가기]");
-          String choice = Prompt.inputString("선택 : ");
+          choice = Prompt.inputString("선택 : ");
           if(choice.equals("1")) {
             update(i);
             break;
@@ -208,7 +278,7 @@ public class IntegratedBoardHandler {
         Board i = board;
         while(true) {
           System.out.println("1. [수정]  2. [삭제]");
-          String choice = Prompt.inputString("선택 : ");
+          choice = Prompt.inputString("선택 : ");
           if(choice.equals("1")) {
             update(i);
             break;
@@ -239,7 +309,7 @@ public class IntegratedBoardHandler {
 
   public void delete(Board i) {
     System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 삭제 ■");
-    integratedBoardList.delete(i);
+    integratedBoardList.remove(i);
     System.out.println("게시글이 삭제되었습니다.");
   }
 
@@ -252,6 +322,34 @@ public class IntegratedBoardHandler {
   //      Board b = (Board)obj;
   //      if(b.getId() == m.getHash()) {
   //        System.out.printf("제목 : [%s] 내용 : [%s]\n", b.getTitle(), b.getContent());
+  //      }
+  //    }
+  //    System.out.println();
+  //  }
+
+  private void commentList(Board b) {
+    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+    System.out.println();
+    System.out.println("■ 댓글 ■");
+    for(Comment c : list) {
+      if(b.getNumber() == c.getCommentId()) {
+        System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
+      }
+    }
+    System.out.println();
+  }
+
+  //  public void myList(SellerMember m) throws CloneNotSupportedException {
+  //    //    Iterator<Board> buyerIterator = sellerBoardList.iterator();
+  //    //    Iterator<Board> sellerIterator = sellerBoardList.
+  //
+  //    System.out.println();
+  //    System.out.printf("%s 님의 게시글 목록\n", m.getBusinessName());
+  //
+  //    while(iterator.hasNext()) {
+  //      Board b = iterator.next();
+  //      if(b.getId() == m.getHash()) {
+  //        System.out.printf("게시글 번호 : [%d]   제목 : [%s]   내용 : [%s]\n", b.getNumber(), b.getTitle(), b.getContent());
   //      }
   //    }
   //    System.out.println();

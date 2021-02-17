@@ -1,18 +1,18 @@
 package com.yoon.pms.handler;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.regex.Pattern;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.SellerMember;
-import com.yoon.util.Iterator;
-import com.yoon.util.List;
 import com.yoon.util.Prompt;
 
 public class MemberHandler {
 
   private boolean logCount = false;
   private int adminNumber = 0;
-  private List<BuyerMember> buyerMemberList = new List<>();
-  private List<SellerMember> sellerMemberList = new List<>();
+  private LinkedList<BuyerMember> buyerMemberList = new LinkedList<>();
+  private LinkedList<SellerMember> sellerMemberList = new LinkedList<>();
   private BuyerBoardHandler buyerBoardListMenu = new BuyerBoardHandler();
   private SellerBoardHandler sellerBoardListMenu = new SellerBoardHandler();
   private IntegratedBoardHandler integratedBoardListMenu = new IntegratedBoardHandler();
@@ -20,7 +20,7 @@ public class MemberHandler {
   public static SellerMember sellerMemberNumber;
   public static int logStatus = -1;
 
-  int times = 0;
+  boolean loginCheck = false;
   int buyerIndex = 1;
   int sellerIndex = 1;
   int flag;
@@ -29,25 +29,14 @@ public class MemberHandler {
   public void service() throws CloneNotSupportedException {
     while(true) {
 
-      System.out.println("■ 메뉴 / 회원 ■");
+      System.out.println("■ 메뉴 - 회원 ■");
       if(adminNumber == 1) {
         System.out.println("1. 회원 목록");
         System.out.println("2. 게시판 관리");
         System.out.println("3. 관리자 로그아웃");
       }
       else {
-        if(logCount == false) {
-          System.out.println("1. 회원가입");
-          System.out.println("2. 로그인");
-          System.out.println("3. 주문하기");
-          System.out.println("4. 구매자 게시판");
-          System.out.println("5. 판매자 게시판");
-          System.out.println("6. 통합 게시판");
-          System.out.println("7. 신고 게시판");
-          System.out.println("8. 고객센터");
-
-        }
-        else if(logCount == true) {
+        if(logCount) {
           if(logStatus == 1) {
             System.out.println("1. 주문 목록");
             System.out.println("2. 판매자 게시판");
@@ -169,10 +158,15 @@ public class MemberHandler {
         System.out.println("잘못 누르셨습니다.");
       }
     }
+    loginCheck = true;
     System.out.println("회원가입이 완료되었습니다.\n");
   }
 
   public void login() {
+    if(loginCheck == false) {
+      System.out.println("존재하는 회원이 없습니다.\n");
+      return;
+    }
 
     if(logCount == false) {
       System.out.println("■ 메뉴 - 회원 - 로그인 ■");
@@ -418,11 +412,11 @@ public class MemberHandler {
     if(logCount == true) {
       if(logStatus == 1) {
         SellerMember seller = sellerMemberNumber;
-        sellerMemberList.delete(seller);
+        sellerMemberList.remove(seller);
       }
       else {
         BuyerMember buyer = buyerMemberNumber;
-        buyerMemberList.delete(buyer);
+        buyerMemberList.remove(buyer);
       }
       logCount = false;
       logStatus = -1;
@@ -438,7 +432,7 @@ public class MemberHandler {
           return;
         }
         else {
-          buyerMemberList.delete(buyer);
+          buyerMemberList.remove(buyer);
           System.out.println("회원 탈퇴 처리가 완료되었습니다.\n");
         }
       }
@@ -451,7 +445,7 @@ public class MemberHandler {
           return;
         }
         else {
-          sellerMemberList.delete(seller);
+          sellerMemberList.remove(seller);
           System.out.println("회원 탈퇴 처리가 완료되었습니다.\n");
         }
       }
