@@ -5,11 +5,13 @@ public class Comment {
   private String comment;
   private int commentId;
   private int commentNumber;
+  private int nestedCommentNumber;
 
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
+    result = prime * result + nestedCommentNumber;
     result = prime * result + commentNumber;
     result = prime * result + commentId;
     result = prime * result + ((commentWriter == null) ? 0 : commentWriter.hashCode());
@@ -27,6 +29,8 @@ public class Comment {
     if (commentId != other.commentId)
       return false;
     if (commentNumber != other.commentNumber)
+      return false;
+    if (nestedCommentNumber != other.nestedCommentNumber)
       return false;
     if (commentWriter == null) {
       if (other.commentWriter != null)
@@ -61,5 +65,12 @@ public class Comment {
   public void setCommentNumber(int commentNumber) {
     this.commentNumber = commentNumber;
   }
+  public int getNestedCommentNumber() {
+    return nestedCommentNumber;
+  }
+  public void setNestedCommentNumber(int nestedCommentNumber) {
+    this.nestedCommentNumber = nestedCommentNumber;
+  }
+
 
 }

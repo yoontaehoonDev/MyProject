@@ -128,8 +128,10 @@ public class BuyerBoardHandler {
 
   public void nestedCommentAdd(Board b, int index) {
 
-    Comment i = findByCommentNum(index);
-    if(i == null) {
+    findByCommentNum(index);
+    int insert = findByCommentNum(index);
+
+    if(insert == -1) {
       System.out.println("선택하신 댓글이 존재하지 않습니다.\n");
       return;
     }
@@ -142,8 +144,8 @@ public class BuyerBoardHandler {
     c.setComment(Prompt.inputString("대댓글 : "));
 
     b.setCommentCount(b.getCommentCount() + 1);
-    c.setCommentNumber(b.getCommentCount());
-    this.commentList.add(i.getCommentNumber() + 1, c); // 대댓글 정렬
+    c.setNestedCommentNumber(b.getCommentCount());
+    this.commentList.add(insert, c); 
 
   }
 
@@ -178,38 +180,21 @@ public class BuyerBoardHandler {
     commentList(board);
 
     while(true) {
-      System.out.println("1. 댓글 작성  2. 나가기");
+      System.out.println("1. 댓글 작성  2. 대댓글 작성  3. 나가기");
       choice = Prompt.inputString("선택 : ");
       if(choice.equals("1")) {
-        while(true) {
-          System.out.println("1. 댓글  2. 대댓글  3. 나가기");
-          choice = Prompt.inputString("선택 : ");
-          if(choice.equals("1")) {
-            commentAdd(board);
-            break;
-          }
-          else if (choice.equals("2")) {
-            commentList(board);
-            int index = Prompt.inputInt("댓글 번호 선택 : ");
-            nestedCommentAdd(board, index);
-
-
-          }
-          else if (choice.equals("3")) {
-            break;
-          }
-          else {
-            System.out.println("다시 입력하세요.");
-          }
-          break;
-        }
+        commentAdd(board);
         break;
       }
       else if(choice.equals("2")) {
-
+        commentList(board);
+        int index = Prompt.inputInt("댓글 번호 선택 : ");
+        nestedCommentAdd(board, index);
         break;
       }
-
+      else if(choice.equals("3")) {
+        break;
+      }
       else {
         System.out.println("잘못 입력하셨습니다.");
       }
@@ -292,25 +277,50 @@ public class BuyerBoardHandler {
   }
 
   private void commentList(Board b) {
-    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+
+    Iterator<Comment> iterator = commentList.iterator();
+
     System.out.println();
     System.out.println("■ 댓글 ■");
-    for(Comment c : list) {
-      if(b.getNumber() == c.getCommentId()) {
-        System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
+    while(iterator.hasNext()) {
+      if(iterator.next().getCommentId() == b.getNumber()) {
+        System.out.printf("%d. %s : %s\n", iterator.next().getCommentNumber(), c.getCommentWriter(), c.getComment());
       }
     }
+    //  Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+    //    for(Comment c : list) {
+    //      if(b.getNumber() == c.getCommentId()) {
+    //        System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
+    //      }
+    //    }
     System.out.println();
   }
 
-  private Comment findByCommentNum(int commentNum) {
-    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
-    for(Comment c : list) {
-      if(commentNum == c.getCommentNumber())
-        return c;
+  public int findByCommentNum(int commentNum) {
+
+    Iterator<Comment> iterator = commentList.iterator();
+    int i = 0;
+
+    while(iterator.hasNext()) {
+
+      if(iterator.next().getCommentNumber() == commentNum) {
+        return i+1;
+        //        Comment c = new Comment();
+        //        BuyerMember m = MemberHandler.buyerMemberNumber;
+        //        c.setCommentId(m.getNumber());
+        //        c.setCommentWriter(m.getNickname());
+        //        c.setComment(Prompt.inputString("대댓글 : "));
+        //        b.setCommentCount(b.getCommentCount() + 1);
+        //        c.setNestedCommentNumber(b.getCommentCount());
+        //        this.commentList.add(i+1, c);
+
+      }
+      i++;
     }
-    return null;
+    return -1;
   }
+
+
 
   private Board findByNum(int boardNum) {
 
