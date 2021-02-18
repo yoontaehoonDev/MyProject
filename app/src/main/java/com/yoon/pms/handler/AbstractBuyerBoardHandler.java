@@ -26,6 +26,21 @@ public abstract class AbstractBuyerBoardHandler implements Command {
   public static int buyerBoardCommentWriterChangeCount = 0;
 
 
+  public void update(Board b) {
+    System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 수정 ■");
+
+    b.setTitle(Prompt.inputString("수정할 제목 : "));
+    b.setContent(Prompt.inputString("수정할 내용 : "));
+
+    System.out.println("수정 완료\n");
+
+  }
+
+  public void delete(Board b) {
+
+    buyerBoardList.remove(b);
+    System.out.println("게시글이 삭제되었습니다.\n");
+  }
 
   public void commentAdd(Board b) {
     BuyerMember m = MemberHandler.buyerMemberNumber;

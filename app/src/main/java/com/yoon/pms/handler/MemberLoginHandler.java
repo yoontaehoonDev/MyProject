@@ -55,6 +55,7 @@ public class MemberLoginHandler extends AbstractMemberHandler {
                   System.out.println("로그인 성공\n");
                   logCount = true;
                   logStatus = 0;
+                  AbstractBuyerBoardHandler.boardAuthorization = true;
                   buyerMemberNumber = idCheck;
                   IntegratedBoardHandler.boardAuthorization = true;
                   BuyerBoardHandler.boardAuthorization = true;
