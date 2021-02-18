@@ -5,6 +5,7 @@ import java.util.List;
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
+import com.yoon.util.Prompt;
 
 public abstract class AbstractBuyerBoardHandler implements Command {
 
@@ -24,6 +25,43 @@ public abstract class AbstractBuyerBoardHandler implements Command {
   public static int buyerBoardWriterChangeCount = 0;
   public static int buyerBoardCommentWriterChangeCount = 0;
 
+
+
+  public void commentAdd(Board b) {
+    BuyerMember m = MemberHandler.buyerMemberNumber;
+    Comment c = new Comment();
+    c.setCommentId(b.getNumber());
+    c.setCommentWriter(m.getNickname());
+    c.setComment(Prompt.inputString("댓글 : "));
+
+    b.setCommentCount(b.getCommentCount() + 1);
+    c.setCommentNumber(b.getCommentCount());
+    this.commentList.add(c);
+
+  }
+
+  public void nestedCommentAdd(Board b, int index) {
+
+    int insert = findByCommentNum(index);
+
+    if(insert == -1) {
+      System.out.println("선택하신 댓글이 존재하지 않습니다.\n");
+      return;
+    }
+
+    BuyerMember m = MemberHandler.buyerMemberNumber;
+    Comment c = new Comment();
+
+    c.setCommentId(b.getNumber());
+    c.setCommentWriter(m.getNickname());
+    c.setComment(Prompt.inputString("대댓글 : "));
+
+    b.setCommentCount(b.getCommentCount() + 1);
+    //    c.setNestedCommentNumber(b.getCommentCount());
+
+    this.commentList.add(insert, c); 
+
+  }
 
 
   public void commentList(Board b) {

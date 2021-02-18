@@ -9,7 +9,10 @@ import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.pms.handler.BuyerBoardAddHandler;
+import com.yoon.pms.handler.BuyerBoardDetailHandler;
 import com.yoon.pms.handler.BuyerBoardHandler;
+import com.yoon.pms.handler.BuyerBoardListHandler;
+import com.yoon.pms.handler.BuyerBoardMyListHandler;
 import com.yoon.pms.handler.Command;
 import com.yoon.pms.handler.IntegratedBoardHandler;
 import com.yoon.pms.handler.MemberAddHandler;
@@ -55,8 +58,14 @@ public class App {
     commandMap.put("삭제", new MemberDeleteHandler(buyerMemberList, sellerMemberList));
     commandMap.put("회원목록", new MemberListHandler(buyerMemberList, sellerMemberList));
 
-    commandMap.put("구매자게시판", new BuyerBoardAddHandler(buyerBoardList, commentList));
+    commandMap.put("글쓰기", new BuyerBoardAddHandler(buyerBoardList, commentList));
+    commandMap.put("글보기", new BuyerBoardDetailHandler(buyerBoardList, commentList));
+    commandMap.put("글목록", new BuyerBoardListHandler(buyerBoardList, commentList));
+    commandMap.put("내글", new BuyerBoardMyListHandler(buyerBoardList, commentList));
 
+    commandMap.put("구매자게시판", new BuyerBoardAddHandler(buyerBoardList, commentList));
+    commandMap.put("구매자게시판", new BuyerBoardAddHandler(buyerBoardList, commentList));
+    commandMap.put("구매자게시판", new BuyerBoardAddHandler(buyerBoardList, commentList));
 
 
     MemberHandler memberHandler = new MemberHandler();

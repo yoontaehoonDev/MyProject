@@ -3,12 +3,13 @@ package com.yoon.pms.handler;
 import java.util.List;
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
+import com.yoon.pms.domain.Comment;
 import com.yoon.util.Prompt;
 
 public class BuyerBoardAddHandler extends AbstractBuyerBoardHandler {
 
 
-  public BuyerBoardAddHandler(List<Board> buyerBoardList, List<Command> commentList) {
+  public BuyerBoardAddHandler(List<Board> buyerBoardList, List<Comment> commentList) {
     super(buyerBoardList, commentList);
   }
 
