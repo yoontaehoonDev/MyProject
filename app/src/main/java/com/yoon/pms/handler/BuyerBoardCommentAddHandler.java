@@ -7,7 +7,7 @@ import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
 import com.yoon.util.Prompt;
 
-public class BuyerBoardHandler {
+public class BuyerBoardCommentAddHandler {
 
   public static boolean boardAuthorization = false;
   protected LinkedList<Board> buyerBoardList = new LinkedList<>();

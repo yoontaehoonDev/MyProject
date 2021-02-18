@@ -16,7 +16,8 @@ public class SellerBoardHandler {
   int boardIndex = 1;
   int commentCount = 0;
   public static int likeCount = 0;
-  public static int changeCount = 0;
+  public static int sellerBoardWriterChangeCount = 0;
+  public static int sellerBoardCommentWriterChangeCount = 0;
 
   public void service() throws CloneNotSupportedException {
     if(MemberHandler.logStatus == -1) {
@@ -24,7 +25,7 @@ public class SellerBoardHandler {
       return;
     }
 
-    if(changeCount == 1) {
+    if(sellerBoardWriterChangeCount == 1) {
       changeWriter();
     }
 
@@ -267,7 +268,7 @@ public class SellerBoardHandler {
         s.setWriter(MemberHandler.sellerMemberNumber.getBusinessName());
       }
     }
-    changeCount = 0;
+    sellerBoardWriterChangeCount = 0;
   }
 
 }

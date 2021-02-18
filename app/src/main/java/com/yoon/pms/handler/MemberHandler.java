@@ -389,7 +389,8 @@ public class MemberHandler {
       s.setEmail(emailFormat("수정할 E-Mail : "));
       s.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
       System.out.println("가게 관련 정보 변경은 고객센터(1542-1542)로 연락 바랍니다.");
-      SellerBoardHandler.changeCount = 1;
+      SellerBoardHandler.sellerBoardWriterChangeCount = 1;
+      SellerBoardHandler.sellerBoardCommentWriterChangeCount = 1;
     }
     else if(logStatus == 0){
       BuyerMember b = buyerMemberNumber;
@@ -399,7 +400,8 @@ public class MemberHandler {
       b.setNickname(findByNickname("수정할 닉네임 : "));
       b.setEmail(emailFormat("수정할 E-Mail : "));
       b.setPhone(phoneFormat("수정할 핸드폰 번호 : "));
-      BuyerBoardHandler.changeCount = 1;
+      BuyerBoardHandler.buyerBoardWriterChangeCount = 1;
+      BuyerBoardHandler.buyerBoardCommentWriterChangeCount = 1;
     }
     IntegratedBoardHandler.changeCount = 1;
     System.out.println("[개인정보 수정 완료]\n");
