@@ -12,7 +12,6 @@ public class SellerBoardDetailHandler extends AbstractSellerBoardHandler {
     super(sellerBoardList, commentList);
   }
 
-
   @Override
   public void service() {
     if(sellerBoardList.size() == 0) {
@@ -47,16 +46,21 @@ public class SellerBoardDetailHandler extends AbstractSellerBoardHandler {
     commentList(board);
 
     while(true) {
-      System.out.println("1. 댓글 작성  2. 나가기");
+      System.out.println("1. 댓글 작성  2. 대댓글 작성  3. 나가기");
       choice = Prompt.inputString("선택 : ");
       if(choice.equals("1")) {
         commentAdd(board);
         break;
       }
       else if(choice.equals("2")) {
+        commentList(board);
+        int index = Prompt.inputInt("댓글 번호 선택 : ");
+        nestedCommentAdd(board, index);
         break;
       }
-
+      else if(choice.equals("3")) {
+        break;
+      }
       else {
         System.out.println("잘못 입력하셨습니다.");
       }

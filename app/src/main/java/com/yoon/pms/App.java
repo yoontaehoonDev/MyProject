@@ -14,6 +14,9 @@ import com.yoon.pms.handler.BuyerBoardListHandler;
 import com.yoon.pms.handler.BuyerBoardMyListHandler;
 import com.yoon.pms.handler.Command;
 import com.yoon.pms.handler.IntegratedBoardAddHandler;
+import com.yoon.pms.handler.IntegratedBoardListHandler;
+import com.yoon.pms.handler.IntegratedBoardMyListHandler;
+import com.yoon.pms.handler.IntegratedDetailBoardHandler;
 import com.yoon.pms.handler.MemberAddHandler;
 import com.yoon.pms.handler.MemberAdminLoginHandler;
 import com.yoon.pms.handler.MemberAdminLogoutHandler;
@@ -70,14 +73,9 @@ public class App {
     commandMap.put("내글2", new SellerBoardMyListHandler(sellerBoardList, commentList));
 
     commandMap.put("글쓰기3", new IntegratedBoardAddHandler(integratedBoardList, commentList));
-    //    commandMap.put("글보기3", new IntegratedBoardDetailHandler(integratedBoardList, commentList));
-    //    commandMap.put("글목록3", new IntegratedBoardListHandler(integratedBoardList, commentList));
-    //    commandMap.put("내글3", new IntegratedBoardMyListHandler(integratedBoardList, commentList));
-
-
-    commandMap.put("구매자게시판", new BuyerBoardAddHandler(buyerBoardList, commentList));
-    commandMap.put("구매자게시판", new BuyerBoardAddHandler(buyerBoardList, commentList));
-    commandMap.put("구매자게시판", new BuyerBoardAddHandler(buyerBoardList, commentList));
+    commandMap.put("글보기3", new IntegratedDetailBoardHandler(integratedBoardList, commentList));
+    commandMap.put("글목록3", new IntegratedBoardListHandler(integratedBoardList, commentList));
+    commandMap.put("내글3", new IntegratedBoardMyListHandler(integratedBoardList, commentList));
 
 
 

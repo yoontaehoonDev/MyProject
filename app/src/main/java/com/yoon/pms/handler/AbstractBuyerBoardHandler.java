@@ -17,7 +17,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
     this.commentList = commentList;
   }
 
-
   public static boolean boardAuthorization = false;
   public static int boardIndex = 1;
   public static int commentCount = 0;
@@ -80,8 +79,8 @@ public abstract class AbstractBuyerBoardHandler implements Command {
   public int findByCommentNum(int commentNum) {
 
     Iterator<Comment> iterator = commentList.iterator();
-    int i = 0, j = 0;
-    Iterator<Board> boardIterator = buyerBoardList.iterator();
+    int i = 0;
+    //    Iterator<Board> boardIterator = buyerBoardList.iterator();
 
     //		while(boardIterator.hasNext()) {
     //			if(boardIterator.next().getNumber() == iterator.next().getCommentId()) {
@@ -111,22 +110,15 @@ public abstract class AbstractBuyerBoardHandler implements Command {
           System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
       }
     }
-    //  Comment[] list = commentList.toArray(new Comment[commentList.size()]);
-    //    for(Comment c : list) {
-    //      if(b.getNumber() == c.getCommentId()) {
-    //        System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
-    //      }
-    //    }
     System.out.println();
   }
 
-
-
-
   public Board findByNum(int boardNum) {
 
-    Board[] list = buyerBoardList.toArray(new Board[buyerBoardList.size()]);
-    for (Board b : list) {
+    Iterator<Board> iterator = buyerBoardList.iterator();
+
+    while(iterator.hasNext()) {
+      Board b = iterator.next();
       if (b.getNumber() == boardNum) {
         return b;
       }
@@ -136,9 +128,12 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 
   public void changeWriter() {
     BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
-    Board[] list = buyerBoardList.toArray(new Board[buyerBoardList.size()]);
-    for(Board b : list) {
-      if(b.getId() == m.getHash()) {
+
+    Iterator<Board> iterator = buyerBoardList.iterator();
+
+    while(iterator.hasNext()) {
+      Board b = iterator.next();
+      if (b.getId() == m.getHash()) {
         b.setWriter(m.getNickname());
       }
     }

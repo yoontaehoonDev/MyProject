@@ -123,7 +123,7 @@ public class MemberLoginHandler extends AbstractMemberHandler {
       }
     }
     else {
-      System.out.println("현재 회원이 없습니다.\n");
+      System.out.println("이미 로그인 되었습니다.\n");
     }
   }
 

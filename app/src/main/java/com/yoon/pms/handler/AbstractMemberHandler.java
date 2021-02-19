@@ -15,7 +15,6 @@ public abstract class AbstractMemberHandler implements Command {
     this.sellerMemberList = sellerMemberList;
   } 
 
-
   public static boolean logCount = false;
   public static int adminNumber = 0;
   public static BuyerMember buyerMemberNumber;

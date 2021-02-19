@@ -1,5 +1,6 @@
 package com.yoon.pms.handler;
 
+import java.util.Iterator;
 import java.util.List;
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
@@ -24,7 +25,8 @@ public abstract class AbstractIntegratedBoardHandler implements Command {
   public static int sellerNum = 1;
   public static int flag;
   public static int likeCount = 0;
-  public static int changeCount = 0;
+  public static int IntegratedBoardWriterChangeCount = 0;
+  public static int IntegratedBoardCommentWriterChangeCount = 0;
 
 
   public void update(Board i) {
@@ -42,73 +44,130 @@ public abstract class AbstractIntegratedBoardHandler implements Command {
     System.out.println("게시글이 삭제되었습니다.");
   }
 
-  //  public void myList()  {
-  //    if()
-  //    Object[] list = sellerBoardList.toArray();
-  //    System.out.println();
-  //    System.out.printf("%s 님의 게시글 목록\n", m.getBusinessName());
-  //    for(Object obj : list) {
-  //      Board b = (Board)obj;
-  //      if(b.getId() == m.getHash()) {
-  //        System.out.printf("제목 : [%s] 내용 : [%s]\n", b.getTitle(), b.getContent());
-  //      }
-  //    }
-  //    System.out.println();
-  //  }
 
   public void commentList(Board b) {
-    Comment[] list = commentList.toArray(new Comment[commentList.size()]);
+    Iterator<Comment> iterator = commentList.iterator();
+
     System.out.println();
     System.out.println("■ 댓글 ■");
-    for(Comment c : list) {
-      if(b.getNumber() == c.getCommentId()) {
-        System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
+    while(iterator.hasNext()) {
+      Comment c = iterator.next(); 
+      if(c.getCommentId() == b.getNumber()) {
+        if(c.getCommentNumber() == 0)
+          System.out.printf("  └ %s : %s\n", c.getCommentWriter(), c.getComment());
+        else 
+          System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
       }
     }
     System.out.println();
   }
 
-  //  public void myList(SellerMember m) throws CloneNotSupportedException {
-  //    //    Iterator<Board> buyerIterator = sellerBoardList.iterator();
-  //    //    Iterator<Board> sellerIterator = sellerBoardList.
-  //
-  //    System.out.println();
-  //    System.out.printf("%s 님의 게시글 목록\n", m.getBusinessName());
-  //
-  //    while(iterator.hasNext()) {
-  //      Board b = iterator.next();
-  //      if(b.getId() == m.getHash()) {
-  //        System.out.printf("게시글 번호 : [%d]   제목 : [%s]   내용 : [%s]\n", b.getNumber(), b.getTitle(), b.getContent());
-  //      }
-  //    }
-  //    System.out.println();
-  //  }
+  public void commentAdd(Board b) {
+    BuyerMember buyer = AbstractMemberHandler.buyerMemberNumber;
+    SellerMember seller = AbstractMemberHandler.sellerMemberNumber;
+    Comment c = new Comment();
+
+
+    c.setCommentId(b.getNumber());
+    //    c.setCommentWriter(m.getNickname());
+    c.setComment(Prompt.inputString("댓글 : "));
+
+    b.setCommentCount(b.getCommentCount() + 1);
+    c.setCommentNumber(b.getCommentCount());
+    this.commentList.add(c);
+
+  }
+
+  public void nestedCommentAdd(Board b, int index) {
+
+    int insert = findByCommentNum(index);
+
+    if(insert == -1) {
+      System.out.println("선택하신 댓글이 존재하지 않습니다.\n");
+      return;
+    }
+
+    BuyerMember buyer = AbstractMemberHandler.buyerMemberNumber;
+    SellerMember seller = AbstractMemberHandler.sellerMemberNumber;
+    Comment c = new Comment();
+
+    c.setCommentId(b.getNumber());
+    //    c.setCommentWriter(m.getNickname());
+    c.setComment(Prompt.inputString("대댓글 : "));
+
+    //    c.setNestedCommentNumber(b.getCommentCount());
+
+    this.commentList.add(insert, c); 
+
+  }
+
+  public int findByCommentNum(int commentNum) {
+
+    Iterator<Comment> iterator = commentList.iterator();
+    int i = 0;
+    //    Iterator<Board> boardIterator = buyerBoardList.iterator();
+
+    //      while(boardIterator.hasNext()) {
+    //          if(boardIterator.next().getNumber() == iterator.next().getCommentId()) {
+    //              j = 1;
+    //          }
+    while(iterator.hasNext()) {
+      if(iterator.next().getCommentNumber() == commentNum) {
+        return i+1;
+      }
+      i++;
+    }
+    return -1;
+  }
 
   public Board findByNum(int boardNum) {
-    Object[] list = integratedBoardList.toArray();
-    for (Object obj : list) {
-      Board i = (Board) obj;
-      if (i.getNumber() == boardNum) {
-        return i;
+
+    Iterator<Board> iterator = integratedBoardList.iterator();
+
+    while(iterator.hasNext()) {
+      if(iterator.next().getNumber() == boardNum) {
+        return iterator.next();
       }
     }
     return null;
+
+    //    Object[] list = integratedBoardList.toArray();
+    //    for (Object obj : list) {
+    //      Board i = (Board) obj;
+    //      if (i.getNumber() == boardNum) {
+    //        return i;
+    //      }
+    //    }
+    //    return null;
   }
 
   public void changeWriter() {
-    BuyerMember b = AbstractMemberHandler.buyerMemberNumber;
-    SellerMember s = AbstractMemberHandler.sellerMemberNumber;
-    Object[] list = integratedBoardList.toArray();
-    for(Object obj : list) {
-      Board i = (Board)obj;
-      if(i.getId() == s.getHash()) {
-        i.setWriter(s.getBusinessName());
+    BuyerMember buyer = AbstractMemberHandler.buyerMemberNumber;
+    SellerMember seller = AbstractMemberHandler.sellerMemberNumber;
+
+    Iterator<Board> iterator = integratedBoardList.iterator();
+
+    while(iterator.hasNext()) {
+      Board b = iterator.next();
+      if(b.getId() == buyer.getHash()) {
+        b.setWriter(buyer.getNickname());
       }
-      else if(i.getId() == b.getHash()) {
-        i.setWriter(b.getNickname());
+      else if (b.getId() == seller.getHash()) {
+        b.setWriter(seller.getBusinessName());
       }
     }
-    changeCount = 0;
+
+    //    Object[] list = integratedBoardList.toArray();
+    //    for(Object obj : list) {
+    //      Board i = (Board)obj;
+    //      if(i.getId() == s.getHash()) {
+    //        i.setWriter(s.getBusinessName());
+    //      }
+    //      else if(i.getId() == b.getHash()) {
+    //        i.setWriter(b.getNickname());
+    //      }
+    //    }
+    IntegratedBoardWriterChangeCount = 0;
   }
 
 

@@ -111,22 +111,15 @@ public abstract class AbstractSellerBoardHandler implements Command {
           System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
       }
     }
-    //  Comment[] list = commentList.toArray(new Comment[commentList.size()]);
-    //    for(Comment c : list) {
-    //      if(b.getNumber() == c.getCommentId()) {
-    //        System.out.printf("%d. %s : %s\n", c.getCommentNumber(), c.getCommentWriter(), c.getComment());
-    //      }
-    //    }
     System.out.println();
   }
 
-
-
-
   public Board findByNum(int boardNum) {
 
-    Board[] list = sellerBoardList.toArray(new Board[sellerBoardList.size()]);
-    for (Board b : list) {
+    Iterator<Board> iterator = sellerBoardList.iterator();
+
+    while(iterator.hasNext()) {
+      Board b = iterator.next();
       if (b.getNumber() == boardNum) {
         return b;
       }
@@ -136,9 +129,12 @@ public abstract class AbstractSellerBoardHandler implements Command {
 
   public void changeWriter() {
     SellerMember m = AbstractMemberHandler.sellerMemberNumber;
-    Board[] list = sellerBoardList.toArray(new Board[sellerBoardList.size()]);
-    for(Board b : list) {
-      if(b.getId() == m.getHash()) {
+
+    Iterator<Board> iterator = sellerBoardList.iterator();
+
+    while(iterator.hasNext()) {
+      Board b = iterator.next();
+      if (b.getId() == m.getHash()) {
         b.setWriter(m.getBusinessName());
       }
     }
