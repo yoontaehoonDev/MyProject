@@ -39,7 +39,7 @@ public class MemberUpdateHandler extends AbstractMemberHandler {
       AbstractBuyerBoardHandler.buyerBoardWriterChangeCount = 1;
       AbstractBuyerBoardHandler.buyerBoardCommentWriterChangeCount = 1;
     }
-    AbstractIntegratedBoardHandler.IntegratedBoardWriterChangeCount = 1;
+    AbstractIntegratedBoardHandler.integratedBoardWriterChangeCount = 1;
     System.out.println("[개인정보 수정 완료]\n");
 
   }

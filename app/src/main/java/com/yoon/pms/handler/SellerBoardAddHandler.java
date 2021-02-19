@@ -29,7 +29,7 @@ public class SellerBoardAddHandler extends AbstractSellerBoardHandler {
       System.out.println("글 작성 완료\n");
     }
     else {
-      System.out.println("회원만 작성 가능합니다.\n");
+      System.out.println("판매회원만 작성 가능합니다.\n");
     }
   }
 

@@ -18,11 +18,9 @@ public class IntegratedBoardListHandler extends AbstractIntegratedBoardHandler {
       System.out.println("존재하는 게시글이 없습니다.");
       return;
     }
-    if(IntegratedBoardWriterChangeCount == 1) {
+    if(integratedBoardWriterChangeCount == 1) {
       changeWriter();
     }
-
-    int count;
 
     System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 ■\n");
 
@@ -36,7 +34,7 @@ public class IntegratedBoardListHandler extends AbstractIntegratedBoardHandler {
       if(choice.equals("1")) {
         System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 통합 게시글 ■\n");
         while(iterator.hasNext()) {
-          count = 0;
+
           Board i = iterator.next();
           if(i.getOwner() == buyerNum) {
             System.out.print("[구매회원] ");
@@ -50,34 +48,36 @@ public class IntegratedBoardListHandler extends AbstractIntegratedBoardHandler {
         break;
       }
       else if(choice.equals("2")) {
-        count = 0;
+        buyerIntegratedBoardCount = 0;
         System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 구매회원 게시글 ■\n");
         while(iterator.hasNext()) {
           Board i = iterator.next();
           if(i.getOwner() == buyerNum) {
             System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
                 i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
-            count = 1;
+            buyerIntegratedBoardCount = 1;
           }
         }
-        if(count == 0) {
-          System.out.println("구매회원 게시글이 존재하지 않습니다.");
+        if(buyerIntegratedBoardCount == 0) {
+          System.out.println("구매회원 게시글이 존재하지 않습니다.\n");
+          return;
         }
         break;
       }
       else if(choice.equals("3")) {
-        count = 0;
+        sellerIntegratedBoardCount = 0;
         System.out.println("■ 메뉴 - 통합게시판 - 게시글 목록 - 판매회원 게시글 ■\n");
         while(iterator.hasNext()) {
           Board i = iterator.next();
           if(i.getOwner() == sellerNum) {
             System.out.printf("번호 : [%d]  제목 : [%s]  작성자 : [%s]  추천 : [%d]  조회수 : [%d]  작성일 : [%s]\n",
                 i.getNumber(), i.getTitle(), i.getWriter(), i.getLike(), i.getView(), i.getRegisteredDate());
-            count = 1;
+            sellerIntegratedBoardCount = 1;
           }  
         }
-        if(count == 0) {
-          System.out.println("판매회원 게시글이 존재하지 않습니다.");
+        if(sellerIntegratedBoardCount == 0) {
+          System.out.println("판매회원 게시글이 존재하지 않습니다.\n");
+          return;
         }
         break;
       }

@@ -15,7 +15,7 @@ public class IntegratedBoardMyListHandler extends AbstractIntegratedBoardHandler
 
   @Override
   public void service() {
-    if(IntegratedBoardWriterChangeCount == 1) {
+    if(integratedBoardWriterChangeCount == 1) {
       changeWriter();
     }
 

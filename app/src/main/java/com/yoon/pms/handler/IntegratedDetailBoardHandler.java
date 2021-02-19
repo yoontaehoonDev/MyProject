@@ -19,13 +19,21 @@ public class IntegratedDetailBoardHandler extends AbstractIntegratedBoardHandler
       System.out.println("존재하는 게시글이 없습니다.");
       return;
     }
-    if(IntegratedBoardWriterChangeCount == 1) {
+    if(integratedBoardWriterChangeCount == 1) {
       changeWriter();
     }
 
     String choice;
     IntegratedBoardListHandler list = new IntegratedBoardListHandler(integratedBoardList, commentList);
     list.service();
+
+    if (buyerIntegratedBoardCount == 1 && sellerIntegratedBoardCount == 0) {
+
+      return;
+    }
+    if (sellerIntegratedBoardCount == 0) {
+      return;
+    }
 
 
     System.out.println("---------------------------------------");
@@ -41,7 +49,6 @@ public class IntegratedDetailBoardHandler extends AbstractIntegratedBoardHandler
 
     BuyerMember b = AbstractMemberHandler.buyerMemberNumber;
     SellerMember s = AbstractMemberHandler.sellerMemberNumber;
-
 
     board.setView(board.getView() + 1);
 
@@ -83,8 +90,11 @@ public class IntegratedDetailBoardHandler extends AbstractIntegratedBoardHandler
       }
     }
 
-
     if(AbstractMemberHandler.logStatus == 0) {
+      while(true) {
+
+        break;
+      }
       // 구매 or 판매회원 해쉬값 수정 필요
       if(board.getId() == b.getHash()) {
         Board i = board;
@@ -100,12 +110,15 @@ public class IntegratedDetailBoardHandler extends AbstractIntegratedBoardHandler
             break;
           }
           else if(choice.equals("3")) {
-            break;
+            return;
           }
           else {
             System.out.println("잘못 누르셨습니다.\n");
           }
         }
+      }
+      else {
+        return;
       }
     }
     else if (AbstractMemberHandler.logStatus == 1) {
@@ -122,11 +135,16 @@ public class IntegratedDetailBoardHandler extends AbstractIntegratedBoardHandler
             delete(i);
             break;
           }
+          else if(choice.equals("3")) {
+            return;
+          }
           else {
             System.out.println("잘못 누르셨습니다.\n");
-            break;
           }
         }
+      }
+      else {
+        return;
       }
     }
     System.out.println();

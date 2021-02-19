@@ -25,8 +25,10 @@ public abstract class AbstractIntegratedBoardHandler implements Command {
   public static int sellerNum = 1;
   public static int flag;
   public static int likeCount = 0;
-  public static int IntegratedBoardWriterChangeCount = 0;
-  public static int IntegratedBoardCommentWriterChangeCount = 0;
+  public static int integratedBoardWriterChangeCount = 0;
+  public static int integratedBoardCommentWriterChangeCount = 0;
+  public static int buyerIntegratedBoardCount;
+  public static int sellerIntegratedBoardCount;
 
 
   public void update(Board i) {
@@ -167,7 +169,7 @@ public abstract class AbstractIntegratedBoardHandler implements Command {
     //        i.setWriter(b.getNickname());
     //      }
     //    }
-    IntegratedBoardWriterChangeCount = 0;
+    integratedBoardWriterChangeCount = 0;
   }
 
 
