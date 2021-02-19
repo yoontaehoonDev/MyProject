@@ -3,27 +3,27 @@ package com.yoon.pms.handler;
 import java.util.Iterator;
 import java.util.List;
 import com.yoon.pms.domain.Board;
-import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
+import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Prompt;
 
-public abstract class AbstractBuyerBoardHandler implements Command {
+public abstract class AbstractSellerBoardHandler implements Command {
 
-  protected List<Board> buyerBoardList;
+  protected List<Board> sellerBoardList;
   protected List<Comment> commentList;
 
-  public AbstractBuyerBoardHandler(List<Board> buyerBoardList, List<Comment> commentList) {
-    this.buyerBoardList = buyerBoardList;
+  public AbstractSellerBoardHandler(List<Board> sellerBoardList, List<Comment> commentList) {
+    this.sellerBoardList = sellerBoardList;
     this.commentList = commentList;
   }
-
 
   public static boolean boardAuthorization = false;
   public static int boardIndex = 1;
   public static int commentCount = 0;
   public static int likeCount = 0;
-  public static int buyerBoardWriterChangeCount = 0;
-  public static int buyerBoardCommentWriterChangeCount = 0;
+  public static int sellerBoardWriterChangeCount = 0;
+  public static int sellerBoardCommentWriterChangeCount = 0;
+
 
 
   public void update(Board b) {
@@ -38,15 +38,15 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 
   public void delete(Board b) {
 
-    buyerBoardList.remove(b);
+    sellerBoardList.remove(b);
     System.out.println("게시글이 삭제되었습니다.\n");
   }
 
   public void commentAdd(Board b) {
-    BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
+    SellerMember m = AbstractMemberHandler.sellerMemberNumber;
     Comment c = new Comment();
     c.setCommentId(b.getNumber());
-    c.setCommentWriter(m.getNickname());
+    c.setCommentWriter(m.getBusinessName());
     c.setComment(Prompt.inputString("댓글 : "));
 
     b.setCommentCount(b.getCommentCount() + 1);
@@ -64,11 +64,11 @@ public abstract class AbstractBuyerBoardHandler implements Command {
       return;
     }
 
-    BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
+    SellerMember m = AbstractMemberHandler.sellerMemberNumber;
     Comment c = new Comment();
 
     c.setCommentId(b.getNumber());
-    c.setCommentWriter(m.getNickname());
+    c.setCommentWriter(m.getBusinessName());
     c.setComment(Prompt.inputString("대댓글 : "));
 
     //    c.setNestedCommentNumber(b.getCommentCount());
@@ -80,13 +80,13 @@ public abstract class AbstractBuyerBoardHandler implements Command {
   public int findByCommentNum(int commentNum) {
 
     Iterator<Comment> iterator = commentList.iterator();
-    int i = 0, j = 0;
-    Iterator<Board> boardIterator = buyerBoardList.iterator();
+    int i = 0;
+    //    Iterator<Board> boardIterator = sellerBoardList.iterator();
 
-    //		while(boardIterator.hasNext()) {
-    //			if(boardIterator.next().getNumber() == iterator.next().getCommentId()) {
-    //				j = 1;
-    //			}
+    //      while(boardIterator.hasNext()) {
+    //          if(boardIterator.next().getNumber() == iterator.next().getCommentId()) {
+    //              j = 1;
+    //          }
     while(iterator.hasNext()) {
       if(iterator.next().getCommentNumber() == commentNum) {
         return i+1;
@@ -125,7 +125,7 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 
   public Board findByNum(int boardNum) {
 
-    Board[] list = buyerBoardList.toArray(new Board[buyerBoardList.size()]);
+    Board[] list = sellerBoardList.toArray(new Board[sellerBoardList.size()]);
     for (Board b : list) {
       if (b.getNumber() == boardNum) {
         return b;
@@ -135,14 +135,14 @@ public abstract class AbstractBuyerBoardHandler implements Command {
   }
 
   public void changeWriter() {
-    BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
-    Board[] list = buyerBoardList.toArray(new Board[buyerBoardList.size()]);
+    SellerMember m = AbstractMemberHandler.sellerMemberNumber;
+    Board[] list = sellerBoardList.toArray(new Board[sellerBoardList.size()]);
     for(Board b : list) {
       if(b.getId() == m.getHash()) {
-        b.setWriter(m.getNickname());
+        b.setWriter(m.getBusinessName());
       }
     }
-    buyerBoardWriterChangeCount = 0;
+    sellerBoardWriterChangeCount = 0;
   }
 
   //  private void changeCommentWriter() {
@@ -158,5 +158,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
   //    }
   //    buyerBoardCommentWriterChangeCount = 0;
   //  }
+
 
 }

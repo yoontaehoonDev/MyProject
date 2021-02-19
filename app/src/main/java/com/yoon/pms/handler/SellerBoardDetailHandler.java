@@ -2,31 +2,33 @@ package com.yoon.pms.handler;
 
 import java.util.List;
 import com.yoon.pms.domain.Board;
-import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
+import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Prompt;
 
-public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
+public class SellerBoardDetailHandler extends AbstractSellerBoardHandler {
 
-  public BuyerBoardDetailHandler(List<Board> buyerBoardList, List<Comment> commentList) {
-    super(buyerBoardList, commentList);
+  public SellerBoardDetailHandler(List<Board> sellerBoardList, List<Comment> commentList) {
+    super(sellerBoardList, commentList);
   }
 
 
   @Override
   public void service() {
-    if(buyerBoardList.size() == 0) {
+    if(sellerBoardList.size() == 0) {
       System.out.println("존재하는 게시글이 없습니다.\n");
       return;
     }
     String choice;
-    BuyerBoardListHandler list = new BuyerBoardListHandler(buyerBoardList, commentList);
+    SellerBoardListHandler list = new SellerBoardListHandler(sellerBoardList, commentList);
     list.service();
+
     System.out.println("---------------------------------------");
-    System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 보기 ■");
+    System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 보기 ■");
     int num = Prompt.inputInt("게시글 번호 입력 : ");
 
-    BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
+
+    SellerMember m = AbstractMemberHandler.sellerMemberNumber;
     Board board = findByNum(num);
 
     if (board == null) {
@@ -45,41 +47,35 @@ public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
     commentList(board);
 
     while(true) {
-      System.out.println("1. 댓글 작성  2. 대댓글 작성  3. 나가기");
+      System.out.println("1. 댓글 작성  2. 나가기");
       choice = Prompt.inputString("선택 : ");
       if(choice.equals("1")) {
         commentAdd(board);
         break;
       }
       else if(choice.equals("2")) {
-        commentList(board);
-        int index = Prompt.inputInt("댓글 번호 선택 : ");
-        nestedCommentAdd(board, index);
         break;
       }
-      else if(choice.equals("3")) {
-        break;
-      }
+
       else {
         System.out.println("잘못 입력하셨습니다.");
       }
     }
 
     if(board.getId() == m.getHash()) {
-      Board b = board;
+      Board s = board;
       while(true) {
         System.out.println("1. [수정]  2. [삭제]  3. [뒤로가기]");
         choice = Prompt.inputString("선택 : ");
         if(choice.equals("1")) {
-          update(b);
+          update(s);
           break;
         }
         else if(choice.equals("2")) {
-          delete(b);
+          delete(s);
           break;
         }
         else if(choice.equals("3")) {
-          System.out.println("■ 메뉴 - 구매회원 전용 게시판 ■ 으로 이동합니다.");
           break;
         }
         else {
@@ -87,7 +83,6 @@ public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
         }
       }
     }
-
 
     /* 추천 기능 보류
 		String message = Prompt.inputString("이 게시글을 추천하시겠습니까? [Y/N] : ");

@@ -8,7 +8,7 @@ import com.yoon.pms.domain.Comment;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Prompt;
 
-public class IntegratedBoardHandler {
+public class IntegratedBoardListHandler {
 
   public static boolean boardAuthorization = false;
   private LinkedList<Board> integratedBoardList = new LinkedList<>();
