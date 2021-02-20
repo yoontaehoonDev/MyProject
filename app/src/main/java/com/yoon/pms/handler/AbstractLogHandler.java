@@ -12,6 +12,4 @@ public abstract class AbstractLogHandler implements Command{
 		this.logList = logList;
 	}
 
-
-
 }
