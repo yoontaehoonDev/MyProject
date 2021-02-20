@@ -1,6 +1,5 @@
 package com.yoon.pms.handler;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.yoon.pms.domain.Board;
@@ -47,7 +46,7 @@ public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
 		commentList(board);
 
 		while(true) {
-			System.out.println("1. 댓글 작성  2. 대댓글 작성  3. 나가기  4. 모든 댓글");
+			System.out.println("1. 댓글 작성  2. 대댓글 작성  3. 나가기");
 			choice = Prompt.inputString("선택 : ");
 			if(choice.equals("1")) {
 				commentAdd(board);
@@ -66,20 +65,6 @@ public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
 			}
 			else if(choice.equals("3")) {
 				break;
-			}
-			else if(choice.equals("4")) {
-
-				Iterator<Comment> f = commentList.iterator();
-				int r = 0;
-				System.out.println("===============================");
-				while(f.hasNext()) {
-					Comment v = f.next();
-					System.out.printf("댓글 아이디 : %d  댓글 번호 : %d\n", v.getCommentId(), v.getCommentNumber());
-					r++;
-				}
-				System.out.printf("총 댓글 수 : %d\n", r);
-				System.out.println("===============================");
-
 			}
 			else {
 				System.out.println("잘못 입력하셨습니다.");

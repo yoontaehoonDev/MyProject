@@ -52,13 +52,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 		b.setCommentCount(b.getCommentCount() + 1);
 		c.setCommentNumber(b.getCommentCount());
 		this.commentList.add(c);
-		System.out.println("=========================================================");
-		System.out.printf("현재 댓글 게시판 번호 : %d\n", b.getNumber());
-		System.out.printf("현재 댓글 소유자 닉네임 : %s\n", m.getNickname());
-		System.out.printf("현재 댓글 소유자 고유번호 : %d\n", m.getHash());
-		System.out.printf("현재 댓글 고유번호 : %d\n", c.getCommentId());
-		System.out.printf("현재 댓글 번호 : %d\n", c.getCommentNumber());
-		System.out.println("=========================================================");
 	}
 
 	public void nestedCommentAdd(Board b, int index) {
@@ -81,21 +74,12 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 		//    c.setNestedCommentNumber(b.getCommentCount());
 
 		this.commentList.add(insert, c); 
-		System.out.println("=========================================================");
-		System.out.printf("현재 대댓글 삽입 위치 : %d\n", insert);
-		System.out.printf("현재 대댓글 게시판 댓글 번호 : %d\n", b.getNumber());
-		System.out.printf("현재 대댓글 소유자 닉네임 : %s\n", m.getNickname());
-		System.out.printf("현재 대댓글 소유자 고유번호 : %d\n", m.getHash());
-		System.out.printf("현재 대댓글 고유번호 : %d\n", c.getCommentId());
-		System.out.printf("현재 대댓글 번호 : %d\n", c.getCommentNumber());
-		System.out.println("=========================================================");
 	}
 
 	public int findByCommentNum(Board b, int commentNum) {
 
 		Iterator<Comment> iterator = commentList.iterator();
 		int i = 0;
-		System.out.println("==================================");
 		while(iterator.hasNext()) {
 			Comment c = iterator.next();
 			if(b.getNumber() == c.getCommentId()) {
@@ -105,7 +89,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 			}
 			i++;
 		}
-		System.out.println("==================================");
 		return -1;
 	}
 
