@@ -9,8 +9,8 @@ import com.yoon.util.Prompt;
 
 public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
 
-	public BuyerBoardDetailHandler(List<Board> buyerBoardList, List<Comment> commentList) {
-		super(buyerBoardList, commentList);
+	public BuyerBoardDetailHandler(List<Board> buyerBoardList, List<Comment> buyerCommentList) {
+		super(buyerBoardList, buyerCommentList);
 	}
 
 
@@ -20,8 +20,15 @@ public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
 			System.out.println("존재하는 게시글이 없습니다.\n");
 			return;
 		}
+		if(buyerBoardWriterChangeCount == 1) {
+			changeWriter();
+		}
+		if(buyerBoardCommentWriterChangeCount == 1) {
+			changeCommentWriter();
+		}
+
 		String choice;
-		BuyerBoardListHandler list = new BuyerBoardListHandler(buyerBoardList, commentList);
+		BuyerBoardListHandler list = new BuyerBoardListHandler(buyerBoardList, buyerCommentList);
 		list.service();
 		System.out.println("---------------------------------------");
 		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 보기 ■");

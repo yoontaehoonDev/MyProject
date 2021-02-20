@@ -11,11 +11,11 @@ import com.yoon.util.Prompt;
 public abstract class AbstractBuyerBoardHandler implements Command {
 
 	protected List<Board> buyerBoardList;
-	protected List<Comment> commentList;
+	protected List<Comment> buyerCommentList;
 
-	public AbstractBuyerBoardHandler(List<Board> buyerBoardList, List<Comment> commentList) {
+	public AbstractBuyerBoardHandler(List<Board> buyerBoardList, List<Comment> buyerCommentList) {
 		this.buyerBoardList = buyerBoardList;
-		this.commentList = commentList;
+		this.buyerCommentList = buyerCommentList;
 	}
 
 	public static boolean boardAuthorization = false;
@@ -45,13 +45,14 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 	public void commentAdd(Board b) {
 		BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
 		Comment c = new Comment();
+		c.setDivision(m.getHash());
 		c.setCommentId(b.getNumber());
 		c.setCommentWriter(m.getNickname());
 		c.setComment(Prompt.inputString("댓글 : "));
 
 		b.setCommentCount(b.getCommentCount() + 1);
 		c.setCommentNumber(b.getCommentCount());
-		this.commentList.add(c);
+		this.buyerCommentList.add(c);
 	}
 
 	public void nestedCommentAdd(Board b, int index) {
@@ -65,7 +66,7 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 
 		BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
 		Comment c = new Comment();
-
+		c.setDivision(m.getHash());
 		c.setCommentId(b.getNumber());
 		c.setCommentWriter(m.getNickname());
 		c.setComment(Prompt.inputString("대댓글 : "));
@@ -73,12 +74,12 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 
 		//    c.setNestedCommentNumber(b.getCommentCount());
 
-		this.commentList.add(insert, c); 
+		this.buyerCommentList.add(insert, c); 
 	}
 
 	public int findByCommentNum(Board b, int commentNum) {
 
-		Iterator<Comment> iterator = commentList.iterator();
+		Iterator<Comment> iterator = buyerCommentList.iterator();
 		int i = 0;
 		while(iterator.hasNext()) {
 			Comment c = iterator.next();
@@ -94,7 +95,7 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 
 	public void commentList(Board b) {
 
-		Iterator<Comment> iterator = commentList.iterator();
+		Iterator<Comment> iterator = buyerCommentList.iterator();
 
 		System.out.println();
 		System.out.println("■ 댓글 ■");
@@ -137,18 +138,17 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 		buyerBoardWriterChangeCount = 0;
 	}
 
-	//  private void changeCommentWriter() {
-	//    
-	//    Comment c = MemberHandler.buyerMemberNumber;
-	//    BuyerMember m = MemberHandler.buyerMemberNumber;
-	//    Board[] list = buyerBoardList.toArray(new Board[buyerBoardList.size()]);
-	//    for(Board b : list) {
-	//      if(b.getId() == m.getHash()) {
-	//        
-	//        b.setWriter(m.getNickname());
-	//      }
-	//    }
-	//    buyerBoardCommentWriterChangeCount = 0;
-	//  }
+	public void changeCommentWriter() {
+		Iterator<Comment> iterator = buyerCommentList.iterator();
+		BuyerMember buyer = AbstractMemberHandler.buyerMemberNumber;
+
+		while(iterator.hasNext()) {
+			Comment b = iterator.next();
+			if(b.getDivision() == buyer.getHash()) {
+				b.setCommentWriter(buyer.getNickname());
+			}
+		}
+		buyerBoardCommentWriterChangeCount = 0;
+	}
 
 }

@@ -9,14 +9,17 @@ import com.yoon.pms.domain.Comment;
 
 public class BuyerBoardMyListHandler extends AbstractBuyerBoardHandler {
 
-	public BuyerBoardMyListHandler(List<Board> buyerBoardList, List<Comment> commentList) {
-		super(buyerBoardList, commentList);
+	public BuyerBoardMyListHandler(List<Board> buyerBoardList, List<Comment> buyerCommentList) {
+		super(buyerBoardList, buyerCommentList);
 	}
 
 	@Override
 	public void service() {
 		if(buyerBoardWriterChangeCount == 1) {
 			changeWriter();
+		}
+		if(buyerBoardCommentWriterChangeCount == 1) {
+			changeCommentWriter();
 		}
 		BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
 		Iterator<Board> iterator = buyerBoardList.iterator();

@@ -8,14 +8,17 @@ import com.yoon.pms.domain.Comment;
 
 public class BuyerBoardListHandler extends AbstractBuyerBoardHandler {
 
-	public BuyerBoardListHandler(List<Board> buyerBoardList, List<Comment> commentList) {
-		super(buyerBoardList, commentList);
+	public BuyerBoardListHandler(List<Board> buyerBoardList, List<Comment> buyerCommentList) {
+		super(buyerBoardList, buyerCommentList);
 	}
 
 	@Override
 	public void service() {
 		if(buyerBoardWriterChangeCount == 1) {
 			changeWriter();
+		}
+		if(buyerBoardCommentWriterChangeCount == 1) {
+			changeCommentWriter();
 		}
 		if(buyerBoardList.size() == 0) {
 			System.out.println("존재하는 게시글이 없습니다.\n");
