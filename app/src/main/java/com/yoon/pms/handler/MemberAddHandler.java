@@ -39,6 +39,7 @@ public class MemberAddHandler extends AbstractMemberHandler {
 				b.setPhone(memberHandler.phoneFormat("핸드폰 번호 입력 : "));
 				b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 				this.buyerMemberList.add(b);
+
 				break;
 			}
 			else if (choice.equals("2")) {

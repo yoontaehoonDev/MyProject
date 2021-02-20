@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
+import com.yoon.pms.domain.Log;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.pms.handler.BuyerBoardAddHandler;
 import com.yoon.pms.handler.BuyerBoardDetailHandler;
@@ -18,6 +19,7 @@ import com.yoon.pms.handler.IntegratedBoardAddHandler;
 import com.yoon.pms.handler.IntegratedBoardListHandler;
 import com.yoon.pms.handler.IntegratedBoardMyListHandler;
 import com.yoon.pms.handler.IntegratedDetailBoardHandler;
+import com.yoon.pms.handler.LogListHandler;
 import com.yoon.pms.handler.MemberAddHandler;
 import com.yoon.pms.handler.MemberAdminLoginHandler;
 import com.yoon.pms.handler.MemberAdminLogoutHandler;
@@ -38,6 +40,7 @@ public class App {
 
 	static ArrayDeque<String> commandStack = new ArrayDeque<>();
 	static LinkedList<String> commandQueue = new LinkedList<>();
+	static public int location = -1;
 
 	public static void main(String[] args) throws CloneNotSupportedException {
 		System.out.println("[2030 Project]");
@@ -50,14 +53,15 @@ public class App {
 		LinkedList<Board> buyerBoardList = new LinkedList<>();
 		LinkedList<Board> sellerBoardList = new LinkedList<>();
 		LinkedList<Board> integratedBoardList = new LinkedList<>();
+		LinkedList<Log> logList = new LinkedList<>();
 
 		HashMap<String, Command> commandMap = new HashMap<>();
 
 		MemberValidatorHandler memberValidatorHandler = new MemberValidatorHandler(buyerMemberList, sellerMemberList);
 
 		commandMap.put("회원가입", new MemberAddHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
-		commandMap.put("로그인", new MemberLoginHandler(buyerMemberList, sellerMemberList));
-		commandMap.put("로그아웃", new MemberLogoutHandler(buyerMemberList, sellerMemberList));
+		commandMap.put("로그인", new MemberLoginHandler(buyerMemberList, sellerMemberList, logList));
+		commandMap.put("로그아웃", new MemberLogoutHandler(buyerMemberList, sellerMemberList, logList));
 		commandMap.put("설정", new MemberSettingHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
 		commandMap.put("변경", new MemberUpdateHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
 		commandMap.put("관리자로그인", new MemberAdminLoginHandler(buyerMemberList, sellerMemberList));
@@ -79,6 +83,9 @@ public class App {
 		commandMap.put("글보기3", new IntegratedDetailBoardHandler(integratedBoardList, integratedCommentList));
 		commandMap.put("글목록3", new IntegratedBoardListHandler(integratedBoardList, integratedCommentList));
 		commandMap.put("내글3", new IntegratedBoardMyListHandler(integratedBoardList, integratedCommentList));
+
+		commandMap.put("기록", new LogListHandler(logList));
+
 
 		loop:
 			while(true) {
