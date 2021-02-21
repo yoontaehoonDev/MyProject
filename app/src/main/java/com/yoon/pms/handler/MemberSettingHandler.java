@@ -23,7 +23,7 @@ public class MemberSettingHandler extends AbstractMemberHandler {
 			MemberDeleteHandler delete = new MemberDeleteHandler(buyerMemberList, sellerMemberList);
 			MemberUpdateHandler update = new MemberUpdateHandler(buyerMemberList, sellerMemberList, memberHandler);
 			if(logStatus == 1) {
-				System.out.println("■ 메뉴 - 회원 - 설정 ■");
+				System.out.println("■ 메뉴 - 판매회원 - 설정 ■");
 				SellerMember s = sellerMemberNumber;
 
 				System.out.println("[설정]");
@@ -43,7 +43,7 @@ public class MemberSettingHandler extends AbstractMemberHandler {
 						update.service();
 					}
 					else {
-						System.out.println("■ 메뉴 - 회원 ■ 으로 돌아갑니다.\n");
+						System.out.println("■ 메뉴 - 판매회원 ■ 으로 돌아갑니다.\n");
 					}
 				}
 				else if (choice.equals("2")) {
@@ -53,20 +53,20 @@ public class MemberSettingHandler extends AbstractMemberHandler {
 						delete.service();
 					}
 					else {
-						System.out.println("■ 메뉴 - 회원 ■ 으로 돌아갑니다.\n");
+						System.out.println("■ 메뉴 - 판매회원 ■ 으로 돌아갑니다.\n");
 					}
 				}
 
 				else if (choice.equals("3")){
-					System.out.println("■ 메뉴 - 회원 ■ 으로 돌아갑니다.\n");
+					System.out.println("■ 메뉴 - 판매회원 ■ 으로 돌아갑니다.\n");
 				}
 				else {
-					System.out.println("■ 메뉴 - 회원 ■ 으로 돌아갑니다.\n");
+					System.out.println("■ 메뉴 - 판매회원 ■ 으로 돌아갑니다.\n");
 				}
 			}
 
 			else if(logStatus == 0){
-				System.out.println("■ 메뉴 - 회원 - 설정 ■");
+				System.out.println("■ 메뉴 - 구매회원 - 설정 ■");
 
 				BuyerMember b = buyerMemberNumber;
 				System.out.println("[설정]");
@@ -81,7 +81,7 @@ public class MemberSettingHandler extends AbstractMemberHandler {
 						update.service();
 					}
 					else {
-						System.out.println("■ 메뉴 - 회원 ■ 으로 돌아갑니다.\n");
+						System.out.println("■ 메뉴 - 구매회원 ■ 으로 돌아갑니다.\n");
 					}
 				}
 				else if (choice.equals("2")) {
@@ -91,15 +91,15 @@ public class MemberSettingHandler extends AbstractMemberHandler {
 						delete.service();
 					}
 					else {
-						System.out.println("■ 메뉴 - 회원 ■ 으로 돌아갑니다.\n");
+						System.out.println("■ 메뉴 - 구매회원 ■ 으로 돌아갑니다.\n");
 					}
 				}
 
 				else if (choice.equals("3")){
-					System.out.println("■ 메뉴 - 회원 ■ 으로 돌아갑니다.\n");
+					System.out.println("■ 메뉴 - 구매회원 ■ 으로 돌아갑니다.\n");
 				}
 				else {
-					System.out.println("■ 메뉴 - 회원 ■ 으로 돌아갑니다.\n");
+					System.out.println("■ 메뉴 - 구매회원 ■ 으로 돌아갑니다.\n");
 				}
 			}
 		}

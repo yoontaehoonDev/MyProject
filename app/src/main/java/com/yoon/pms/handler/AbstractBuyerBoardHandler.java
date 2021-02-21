@@ -25,6 +25,9 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 	public static int buyerBoardWriterChangeCount = 0;
 	public static int buyerBoardCommentWriterChangeCount = 0;
 
+	@Override
+	public void service() {
+	}
 
 	public void update(Board b) {
 		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 수정 ■");
@@ -52,6 +55,7 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 
 		b.setCommentCount(b.getCommentCount() + 1);
 		c.setCommentNumber(b.getCommentCount());
+
 		this.buyerCommentList.add(c);
 	}
 
@@ -125,8 +129,9 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 	}
 
 	public void changeWriter() {
+		System.out.println("changeWriter 접근");
 		BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
-
+		System.out.println("changeWriter 접근 후");
 		Iterator<Board> iterator = buyerBoardList.iterator();
 
 		while(iterator.hasNext()) {
@@ -139,9 +144,10 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 	}
 
 	public void changeCommentWriter() {
+		System.out.println("changeCommentWriter 접근");
 		Iterator<Comment> iterator = buyerCommentList.iterator();
 		BuyerMember buyer = AbstractMemberHandler.buyerMemberNumber;
-
+		System.out.println("changeCommentWriter 접근 후");
 		while(iterator.hasNext()) {
 			Comment b = iterator.next();
 			if(b.getDivision() == buyer.getHash()) {

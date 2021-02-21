@@ -3,14 +3,12 @@ package com.yoon.pms.handler;
 import java.util.List;
 
 import com.yoon.pms.domain.BuyerMember;
-import com.yoon.pms.domain.Menu;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Prompt;
 
 public class MemberAddHandler extends AbstractMemberHandler {
 
 	private MemberValidatorHandler memberHandler;
-	private List<Menu> menuList;
 
 	public MemberAddHandler(List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, MemberValidatorHandler memberHandler) {
 		super(buyerMemberList, sellerMemberList);
@@ -41,7 +39,6 @@ public class MemberAddHandler extends AbstractMemberHandler {
 				b.setPhone(memberHandler.phoneFormat("휴대폰 입력 : "));
 				b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 				this.buyerMemberList.add(b);
-
 				break;
 			}
 			else if (choice.equals("2")) {
@@ -62,7 +59,6 @@ public class MemberAddHandler extends AbstractMemberHandler {
 				category(s); // 업종 입력 메소드
 				s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 				this.sellerMemberList.add(s);
-
 				break;
 			}
 			else {

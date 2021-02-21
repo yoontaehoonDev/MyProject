@@ -18,10 +18,7 @@ public class SellerMember {
 	private String businessNumber;
 	private String businessHour;
 	private String category;
-	private String menu;
-	private String menuExplaination;
-	private String explaination;
-	private int price;
+	private int count;
 
 
 	@Override
@@ -116,6 +113,12 @@ public class SellerMember {
 	public void setNumber(int number) {
 		this.number = number;
 	}
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
 	public int getHash() {
 		return hash;
 	}
@@ -188,32 +191,6 @@ public class SellerMember {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public String getMenu() {
-		return menu;
-	}
-	public void setMenu(String menu) {
-		this.menu = menu;
-	}
-	public String getMenuExplaination() {
-		return menuExplaination;
-	}
-	public void setMenuExplaination(String menuExplaination) {
-		this.menuExplaination = menuExplaination;
-	}
-	public String getExplaination() {
-		return explaination;
-	}
-	public void setExplaination(String explaination) {
-		this.explaination = explaination;
-	}
-	public int getPrice() {
-		return price;
-	}
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-
 
 
 }

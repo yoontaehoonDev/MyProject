@@ -22,8 +22,8 @@ public class MenuAddHandler extends AbstractMenuHandler {
 
 			m.setId(s.getHash());
 			m.setOwner(s.getBusinessName());
-			m.setCount(m.getCount() + 1);
-			m.setNumber(m.getCount());
+			s.setCount(s.getCount() + 1);
+			m.setNumber(s.getCount());
 			m.setName(Prompt.inputString("메뉴명 : "));
 			m.setPrice(Prompt.inputInt("가격 : "));
 			m.setExplain(Prompt.inputString("메뉴 설명 : "));

@@ -15,7 +15,7 @@ public class MenuMyListHandler extends AbstractMenuHandler {
 	@Override
 	public void service() {
 		System.out.println("■ 메뉴 - 내 메뉴 목록 ■");
-
+		int flag = 0;
 		Iterator<Menu> iterator = menuList.iterator();
 		SellerMember s = AbstractMemberHandler.sellerMemberNumber;
 		System.out.println();
@@ -25,7 +25,11 @@ public class MenuMyListHandler extends AbstractMenuHandler {
 			if(m.getId() == s.getHash()) {
 				System.out.printf("메뉴번호 : %d  메뉴명 : %s  메뉴가격 : %d  메뉴설명 : %s\n", 
 						m.getNumber(), m.getName(), m.getPrice(), m.getExplain());
+				flag = 1;
 			}
+		}
+		if(flag == 0) {
+			System.out.println("메뉴가 없습니다.\n");
 		}
 	}
 }

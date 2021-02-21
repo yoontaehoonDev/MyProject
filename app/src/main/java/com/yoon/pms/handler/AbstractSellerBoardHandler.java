@@ -25,8 +25,6 @@ public abstract class AbstractSellerBoardHandler implements Command {
 	public static int sellerBoardWriterChangeCount = 0;
 	public static int sellerBoardCommentWriterChangeCount = 0;
 
-
-
 	public void update(Board b) {
 		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 수정 ■");
 

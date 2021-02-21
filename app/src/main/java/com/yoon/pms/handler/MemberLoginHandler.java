@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import com.yoon.pms.App;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Log;
 import com.yoon.pms.domain.SellerMember;
@@ -73,6 +74,7 @@ public class MemberLoginHandler extends AbstractMemberHandler {
 									AbstractIntegratedBoardHandler.boardAuthorization = true;
 									buyerMemberNumber = idCheck;
 									buyerMemberNumber.setDivision(true);
+									App.location = 0;
 									return;
 								}
 								else {
@@ -123,6 +125,7 @@ public class MemberLoginHandler extends AbstractMemberHandler {
 									AbstractIntegratedBoardHandler.boardAuthorization = true;
 									sellerMemberNumber = idCheck;
 									sellerMemberNumber.setDivision(true);
+									App.location = 1;
 									return;
 								}
 								else {

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import com.yoon.pms.App;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Log;
 import com.yoon.pms.domain.SellerMember;
@@ -28,7 +29,7 @@ public class MemberLogoutHandler extends AbstractMemberHandler{
 			temp = sellerMemberNumber.getId() + logout.format(cal.getTime());
 			log.setLoginTime(temp);
 			logList.add(log);
-
+			App.location = -1;
 			sellerMemberNumber.setDivision(false);
 			AbstractSellerBoardHandler.boardAuthorization = false;
 		}
@@ -37,7 +38,8 @@ public class MemberLogoutHandler extends AbstractMemberHandler{
 			temp = buyerMemberNumber.getId() + logout.format(cal.getTime());
 			log.setLoginTime(temp);
 			logList.add(log);
-
+			App.location = -1;
+			AbstractMemberHandler.buyerMemberNumber = null;
 			buyerMemberNumber.setDivision(false);
 			AbstractBuyerBoardHandler.boardAuthorization = false;
 		}

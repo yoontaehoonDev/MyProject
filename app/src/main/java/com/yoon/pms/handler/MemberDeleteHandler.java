@@ -2,6 +2,7 @@ package com.yoon.pms.handler;
 
 import java.util.List;
 
+import com.yoon.pms.App;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Prompt;
@@ -26,6 +27,7 @@ public class MemberDeleteHandler extends AbstractMemberHandler {
 			logCount = false;
 			logStatus = -1;
 			System.out.println("계정 탈퇴 처리가 완료되었습니다. 그동안 이용해주셔서 감사합니다.\n");
+			App.location = -1;
 		}
 		else {
 			int num;
