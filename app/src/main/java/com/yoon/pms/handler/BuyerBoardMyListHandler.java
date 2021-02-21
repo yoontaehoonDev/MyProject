@@ -25,7 +25,7 @@ public class BuyerBoardMyListHandler extends AbstractBuyerBoardHandler {
 		Iterator<Board> iterator = buyerBoardList.iterator();
 
 		System.out.println();
-		System.out.printf("%s 님의 게시글 목록\n", m.getNickname());
+		System.out.printf("[%s 님의 게시글 목록]\n", m.getNickname());
 
 		while(iterator.hasNext()) {
 			Board b = iterator.next();

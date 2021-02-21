@@ -9,6 +9,7 @@ import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
 import com.yoon.pms.domain.Log;
+import com.yoon.pms.domain.Menu;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.pms.handler.BuyerBoardAddHandler;
 import com.yoon.pms.handler.BuyerBoardDetailHandler;
@@ -19,7 +20,7 @@ import com.yoon.pms.handler.IntegratedBoardAddHandler;
 import com.yoon.pms.handler.IntegratedBoardListHandler;
 import com.yoon.pms.handler.IntegratedBoardMyListHandler;
 import com.yoon.pms.handler.IntegratedDetailBoardHandler;
-import com.yoon.pms.handler.LogListHandler;
+import com.yoon.pms.handler.LogHandler;
 import com.yoon.pms.handler.MemberAddHandler;
 import com.yoon.pms.handler.MemberAdminLoginHandler;
 import com.yoon.pms.handler.MemberAdminLogoutHandler;
@@ -30,6 +31,9 @@ import com.yoon.pms.handler.MemberLogoutHandler;
 import com.yoon.pms.handler.MemberSettingHandler;
 import com.yoon.pms.handler.MemberUpdateHandler;
 import com.yoon.pms.handler.MemberValidatorHandler;
+import com.yoon.pms.handler.MenuAddHandler;
+import com.yoon.pms.handler.MenuListHandler;
+import com.yoon.pms.handler.MenuMyListHandler;
 import com.yoon.pms.handler.SellerBoardAddHandler;
 import com.yoon.pms.handler.SellerBoardDetailHandler;
 import com.yoon.pms.handler.SellerBoardListHandler;
@@ -54,6 +58,7 @@ public class App {
 		LinkedList<Board> sellerBoardList = new LinkedList<>();
 		LinkedList<Board> integratedBoardList = new LinkedList<>();
 		LinkedList<Log> logList = new LinkedList<>();
+		LinkedList<Menu> menuList = new LinkedList<>();
 
 		HashMap<String, Command> commandMap = new HashMap<>();
 
@@ -84,8 +89,11 @@ public class App {
 		commandMap.put("글목록3", new IntegratedBoardListHandler(integratedBoardList, integratedCommentList));
 		commandMap.put("내글3", new IntegratedBoardMyListHandler(integratedBoardList, integratedCommentList));
 
-		commandMap.put("기록", new LogListHandler(logList));
+		commandMap.put("기록", new LogHandler(logList));
 
+		commandMap.put("메뉴추가", new MenuAddHandler(menuList));
+		commandMap.put("메뉴목록", new MenuListHandler(menuList));
+		commandMap.put("내메뉴", new MenuMyListHandler(menuList));
 
 		loop:
 			while(true) {

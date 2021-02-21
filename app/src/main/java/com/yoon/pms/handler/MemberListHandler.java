@@ -63,7 +63,7 @@ public class MemberListHandler extends AbstractMemberHandler {
 				}
 				while(iterator.hasNext()) {
 					SellerMember s = iterator.next();
-					System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  소유주 : [%s]  E-Mail : [%s]  휴대폰번호 : [%s]\n", 
+					System.out.printf("회원번호 : [%d]  ID : [%s]  Password : [%s]  소유주 : [%s]  E-Mail : [%s]  가게번호 : [%s]\n", 
 							s.getNumber(), s.getId(), s.getPassword(), s.getName(), s.getEmail(), s.getPhone());
 					System.out.printf("상호명 : [%s]  사업자등록번호 : [%s]  영업시간 : [%s]  업종 : [%s]\n",
 							s.getBusinessName(), s.getBusinessNumber(), s.getBusinessHour(), s.getCategory());

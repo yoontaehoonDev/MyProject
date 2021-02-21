@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.yoon.pms.domain.Log;
 
-public class LogListHandler extends AbstractLogHandler {
+public class LogHandler implements Command {
 
-	public LogListHandler(List<Log> logList) {
-		super(logList);
+	protected List<Log> logList;
+
+	public LogHandler(List<Log> logList) {
+		this.logList = logList;
 	}
 
 	@Override

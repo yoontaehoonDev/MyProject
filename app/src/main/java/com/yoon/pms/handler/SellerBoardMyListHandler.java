@@ -20,7 +20,7 @@ public class SellerBoardMyListHandler extends AbstractSellerBoardHandler {
 		Iterator<Board> iterator = sellerBoardList.iterator();
 
 		System.out.println();
-		System.out.printf("%s 님의 게시글 목록\n", m.getBusinessName());
+		System.out.printf("[%s 님의 게시글 목록]\n", m.getBusinessName());
 
 		while(iterator.hasNext()) {
 			Board b = iterator.next();
