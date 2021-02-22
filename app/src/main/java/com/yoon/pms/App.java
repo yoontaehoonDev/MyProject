@@ -9,10 +9,12 @@ import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
 import com.yoon.pms.domain.Log;
 import com.yoon.pms.domain.Menu;
+import com.yoon.pms.domain.Order;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.pms.handler.BuyerBoardAddHandler;
 import com.yoon.pms.handler.BuyerBoardDetailHandler;
 import com.yoon.pms.handler.BuyerBoardListHandler;
+import com.yoon.pms.handler.BuyerBoardMyCommentListHandler;
 import com.yoon.pms.handler.BuyerBoardMyListHandler;
 import com.yoon.pms.handler.BuyerBoardReturnHandler;
 import com.yoon.pms.handler.BuyerBoardServiceHandler;
@@ -38,9 +40,11 @@ import com.yoon.pms.handler.MenuMyListHandler;
 import com.yoon.pms.handler.MenuReturnHandler;
 import com.yoon.pms.handler.MenuServiceHandler;
 import com.yoon.pms.handler.MenuUpdateHandler;
+import com.yoon.pms.handler.OrderAddHandler;
 import com.yoon.pms.handler.SellerBoardAddHandler;
 import com.yoon.pms.handler.SellerBoardDetailHandler;
 import com.yoon.pms.handler.SellerBoardListHandler;
+import com.yoon.pms.handler.SellerBoardMyCommentListHandler;
 import com.yoon.pms.handler.SellerBoardMyListHandler;
 import com.yoon.pms.handler.SellerBoardReturnHandler;
 import com.yoon.pms.handler.SellerBoardServiceHandler;
@@ -66,16 +70,17 @@ public class App {
     LinkedList<Board> integratedBoardList = new LinkedList<>();
     LinkedList<Log> logList = new LinkedList<>();
     LinkedList<Menu> menuList = new LinkedList<>();
+    LinkedList<Order> orderList = new LinkedList<>();
 
     HashMap<String, Command> commandMap = new HashMap<>();
     MemberValidatorHandler memberValidatorHandler = new MemberValidatorHandler(buyerMemberList, sellerMemberList);
 
+    commandMap.put("관리자로그인", new MemberAdminLoginHandler(buyerMemberList, sellerMemberList));
     //				commandMap.put("회원가입", new MemberAddHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
     //		commandMap.put("로그인", new MemberLoginHandler(buyerMemberList, sellerMemberList, logList));
     //		commandMap.put("로그아웃", new MemberLogoutHandler(buyerMemberList, sellerMemberList, logList));
     //		commandMap.put("설정", new MemberSettingHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
     //		commandMap.put("변경", new MemberUpdateHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
-    commandMap.put("관리자로그인", new MemberAdminLoginHandler(buyerMemberList, sellerMemberList));
     //		commandMap.put("관리자로그아웃", new MemberAdminLogoutHandler(buyerMemberList, sellerMemberList));
     //		commandMap.put("삭제", new MemberDeleteHandler(buyerMemberList, sellerMemberList));
     //		commandMap.put("회원목록", new MemberListHandler(buyerMemberList, sellerMemberList));
@@ -104,7 +109,7 @@ public class App {
 
     loop:
       while(true) {
-        if(location == -1) {
+        if(location == -1) /* 메인 메뉴 */ {
           System.out.println("■ 메뉴 ■");
           System.out.println("1. 회원가입");
           System.out.println("2. 로그인");
@@ -154,34 +159,38 @@ public class App {
           commandMap.put("6", new Temp());
           commandMap.put("7", new MemberLogoutHandler(buyerMemberList, sellerMemberList, logList));
         }
-        else if(location == 2) /*메뉴 추가*/ {
+        else if(location == 2) /* 구매게시판 관리 */ {
           System.out.println("■ 메뉴 - 구매자 게시판 ■");
           System.out.println("1. 게시글 쓰기");
           System.out.println("2. 게시글 목록");
           System.out.println("3. 게시글 보기");
-          System.out.println("4. 내가 쓴 글 보기");
-          System.out.println("5. 나가기\n");
+          System.out.println("4. 내 글 보기");
+          System.out.println("5. 내 댓글 보기");
+          System.out.println("6. 나가기\n");
           commandMap.put("1", new BuyerBoardAddHandler(buyerBoardList, buyerCommentList));
           commandMap.put("2", new BuyerBoardListHandler(buyerBoardList, buyerCommentList));
           commandMap.put("3", new BuyerBoardDetailHandler(buyerBoardList, buyerCommentList));
           commandMap.put("4", new BuyerBoardMyListHandler(buyerBoardList, buyerCommentList));
-          commandMap.put("5", new BuyerBoardReturnHandler(buyerBoardList, buyerCommentList));
+          commandMap.put("5", new BuyerBoardMyCommentListHandler(buyerBoardList, buyerCommentList));
+          commandMap.put("6", new BuyerBoardReturnHandler(buyerBoardList, buyerCommentList));
         }
-        else if(location == 3) {
+        else if(location == 3) /* 판매게시판 관리 */ {
           System.out.println("■ 메뉴 - 판매자 게시판 ■");
           System.out.println("1. 게시글 쓰기");
           System.out.println("2. 게시글 목록");
           System.out.println("3. 게시글 보기");
-          System.out.println("4. 내가 쓴 글 보기");
-          System.out.println("5. 나가기\n");
+          System.out.println("4. 내 글 보기");
+          System.out.println("5. 내 댓글 보기");
+          System.out.println("6. 나가기\n");
           commandMap.put("1", new SellerBoardAddHandler(sellerBoardList, sellerCommentList));
           commandMap.put("2", new SellerBoardListHandler(sellerBoardList, sellerCommentList));
           commandMap.put("3", new SellerBoardDetailHandler(sellerBoardList, sellerCommentList));
           commandMap.put("4", new SellerBoardMyListHandler(sellerBoardList, sellerCommentList));
-          commandMap.put("5", new SellerBoardReturnHandler(sellerBoardList, sellerCommentList));
+          commandMap.put("5", new SellerBoardMyCommentListHandler(sellerBoardList, sellerCommentList));
+          commandMap.put("6", new SellerBoardReturnHandler(sellerBoardList, sellerCommentList));
 
         }
-        else if(location == 4) {
+        else if(location == 4) /* 통합게시판 관리 */ {
           System.out.println("■ 메뉴 - 통합 게시판 ■");
           System.out.println("1. 게시글 쓰기");
           System.out.println("2. 게시글 목록");
@@ -194,10 +203,10 @@ public class App {
           commandMap.put("4", new IntegratedBoardMyListHandler(integratedBoardList, integratedCommentList));
           commandMap.put("5", new IntegratedBoardReturnHandler(integratedBoardList, integratedCommentList));
         }
-        else if(location == 5) {
+        else if(location == 5) /* 판매자 메뉴 관리 */ {
           System.out.println("■ 메뉴 - 판매자 메뉴 ■");
           System.out.println("1. 메뉴 추가");
-          System.out.println("2. 메뉴 목록"); // MyList
+          System.out.println("2. 메뉴 목록");
           System.out.println("3. 메뉴 변경");
           System.out.println("4. 메뉴 삭제");
           System.out.println("5. 나가기\n");
@@ -207,19 +216,29 @@ public class App {
           commandMap.put("4", new MenuDeleteHandler(menuList));
           commandMap.put("5", new MenuReturnHandler(menuList));
         }
-        else if(location == 6) {
+        else if(location == 6) /* 관리자 */ {
           System.out.println("■ 메뉴 - 관리자 메뉴 ■");
           System.out.println("1. 회원 관리");
           System.out.println("2. 회원 로그");
-          System.out.println("3. 로그아웃");
+          System.out.println("3. 로그아웃\n");
           commandMap.put("1", new MemberListHandler(buyerMemberList, sellerMemberList));
           commandMap.put("2", new LogHandler(logList));
           commandMap.put("3", new MemberAdminLogoutHandler(buyerMemberList, sellerMemberList));
 
         }
-        //				else if(location == 7) {
-        //
-        //				}
+        else if(location == 7) /* 구매자 주문 관리 */ {
+          System.out.println("■ 메뉴 - 주문 메뉴 ■");
+          System.out.println("1. 주문하기");
+          System.out.println("2. 주문 취소");
+          System.out.println("3. 나가기\n");
+
+          commandMap.put("1", new OrderAddHandler(orderList));
+          //          commandMap.put("2", new OrderAddHandler(orderList));
+          //          commandMap.put("3", new OrderAddHandler(orderList));
+          //          commandMap.put("4", new OrderAddHandler(orderList));
+        }
+
+
         //				else if(location == 8) {
         //
         //				}

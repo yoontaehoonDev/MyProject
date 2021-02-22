@@ -15,12 +15,11 @@ public class SellerBoardMyListHandler extends AbstractSellerBoardHandler {
 
   @Override
   public void service()  {
-    System.out.println("■ 메뉴 - 판매자 - 내가 쓴 글 ■\n");
+    System.out.println("■ 메뉴 - 판매자 - 내 글 ■\n");
     SellerMember m = AbstractMemberHandler.sellerMemberNumber;
     Iterator<Board> iterator = sellerBoardList.iterator();
 
-    System.out.println();
-    System.out.printf("[%s 님의 게시글 목록]", m.getBusinessName());
+    System.out.printf("[%s 님의 게시글 목록]\n", m.getBusinessName());
 
     while(iterator.hasNext()) {
       Board b = iterator.next();

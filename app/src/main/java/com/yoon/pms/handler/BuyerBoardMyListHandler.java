@@ -20,12 +20,11 @@ public class BuyerBoardMyListHandler extends AbstractBuyerBoardHandler {
     if(buyerBoardCommentWriterChangeCount == 1) {
       changeCommentWriter();
     }
-    System.out.println("■ 메뉴 - 구매자 - 내가 쓴 글 ■\n");
+    System.out.println("■ 메뉴 - 구매자 - 내 글 ■");
     BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
     Iterator<Board> iterator = buyerBoardList.iterator();
 
-    System.out.println();
-    System.out.printf("[%s 님의 게시글 목록]", m.getNickname());
+    System.out.printf("[%s 님의 게시글 목록]\n", m.getNickname());
 
     while(iterator.hasNext()) {
       Board b = iterator.next();
