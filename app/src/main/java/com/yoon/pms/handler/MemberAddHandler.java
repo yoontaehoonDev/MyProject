@@ -50,8 +50,8 @@ public class MemberAddHandler extends AbstractMemberHandler {
         s.setEmail(memberHandler.emailFormat("이메일 입력 : "));
         s.setPhone(memberHandler.phoneFormat("가게 번호 : "));
         s.setBusinessName(Prompt.inputString("상호명 : "));
-        s.setBusinessNumber(Prompt.inputString("사업자 등록 번호 : "));
-        s.setBusinessHour(Prompt.inputString("영업 시간 : "));
+        s.setBusinessNumber(memberHandler.businessNumberFormat("사업자등록번호 : "));
+        s.setBusinessHour(memberHandler.businessHourFormat("영업 시간 : "));
         category(s); // 업종 입력 메소드
         s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
         this.sellerMemberList.add(s);

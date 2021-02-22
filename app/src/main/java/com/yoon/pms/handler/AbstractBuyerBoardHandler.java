@@ -39,9 +39,20 @@ public abstract class AbstractBuyerBoardHandler implements Command {
   }
 
   public void delete(Board b) {
-
+    deleteComment(b);
     buyerBoardList.remove(b);
     System.out.println("게시글이 삭제되었습니다.\n");
+  }
+
+  public void deleteComment(Board b) {
+    Iterator<Comment> iterator = buyerCommentList.iterator();
+
+    for(; iterator.hasNext();) {
+      Comment c = iterator.next();
+      if(c.getCommentId() == b.getNumber()) {
+        iterator.remove();
+      }
+    }
   }
 
   public void commentAdd(Board b) {
@@ -73,7 +84,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
     c.setCommentId(b.getNumber());
     c.setCommentWriter(m.getNickname());
     c.setComment(Prompt.inputString("대댓글 : "));
-
 
     //    c.setNestedCommentNumber(b.getCommentCount());
 
