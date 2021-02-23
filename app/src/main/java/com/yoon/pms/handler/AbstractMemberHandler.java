@@ -26,6 +26,7 @@ public abstract class AbstractMemberHandler implements Command {
   public static int buyerIndex = 1;
   public static int sellerIndex = 1;
   public static int hashNum = 1;
+  public static int temp;
 
 
   public String findByBuyerId(String message) {
@@ -182,11 +183,12 @@ public abstract class AbstractMemberHandler implements Command {
 
   public void category(SellerMember s) {
     System.out.println("[업종 선택]");
+    String choice;
     Loop:
       while(true) {
         System.out.println("1. 한식 2. 양식 3. 일식 4. 중식 5. 분식");
         System.out.println("6. 치킨 7. 피자 8. 디저트 9. 야식\n");
-        String choice = Prompt.inputString("번호 선택 : ");
+        choice = Prompt.inputString("번호 선택 : ");
 
         if(choice.length() == 0) {
           continue;
@@ -205,6 +207,7 @@ public abstract class AbstractMemberHandler implements Command {
           default: System.out.println("다시 선택하세요.\n");
         }
       }
+    s.setCategoryId(Integer.parseInt(choice));
     System.out.println("업종 선택 완료\n");
   }
 

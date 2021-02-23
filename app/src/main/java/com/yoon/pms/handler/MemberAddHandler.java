@@ -53,6 +53,7 @@ public class MemberAddHandler extends AbstractMemberHandler {
         s.setBusinessNumber(memberHandler.businessNumberFormat("사업자등록번호 : "));
         s.setBusinessHour(memberHandler.businessHourFormat("영업 시간 : "));
         category(s); // 업종 입력 메소드
+
         s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
         this.sellerMemberList.add(s);
         break;

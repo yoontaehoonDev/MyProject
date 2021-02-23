@@ -13,13 +13,16 @@ public class OrderAddHandler extends AbstractOrderHandler {
   @Override
   public void service() {
     System.out.println("■ 메뉴 - 주문 - 주문하기 ■");
-    int choice;
-    String order;
+    String choice, order;
 
     while(true) {
-      System.out.println("[업종]");
-      choice = Prompt.inputInt("선택 : ");
-      Order o = findByNum(choice);
+      System.out.println("[가게 종류]");
+      System.out.println("1. 한식 2. 양식 3. 일식 4. 중식 5. 분식");
+      System.out.println("6. 치킨 7. 피자 8. 디저트 9. 야식\n");
+      choice = Prompt.inputString("선택 : ");
+      listRestaurants(choice);
+
+
 
 
       System.out.println("1. 배달 주문   2. 포장 주문");
