@@ -13,6 +13,7 @@ import com.yoon.util.Prompt;
 public class MemberLoginHandler extends AbstractMemberHandler {
 
 	private List<Log> logList;
+
 	public MemberLoginHandler(List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, List<Log> logList) {
 		super(buyerMemberList, sellerMemberList);
 		this.logList = logList;

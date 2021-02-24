@@ -3,260 +3,261 @@ package com.yoon.pms.domain;
 import java.sql.Date;
 
 public class Order {
-  private int firstId;
-  private int secondId;
-  private int number;
-  private String name;
-  private String address;
-  private String phone;
-  private Date orderTime;
-  private Date servingTime;
-  private int time;
-  private int sum;
-  // 영수증, 영수증 ID, 금액 등
+	private int firstId;
+	private int secondId;
+	private int number;
+	private String name;
+	private String address;
+	private String phone;
+	private Date orderTime;
+	private Date servingTime;
+	private int time;
+	private int sum;
+	private String foodList;
+	// 영수증, 영수증 ID, 금액 등
 
-  private int koreanId;
-  private int westernId;
-  private int japaneseId;
-  private int chineseId;
-  private int snackId;
-  private int chickenId;
-  private int pizzaId;
-  private int dessertId;
-  private int nightSnackId;
-
-
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((address == null) ? 0 : address.hashCode());
-    result = prime * result + chickenId;
-    result = prime * result + chineseId;
-    result = prime * result + dessertId;
-    result = prime * result + firstId;
-    result = prime * result + japaneseId;
-    result = prime * result + koreanId;
-    result = prime * result + ((name == null) ? 0 : name.hashCode());
-    result = prime * result + nightSnackId;
-    result = prime * result + number;
-    result = prime * result + ((orderTime == null) ? 0 : orderTime.hashCode());
-    result = prime * result + ((phone == null) ? 0 : phone.hashCode());
-    result = prime * result + pizzaId;
-    result = prime * result + secondId;
-    result = prime * result + ((servingTime == null) ? 0 : servingTime.hashCode());
-    result = prime * result + snackId;
-    result = prime * result + sum;
-    result = prime * result + time;
-    result = prime * result + westernId;
-    return result;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Order other = (Order) obj;
-    if (address == null) {
-      if (other.address != null)
-        return false;
-    } else if (!address.equals(other.address))
-      return false;
-    if (chickenId != other.chickenId)
-      return false;
-    if (chineseId != other.chineseId)
-      return false;
-    if (dessertId != other.dessertId)
-      return false;
-    if (firstId != other.firstId)
-      return false;
-    if (japaneseId != other.japaneseId)
-      return false;
-    if (koreanId != other.koreanId)
-      return false;
-    if (name == null) {
-      if (other.name != null)
-        return false;
-    } else if (!name.equals(other.name))
-      return false;
-    if (nightSnackId != other.nightSnackId)
-      return false;
-    if (number != other.number)
-      return false;
-    if (orderTime == null) {
-      if (other.orderTime != null)
-        return false;
-    } else if (!orderTime.equals(other.orderTime))
-      return false;
-    if (phone == null) {
-      if (other.phone != null)
-        return false;
-    } else if (!phone.equals(other.phone))
-      return false;
-    if (pizzaId != other.pizzaId)
-      return false;
-    if (secondId != other.secondId)
-      return false;
-    if (servingTime == null) {
-      if (other.servingTime != null)
-        return false;
-    } else if (!servingTime.equals(other.servingTime))
-      return false;
-    if (snackId != other.snackId)
-      return false;
-    if (sum != other.sum)
-      return false;
-    if (time != other.time)
-      return false;
-    if (westernId != other.westernId)
-      return false;
-    return true;
-  }
+	private int koreanId;
+	private int westernId;
+	private int japaneseId;
+	private int chineseId;
+	private int snackId;
+	private int chickenId;
+	private int pizzaId;
+	private int dessertId;
+	private int nightSnackId;
 
 
 
-  public Date getServingTime() {
-    return servingTime;
-  }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + chickenId;
+		result = prime * result + chineseId;
+		result = prime * result + dessertId;
+		result = prime * result + firstId;
+		result = prime * result + japaneseId;
+		result = prime * result + koreanId;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + nightSnackId;
+		result = prime * result + number;
+		result = prime * result + ((orderTime == null) ? 0 : orderTime.hashCode());
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + pizzaId;
+		result = prime * result + secondId;
+		result = prime * result + ((servingTime == null) ? 0 : servingTime.hashCode());
+		result = prime * result + snackId;
+		result = prime * result + sum;
+		result = prime * result + time;
+		result = prime * result + westernId;
+		return result;
+	}
 
-  public void setServingTime(Date servingTime) {
-    this.servingTime = servingTime;
-  }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (chickenId != other.chickenId)
+			return false;
+		if (chineseId != other.chineseId)
+			return false;
+		if (dessertId != other.dessertId)
+			return false;
+		if (firstId != other.firstId)
+			return false;
+		if (japaneseId != other.japaneseId)
+			return false;
+		if (koreanId != other.koreanId)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (nightSnackId != other.nightSnackId)
+			return false;
+		if (number != other.number)
+			return false;
+		if (orderTime == null) {
+			if (other.orderTime != null)
+				return false;
+		} else if (!orderTime.equals(other.orderTime))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
+			return false;
+		if (pizzaId != other.pizzaId)
+			return false;
+		if (secondId != other.secondId)
+			return false;
+		if (servingTime == null) {
+			if (other.servingTime != null)
+				return false;
+		} else if (!servingTime.equals(other.servingTime))
+			return false;
+		if (snackId != other.snackId)
+			return false;
+		if (sum != other.sum)
+			return false;
+		if (time != other.time)
+			return false;
+		if (westernId != other.westernId)
+			return false;
+		return true;
+	}
 
-  public int getSum() {
-    return sum;
-  }
 
-  public void setSum(int sum) {
-    this.sum = sum;
-  }
 
-  public int getKoreanId() {
-    return koreanId;
-  }
+	public Date getServingTime() {
+		return servingTime;
+	}
 
-  public void setKoreanId(int koreanId) {
-    this.koreanId = koreanId;
-  }
+	public void setServingTime(Date servingTime) {
+		this.servingTime = servingTime;
+	}
 
-  public int getWesternId() {
-    return westernId;
-  }
+	public int getSum() {
+		return sum;
+	}
 
-  public void setWesternId(int westernId) {
-    this.westernId = westernId;
-  }
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
 
-  public int getJapaneseId() {
-    return japaneseId;
-  }
+	public int getKoreanId() {
+		return koreanId;
+	}
 
-  public void setJapaneseId(int japaneseId) {
-    this.japaneseId = japaneseId;
-  }
+	public void setKoreanId(int koreanId) {
+		this.koreanId = koreanId;
+	}
 
-  public int getChineseId() {
-    return chineseId;
-  }
+	public int getWesternId() {
+		return westernId;
+	}
 
-  public void setChineseId(int chineseId) {
-    this.chineseId = chineseId;
-  }
+	public void setWesternId(int westernId) {
+		this.westernId = westernId;
+	}
 
-  public int getSnackId() {
-    return snackId;
-  }
+	public int getJapaneseId() {
+		return japaneseId;
+	}
 
-  public void setSnackId(int snackId) {
-    this.snackId = snackId;
-  }
+	public void setJapaneseId(int japaneseId) {
+		this.japaneseId = japaneseId;
+	}
 
-  public int getChickenId() {
-    return chickenId;
-  }
+	public int getChineseId() {
+		return chineseId;
+	}
 
-  public void setChickenId(int chickenId) {
-    this.chickenId = chickenId;
-  }
+	public void setChineseId(int chineseId) {
+		this.chineseId = chineseId;
+	}
 
-  public int getPizzaId() {
-    return pizzaId;
-  }
+	public int getSnackId() {
+		return snackId;
+	}
 
-  public void setPizzaId(int pizzaId) {
-    this.pizzaId = pizzaId;
-  }
+	public void setSnackId(int snackId) {
+		this.snackId = snackId;
+	}
 
-  public int getDessertId() {
-    return dessertId;
-  }
+	public int getChickenId() {
+		return chickenId;
+	}
 
-  public void setDessertId(int dessertId) {
-    this.dessertId = dessertId;
-  }
+	public void setChickenId(int chickenId) {
+		this.chickenId = chickenId;
+	}
 
-  public int getNightSnackId() {
-    return nightSnackId;
-  }
+	public int getPizzaId() {
+		return pizzaId;
+	}
 
-  public void setNightSnackId(int nightSnackId) {
-    this.nightSnackId = nightSnackId;
-  }
+	public void setPizzaId(int pizzaId) {
+		this.pizzaId = pizzaId;
+	}
 
-  public int getFirstId() {
-    return firstId;
-  }
-  public void setFirstId(int firstId) {
-    this.firstId = firstId;
-  }
-  public int getSecondId() {
-    return secondId;
-  }
-  public void setSecondId(int secondId) {
-    this.secondId = secondId;
-  }
-  public int getNumber() {
-    return number;
-  }
-  public void setNumber(int number) {
-    this.number = number;
-  }
-  public String getName() {
-    return name;
-  }
-  public void setName(String name) {
-    this.name = name;
-  }
-  public String getAddress() {
-    return address;
-  }
-  public void setAddress(String address) {
-    this.address = address;
-  }
-  public String getPhone() {
-    return phone;
-  }
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
-  public Date getOrderTime() {
-    return orderTime;
-  }
-  public void setOrderTime(Date orderTime) {
-    this.orderTime = orderTime;
-  }
-  public int getTime() {
-    return time;
-  }
-  public void setTime(int time) {
-    this.time = time;
-  }
+	public int getDessertId() {
+		return dessertId;
+	}
 
-  // 재주문율 시스템
+	public void setDessertId(int dessertId) {
+		this.dessertId = dessertId;
+	}
+
+	public int getNightSnackId() {
+		return nightSnackId;
+	}
+
+	public void setNightSnackId(int nightSnackId) {
+		this.nightSnackId = nightSnackId;
+	}
+
+	public int getFirstId() {
+		return firstId;
+	}
+	public void setFirstId(int firstId) {
+		this.firstId = firstId;
+	}
+	public int getSecondId() {
+		return secondId;
+	}
+	public void setSecondId(int secondId) {
+		this.secondId = secondId;
+	}
+	public int getNumber() {
+		return number;
+	}
+	public void setNumber(int number) {
+		this.number = number;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public Date getOrderTime() {
+		return orderTime;
+	}
+	public void setOrderTime(Date orderTime) {
+		this.orderTime = orderTime;
+	}
+	public int getTime() {
+		return time;
+	}
+	public void setTime(int time) {
+		this.time = time;
+	}
+
+	// 재주문율 시스템
 
 }
