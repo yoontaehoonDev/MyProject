@@ -29,7 +29,6 @@ public class OrderRestaurantListHandler extends AbstractMemberHandler {
       }
     }
 
-
   }
 
 }

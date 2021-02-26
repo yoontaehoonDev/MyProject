@@ -272,6 +272,8 @@ public class App {
               printCommandHistory(commandQueue.iterator());
               break;
             case "종료":
+              MemberLogoutHandler m = new MemberLogoutHandler(buyerMemberList, sellerMemberList, logList);
+              m.service();
               System.out.println("프로그램 종료");
               break loop;
             default:

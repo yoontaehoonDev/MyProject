@@ -62,10 +62,11 @@ public abstract class AbstractBuyerBoardHandler implements Command {
     c.setCommentId(b.getNumber());
     c.setCommentWriter(m.getNickname());
     c.setComment(Prompt.inputString("댓글 : "));
-
+    System.out.printf("(0)댓글 번호 : %d\n", b.getCommentCount());
     b.setCommentCount(b.getCommentCount() + 1);
+    System.out.printf("(1)댓글 번호 : %d\n", b.getCommentCount());
     c.setCommentNumber(b.getCommentCount());
-
+    System.out.printf("(2)댓글 번호 : %d\n", b.getCommentCount());
     this.buyerCommentList.add(c);
   }
 
