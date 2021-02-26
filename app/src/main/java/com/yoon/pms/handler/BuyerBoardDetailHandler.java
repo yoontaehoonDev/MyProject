@@ -12,7 +12,6 @@ public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
     super(buyerBoardList, buyerCommentList);
   }
 
-
   @Override
   public void service() {
     if(buyerBoardList.size() == 0) {
@@ -77,28 +76,6 @@ public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
       }
     }
 
-    if(board.getId() == m.getHash()) {
-      Board b = board;
-      while(true) {
-        System.out.println("1. [수정]  2. [삭제]  3. [뒤로가기]");
-        choice = Prompt.inputString("선택 : ");
-        if(choice.equals("1")) {
-          update(b);
-          break;
-        }
-        else if(choice.equals("2")) {
-          delete(b);
-          break;
-        }
-        else if(choice.equals("3")) {
-          System.out.println("■ 메뉴 - 구매자 게시판 ■ 으로 이동합니다.");
-          return;
-        }
-        else {
-          System.out.println("잘못 누르셨습니다.\n");
-        }
-      }
-    }
 
 
     /* 추천 기능 보류

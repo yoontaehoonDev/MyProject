@@ -31,6 +31,7 @@ public class MenuUpdateHandler extends AbstractMenuHandler {
     m.setPrice(Prompt.inputInt("변경할 가격 : "));
     m.setExplain(Prompt.inputString("변경할 메뉴 설명 : "));
 
+    System.out.println("선택하신 메뉴 정보가 변경되었습니다.\n");
   }
 
 }

@@ -326,7 +326,6 @@ public class App {
   static <T extends Serializable> List<T> loadObjects(File file, Class<T> dataType) {
 
     try(ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
-      System.out.println("파일 로딩");
       return (List<T>) in.readObject();
     }
     catch (Exception e) {
@@ -341,7 +340,6 @@ public class App {
 
       out.writeObject(dataList);
 
-      System.out.println("파일 저장");
     }
     catch (Exception e) {
       System.out.println("파일 저장 실패");

@@ -71,28 +71,7 @@ public class SellerBoardDetailHandler extends AbstractSellerBoardHandler {
       }
     }
 
-    if(board.getId() == m.getHash()) {
-      Board s = board;
-      while(true) {
-        System.out.println("1. [수정]  2. [삭제]  3. [뒤로가기]");
-        choice = Prompt.inputString("선택 : ");
-        if(choice.equals("1")) {
-          update(s);
-          break;
-        }
-        else if(choice.equals("2")) {
-          delete(s);
-          break;
-        }
-        else if(choice.equals("3")) {
-          System.out.println("■ 메뉴 - 판매자 게시판 ■ 으로 이동합니다.");
-          break;
-        }
-        else {
-          System.out.println("잘못 누르셨습니다.\n");
-        }
-      }
-    }
+
 
     /* 추천 기능 보류
 		String message = Prompt.inputString("이 게시글을 추천하시겠습니까? [Y/N] : ");

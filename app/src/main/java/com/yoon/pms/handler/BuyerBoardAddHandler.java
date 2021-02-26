@@ -20,7 +20,7 @@ public class BuyerBoardAddHandler extends AbstractBuyerBoardHandler {
     if(boardAuthorization == true && m.isDivision() == true) {
       System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 작성 ■");
 
-      b.setNumber(boardIndex++);
+      b.setNumber(AbstractBuyerBoardHandler.boardIndex++);
       b.setTitle(Prompt.inputString("제목 입력 : "));
       b.setContent(Prompt.inputString("내용 입력 : "));
       b.setWriter(m.getNickname());
