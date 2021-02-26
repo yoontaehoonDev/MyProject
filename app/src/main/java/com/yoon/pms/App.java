@@ -1,9 +1,18 @@
 package com.yoon.pms;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
@@ -57,55 +66,52 @@ public class App {
   static LinkedList<String> commandQueue = new LinkedList<>();
   static public int location = -1;
 
-  public static void main(String[] args) throws CloneNotSupportedException {
+  static List<BuyerMember> buyerMemberList;
+  static List<SellerMember> sellerMemberList;
+  static List<Comment> buyerCommentList;
+  static List<Comment> sellerCommentList;
+  static List<Comment> integratedCommentList;
+  static List<Board> buyerBoardList;
+  static List<Board> sellerBoardList;
+  static List<Board> integratedBoardList;
+  static List<Log> logList;
+  static List<Menu> menuList;
+  static List<Order> orderList;
+
+  static File buyerMemberListFile = new File("buyerMemberList.data");
+  static File sellerMemberListFile = new File("sellerMemberList.data");
+  static File buyerCommentListFile = new File("buyerCommentList.data");
+  static File sellerCommentListFile = new File("sellerCommentList.data");
+  static File integratedCommentListFile = new File("integratedCommentList.data");
+  static File buyerBoardListFile = new File("buyerBoardList.data");
+  static File sellerBoardListFile = new File("sellerBoardList.data");
+  static File integratedBoardListFile = new File("integratedBoardList.data");
+  static File logListFile = new File("logList.data");
+  static File menuListFile = new File("menuList.data");
+  static File orderListFile = new File("orderList.data");
+
+
+  public static void main(String[] args) {
     System.out.println("[Sola Delivery]");
 
-    LinkedList<BuyerMember> buyerMemberList = new LinkedList<>();
-    LinkedList<SellerMember> sellerMemberList = new LinkedList<>();
-    LinkedList<Comment> buyerCommentList = new LinkedList<>();
-    LinkedList<Comment> sellerCommentList = new LinkedList<>();
-    LinkedList<Comment> integratedCommentList = new LinkedList<>();
-    LinkedList<Board> buyerBoardList = new LinkedList<>();
-    LinkedList<Board> sellerBoardList = new LinkedList<>();
-    LinkedList<Board> integratedBoardList = new LinkedList<>();
-    LinkedList<Log> logList = new LinkedList<>();
-    LinkedList<Menu> menuList = new LinkedList<>();
-    LinkedList<Order> orderList = new LinkedList<>();
+    buyerMemberList = loadObjects(buyerMemberListFile, BuyerMember.class);
+    sellerMemberList = loadObjects(sellerMemberListFile, SellerMember.class);
+    buyerCommentList = loadObjects(buyerCommentListFile, Comment.class);
+    sellerCommentList = loadObjects(sellerCommentListFile, Comment.class);
+    integratedCommentList = loadObjects(integratedCommentListFile, Comment.class);
+    buyerBoardList = loadObjects(buyerBoardListFile, Board.class);
+    sellerBoardList = loadObjects(sellerBoardListFile, Board.class);
+    integratedBoardList = loadObjects(integratedBoardListFile, Board.class);
+    logList = loadObjects(logListFile, Log.class);
+    menuList = loadObjects(menuListFile, Menu.class);
+    orderList = loadObjects(orderListFile, Order.class);
+
+
 
     HashMap<String, Command> commandMap = new HashMap<>();
     MemberValidatorHandler memberValidatorHandler = new MemberValidatorHandler(buyerMemberList, sellerMemberList);
 
     commandMap.put("관리자로그인", new MemberAdminLoginHandler(buyerMemberList, sellerMemberList));
-    //				commandMap.put("회원가입", new MemberAddHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
-    //		commandMap.put("로그인", new MemberLoginHandler(buyerMemberList, sellerMemberList, logList));
-    //		commandMap.put("로그아웃", new MemberLogoutHandler(buyerMemberList, sellerMemberList, logList));
-    //		commandMap.put("설정", new MemberSettingHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
-    //		commandMap.put("변경", new MemberUpdateHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
-    //		commandMap.put("관리자로그아웃", new MemberAdminLogoutHandler(buyerMemberList, sellerMemberList));
-    //		commandMap.put("삭제", new MemberDeleteHandler(buyerMemberList, sellerMemberList));
-    //		commandMap.put("회원목록", new MemberListHandler(buyerMemberList, sellerMemberList));
-    //
-    //		commandMap.put("글쓰기1", new BuyerBoardAddHandler(buyerBoardList, buyerCommentList));
-    //		commandMap.put("글보기1", new BuyerBoardDetailHandler(buyerBoardList, buyerCommentList));
-    //		commandMap.put("글목록1", new BuyerBoardListHandler(buyerBoardList, buyerCommentList));
-    //		commandMap.put("내글1", new BuyerBoardMyListHandler(buyerBoardList, buyerCommentList));
-    //
-    //		commandMap.put("글쓰기2", new SellerBoardAddHandler(sellerBoardList, sellerCommentList));
-    //		commandMap.put("글보기2", new SellerBoardDetailHandler(sellerBoardList, sellerCommentList));
-    //		commandMap.put("글목록2", new SellerBoardListHandler(sellerBoardList, sellerCommentList));
-    //		commandMap.put("내글2", new SellerBoardMyListHandler(sellerBoardList, sellerCommentList));
-    //
-    //		commandMap.put("글쓰기3", new IntegratedBoardAddHandler(integratedBoardList, integratedCommentList));
-    //		commandMap.put("글보기3", new IntegratedDetailBoardHandler(integratedBoardList, integratedCommentList));
-    //		commandMap.put("글목록3", new IntegratedBoardListHandler(integratedBoardList, integratedCommentList));
-    //		commandMap.put("내글3", new IntegratedBoardMyListHandler(integratedBoardList, integratedCommentList));
-    //
-    //		commandMap.put("기록", new LogHandler(logList));
-    //
-    //
-    //		commandMap.put("메뉴추가", new MenuAddHandler(menuList));
-    //		commandMap.put("메뉴목록", new MenuListHandler(menuList));
-    //		commandMap.put("내메뉴", new MenuMyListHandler(menuList));
 
     loop:
       while(true) {
@@ -286,6 +292,19 @@ public class App {
           System.out.println("---------------------------------------------");
         }
       }
+
+    saveObjects(buyerMemberListFile, buyerMemberList);
+    saveObjects(sellerMemberListFile, sellerMemberList);
+    saveObjects(buyerCommentListFile, buyerCommentList);
+    saveObjects(sellerCommentListFile, sellerCommentList);
+    saveObjects(integratedCommentListFile, integratedCommentList);
+    saveObjects(buyerBoardListFile, buyerBoardList);
+    saveObjects(sellerBoardListFile, sellerBoardList);
+    saveObjects(integratedBoardListFile, integratedBoardList);
+    saveObjects(logListFile, logList);
+    saveObjects(menuListFile, menuList);
+    saveObjects(orderListFile, orderList);
+
     Prompt.close();
   }
 
@@ -302,4 +321,44 @@ public class App {
       }
     }
   }
+
+  @SuppressWarnings("unchecked")
+  static <T extends Serializable> List<T> loadObjects(File file, Class<T> dataType) {
+
+    try(ObjectInputStream in = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)))) {
+      System.out.println("파일 로딩");
+      return (List<T>) in.readObject();
+    }
+    catch (Exception e) {
+      System.out.println("파일 로딩 실패");
+      return new LinkedList<T>();
+    }
+  }
+
+  static <T extends Serializable> void saveObjects(File file, List<T> dataList) {
+
+    try(ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
+
+      out.writeObject(dataList);
+
+      System.out.println("파일 저장");
+    }
+    catch (Exception e) {
+      System.out.println("파일 저장 실패");
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

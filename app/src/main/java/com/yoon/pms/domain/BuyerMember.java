@@ -1,8 +1,12 @@
 package com.yoon.pms.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class BuyerMember {
+public class BuyerMember implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
   private boolean division;
   private int hash;
   private int number;
