@@ -30,7 +30,6 @@ public class MemberUpdateHandler extends AbstractMemberHandler {
 
 	@Override
 	public void service() {
-		System.out.println("업데이트 접근");
 		if(logStatus == 0){
 			BuyerMember b = buyerMemberNumber;
 			b.setId(findByBuyerId("수정할 ID : "));
@@ -39,7 +38,6 @@ public class MemberUpdateHandler extends AbstractMemberHandler {
 			b.setNickname(findByNickname("수정할 닉네임 : "));
 			b.setEmail(memberHandler.emailFormat("수정할 E-Mail : "));
 			b.setPhone(memberHandler.phoneFormat("수정할 핸드폰 번호 : "));
-			System.out.println("메소드 접근");
 
 			BuyerBoardChangeWriterHandler execute = new BuyerBoardChangeWriterHandler(buyerBoardList, buyerCommentList);
 			execute.service();
