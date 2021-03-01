@@ -2,16 +2,28 @@ package com.yoon.pms.handler;
 
 import java.util.List;
 
+import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
+import com.yoon.pms.domain.Comment;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Prompt;
 
 public class MemberSettingHandler extends AbstractMemberHandler {
 
 	private MemberValidatorHandler memberHandler;
+	protected List<Board> buyerBoardList;
+	protected List<Comment> buyerCommentList;
+	protected List<Board> sellerBoardList;
+	protected List<Comment> sellerCommentList;
 
-	public MemberSettingHandler(List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, MemberValidatorHandler memberHandler) {
+
+	public MemberSettingHandler(List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, List<Board> buyerBoardList, 
+			List<Comment> buyerCommentList, List<Board> sellerBoardList, List<Comment> sellerCommentList, MemberValidatorHandler memberHandler) {
 		super(buyerMemberList, sellerMemberList);
+		this.buyerBoardList = buyerBoardList;
+		this.buyerCommentList = buyerCommentList;
+		this.sellerBoardList = sellerBoardList;
+		this.sellerCommentList = sellerCommentList;
 		this.memberHandler = memberHandler;
 	}
 
@@ -21,7 +33,7 @@ public class MemberSettingHandler extends AbstractMemberHandler {
 
 		if(logCount == true) {
 			MemberDeleteHandler delete = new MemberDeleteHandler(buyerMemberList, sellerMemberList);
-			MemberUpdateHandler update = new MemberUpdateHandler(buyerMemberList, sellerMemberList, memberHandler);
+			MemberUpdateHandler update = new MemberUpdateHandler(buyerMemberList, sellerMemberList, buyerBoardList, buyerCommentList, sellerBoardList, sellerCommentList, memberHandler);
 			if(logStatus == 1) {
 				System.out.println("■ 메뉴 - 판매회원 - 설정 ■");
 				SellerMember s = sellerMemberNumber;

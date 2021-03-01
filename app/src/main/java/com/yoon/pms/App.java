@@ -144,7 +144,7 @@ public class App {
 					commandMap.put("1", new OrderAddHandler(orderList, buyerMemberList, sellerMemberList));
 					commandMap.put("2", new BuyerBoardServiceHandler(buyerBoardList, buyerCommentList));
 					commandMap.put("3", new IntegratedBoardServiceHandler(integratedBoardList, integratedCommentList));
-					commandMap.put("4", new MemberSettingHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
+					commandMap.put("4", new MemberSettingHandler(buyerMemberList, sellerMemberList, buyerBoardList, buyerCommentList, sellerBoardList, sellerCommentList, memberValidatorHandler));
 					commandMap.put("5", new Temp());
 					commandMap.put("6", new MemberLogoutHandler(buyerMemberList, sellerMemberList, logList));
 				}
@@ -162,7 +162,7 @@ public class App {
 					commandMap.put("2", new Temp());
 					commandMap.put("3", new SellerBoardServiceHandler(sellerBoardList, sellerCommentList));
 					commandMap.put("4", new IntegratedBoardServiceHandler(integratedBoardList, integratedCommentList));
-					commandMap.put("5", new MemberSettingHandler(buyerMemberList, sellerMemberList, memberValidatorHandler));
+					commandMap.put("5", new MemberSettingHandler(buyerMemberList, sellerMemberList, buyerBoardList, buyerCommentList, sellerBoardList, sellerCommentList, memberValidatorHandler));
 					commandMap.put("6", new Temp());
 					commandMap.put("7", new MemberLogoutHandler(buyerMemberList, sellerMemberList, logList));
 				}

@@ -18,12 +18,6 @@ public class BuyerBoardDetailHandler extends AbstractBuyerBoardHandler {
 			System.out.println("존재하는 게시글이 없습니다.\n");
 			return;
 		}
-		if(buyerBoardWriterChangeCount == 1) {
-			changeWriter();
-		}
-		if(buyerBoardCommentWriterChangeCount == 1) {
-			changeCommentWriter();
-		}
 
 		String choice;
 		BuyerBoardListHandler list = new BuyerBoardListHandler(buyerBoardList, buyerCommentList);

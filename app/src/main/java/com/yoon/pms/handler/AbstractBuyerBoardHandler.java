@@ -22,8 +22,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 	public static int boardIndex = 1;
 	public static int commentCount = 0;
 	public static int likeCount = 0;
-	public static int buyerBoardWriterChangeCount = 0;
-	public static int buyerBoardCommentWriterChangeCount = 0;
 
 	@Override
 	public void service() {
@@ -139,31 +137,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 			}
 		}
 		return null;
-	}
-
-	public void changeWriter() {
-		//		BuyerMember m = AbstractMemberHandler.buyerMemberNumber;
-		//		Iterator<Board> iterator = buyerBoardList.iterator();
-		//
-		//		while(iterator.hasNext()) {
-		//			Board b = iterator.next();
-		//			if (b.getId() == m.getHash()) {
-		//				b.setWriter(m.getNickname());
-		//			}
-		//		}
-		buyerBoardWriterChangeCount = 0;
-	}
-
-	public void changeCommentWriter() {
-		//		Iterator<Comment> iterator = buyerCommentList.iterator();
-		//		BuyerMember buyer = AbstractMemberHandler.buyerMemberNumber;
-		//		while(iterator.hasNext()) {
-		//			Comment c = iterator.next();
-		//			if(c.getDivision() == buyer.getHash()) {
-		//				c.setCommentWriter(buyer.getNickname());
-		//			}
-		//		}
-		buyerBoardCommentWriterChangeCount = 0;
 	}
 
 }
