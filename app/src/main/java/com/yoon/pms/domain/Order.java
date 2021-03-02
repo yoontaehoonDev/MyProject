@@ -1,22 +1,10 @@
 package com.yoon.pms.domain;
 
-import java.io.Serializable;
 import java.sql.Date;
+import com.yoon.util.CsvObject;
 
-public class Order implements Serializable {
+public class Order implements CsvObject {
 
-  private static final long serialVersionUID = 1L;
-  private int firstId;
-  private int secondId;
-  private int number;
-  private String name;
-  private String address;
-  private String phone;
-  private Date orderTime;
-  private Date servingTime;
-  private int time;
-  private int sum;
-  private String foodList;
   // 영수증, 영수증 ID, 금액 등
 
   private int koreanId = 1;
@@ -29,7 +17,37 @@ public class Order implements Serializable {
   private int dessertId = 8;
   private int nightSnackId = 9;
 
+  private int firstId;
+  private int secondId;
+  private int number;
+  private String name;
+  private String address;
+  private String phone;
+  private Date orderTime;
+  private Date servingTime;
+  private int time;
+  private int sum;
+  private String foodList;
 
+  public Order() {}
+
+  public Order(String csv) {
+    String[] fields = csv.split(",");
+    this.setNumber(Integer.parseInt(fields[0]));
+    this.setName(fields[1]);
+    this.setAddress(fields[2]);
+    this.setPhone(fields[3]);
+
+  }
+
+  @Override
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%s",
+        this.getNumber(),
+        this.getName(),
+        this.getAddress(),
+        this.getPhone());
+  }
 
   @Override
   public int hashCode() {

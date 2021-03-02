@@ -1,13 +1,10 @@
 package com.yoon.pms.domain;
 
-import java.io.Serializable;
 import java.sql.Date;
+import com.yoon.util.CsvObject;
 
-public class Board implements Serializable {
+public class Board implements CsvObject {
 
-  private static final long serialVersionUID = 1L;
-
-  private int owner;
   private int id;
   private int number;
   private String title;
@@ -17,7 +14,32 @@ public class Board implements Serializable {
   private int like;
   private int view;
   private int commentCount;
+  private int owner;
 
+  public Board() {}
+
+  public Board(String csv) {
+    String[] fields = csv.split(",");
+    this.setId(Integer.parseInt(fields[0]));
+    this.setNumber(Integer.parseInt(fields[1]));
+    this.setTitle(fields[2]);
+    this.setContent(fields[3]);
+    this.setWriter(fields[4]);
+    this.setView(Integer.parseInt(fields[5]));
+    this.setRegisteredDate(Date.valueOf(fields[6]));
+  }
+
+  @Override
+  public String toCsvString() {
+    return String.format("%d,%d,%s,%s,%s,%d,%s",
+        this.getId(),
+        this.getNumber(),
+        this.getTitle(),
+        this.getContent(),
+        this.getWriter(),
+        this.getView(),
+        this.getRegisteredDate().toString());
+  }
 
   @Override
   public int hashCode() {

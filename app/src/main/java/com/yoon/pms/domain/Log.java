@@ -1,16 +1,32 @@
 package com.yoon.pms.domain;
 
-import java.io.Serializable;
+import com.yoon.util.CsvObject;
 
-public class Log implements Serializable {
+public class Log implements CsvObject {
 
-  private static final long serialVersionUID = 1L;
   // 아이디 구분 로그인 시간, 
   // 아이디 구분 로그아웃 시간, 접속 유지 시간
   private String id;
   private String loginTime;
   private String logoutTime;
   private int stayedTime;
+
+  public Log() {}
+
+  public Log(String csv) {
+    String[] fields = csv.split(",");
+    this.setId(fields[0]);
+    this.setLoginTime(fields[1]);
+    this.setLogoutTime(fields[2]);
+  }
+
+  @Override
+  public String toCsvString() {
+    return String.format("%s,%s,%s", 
+        this.id,
+        this.loginTime,
+        this.logoutTime);
+  }
 
   public String getId() {
     return id;

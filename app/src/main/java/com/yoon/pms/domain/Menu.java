@@ -1,17 +1,40 @@
 package com.yoon.pms.domain;
 
-import java.io.Serializable;
+import com.yoon.util.CsvObject;
 
-public class Menu implements Serializable {
+public class Menu implements CsvObject {
 
-  private static final long serialVersionUID = 1L;
   private int id; // 메뉴 고유번호
   private int number; // 메뉴 인덱스
-  private int count; // 개수 세기
-  private int price; // 메뉴 가격
-  private String name; // 메뉴 이름
-  private String explain; // 메뉴 설명
   private String owner; // 상호명
+  private String name; // 메뉴 이름
+  private int price; // 메뉴 가격
+  private String explain; // 메뉴 설명
+  private int count; // 개수 세기
+
+  public Menu() {}
+
+  public Menu(String csv) {
+    String[] fields = csv.split(",");
+    this.setId(Integer.parseInt(fields[0]));
+    this.setNumber(Integer.parseInt(fields[1]));
+    this.setOwner(fields[2]);
+    this.setName(fields[3]);
+    this.setPrice(Integer.parseInt(fields[4]));
+    this.setExplain(fields[5]);
+  }
+
+  @Override
+  public String toCsvString() {
+    return String.format("%d,%d,%s,%s,%d,%s", 
+        this.getId(),
+        this.getNumber(),
+        this.getOwner(),
+        this.getName(),
+        this.getPrice(),
+        this.getExplain());
+  }
+
 
   @Override
   public int hashCode() {

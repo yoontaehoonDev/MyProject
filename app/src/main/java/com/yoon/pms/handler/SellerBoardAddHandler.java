@@ -18,12 +18,12 @@ public class SellerBoardAddHandler extends AbstractSellerBoardHandler {
     SellerMember m = AbstractMemberHandler.sellerMemberNumber;
     if(boardAuthorization == true) {
       System.out.println("■ 메뉴 - 판매회원 게시판 - 게시글 작성 ■");
+      s.setId(m.getHash());
       s.setNumber(AbstractSellerBoardHandler.boardIndex++);
       s.setTitle(Prompt.inputString("제목 입력 : "));
       s.setContent(Prompt.inputString("내용 입력 : "));
       s.setWriter(m.getBusinessName()); // 체크
       s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
-      s.setId(m.getHash());
       this.sellerBoardList.add(s);
 
       System.out.println("글 작성 완료\n");

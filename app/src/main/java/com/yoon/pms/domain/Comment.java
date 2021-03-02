@@ -1,10 +1,9 @@
 package com.yoon.pms.domain;
 
-import java.io.Serializable;
+import com.yoon.util.CsvObject;
 
-public class Comment implements Serializable {
+public class Comment implements CsvObject {
 
-  private static final long serialVersionUID = 1L;
 
   private int division;
   private String commentWriter;
@@ -12,6 +11,27 @@ public class Comment implements Serializable {
   private int commentId;
   private int commentNumber;
   private int nestedCommentNumber;
+
+  public Comment() {}
+
+  public Comment(String csv) {
+    String[] fields = csv.split(",");
+
+    this.setCommentId(Integer.parseInt(fields[0]));
+    this.setCommentNumber(Integer.parseInt(fields[1]));
+    this.setCommentWriter(fields[2]);
+    this.setComment(fields[3]);
+  }
+
+
+  @Override
+  public String toCsvString() {
+    return String.format("%d,%d,%s,%s", 
+        this.getCommentId(),
+        this.getCommentNumber(),
+        this.getCommentWriter(),
+        this.getComment());
+  }
 
   @Override
   public int hashCode() {
