@@ -49,7 +49,7 @@ public class MemberAddHandler extends AbstractMemberHandler {
         s.setDivision(false);
         s.setHash(s.getHash() + 1);
         System.out.printf("해쉬 : %d\n",s.getHash());
-        s.setCount(s.getCount() + 1);
+        //        s.setCount(s.getCount() + 1);
         s.setNumber(s.getCount());
 
         s.setId(findBySellerId("아이디 입력 : "));
