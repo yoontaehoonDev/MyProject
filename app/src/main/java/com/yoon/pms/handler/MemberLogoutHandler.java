@@ -42,6 +42,7 @@ public class MemberLogoutHandler extends AbstractMemberHandler{
       AbstractBuyerBoardHandler.boardAuthorization = false;
     }
 
+
     logStatus = -1;
     System.out.println("로그아웃\n");
   }

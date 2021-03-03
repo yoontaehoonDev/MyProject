@@ -25,13 +25,12 @@ public class MemberAddHandler extends AbstractMemberHandler {
         System.out.println("메뉴로 돌아갑니다.\n");
         return;
       }
-
       if(choice.equals("1")) {
 
         BuyerMember b = new BuyerMember();
         b.setDivision(false);
         b.setHash(b.getHash() + 1);
-        b.setNumber(b.getCount() + 1);
+        b.setNumber(b.getNumber() + 1);
         b.setId(findByBuyerId("아이디 입력 : "));
         b.setPassword(memberHandler.minimumLength("비밀번호 입력 : "));
         memberHandler.checkPassword(b.getPassword());

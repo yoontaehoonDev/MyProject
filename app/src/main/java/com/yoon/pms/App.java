@@ -326,7 +326,7 @@ public class App {
       while ((csvStr = in.readLine()) != null) {
         list.add(objFactory.create(csvStr));
       }
-      System.out.printf("%s 파일 데이터 로딩\n", file.getName());
+      //      System.out.printf("%s 파일 데이터 로딩\n", file.getName());
 
     } catch (Exception e) {
       System.out.printf("%s 파일 데이터 로딩 중 오류 발생\n", file.getName());
