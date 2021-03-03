@@ -5,14 +5,18 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.lang.reflect.Type;
 import java.util.ArrayDeque;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.yoon.context.ApplicationContextListener;
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Comment;
@@ -67,44 +71,61 @@ public class App {
 	static LinkedList<String> commandQueue = new LinkedList<>();
 	static public int location = -1;
 
-	static LinkedList<BuyerMember> buyerMemberList = new LinkedList<>();
-	static LinkedList<SellerMember> sellerMemberList = new LinkedList<>();
-	static LinkedList<Comment> buyerCommentList = new LinkedList<>();
-	static LinkedList<Comment> sellerCommentList = new LinkedList<>();
-	static LinkedList<Comment> integratedCommentList = new LinkedList<>();
-	static LinkedList<Board> buyerBoardList = new LinkedList<>();
-	static LinkedList<Board> sellerBoardList = new LinkedList<>();
-	static LinkedList<Board> integratedBoardList = new LinkedList<>();
-	static LinkedList<Log> logList = new LinkedList<>();
-	static LinkedList<Menu> menuList = new LinkedList<>();
-	static LinkedList<Order> orderList = new LinkedList<>();
+	List<ApplicationContextListener> listeners = new ArrayList<>();
 
-	static File buyerMemberListFile = new File("buyerMemberList.json");
-	static File sellerMemberListFile = new File("sellerMemberList.json");
-	static File buyerCommentListFile = new File("buyerCommentList.json");
-	static File sellerCommentListFile = new File("sellerCommentList.json");
-	static File integratedCommentListFile = new File("integratedCommentList.json");
-	static File buyerBoardListFile = new File("buyerBoardList.json");
-	static File sellerBoardListFile = new File("sellerBoardList.json");
-	static File integratedBoardListFile = new File("integratedBoardList.json");
-	static File logListFile = new File("logList.json");
-	static File menuListFile = new File("menuList.json");
-	static File orderListFile = new File("orderList.json");
+	LinkedList<BuyerMember> buyerMemberList = new LinkedList<>();
+	LinkedList<SellerMember> sellerMemberList = new LinkedList<>();
+	LinkedList<Comment> buyerCommentList = new LinkedList<>();
+	LinkedList<Comment> sellerCommentList = new LinkedList<>();
+	LinkedList<Comment> integratedCommentList = new LinkedList<>();
+	LinkedList<Board> buyerBoardList = new LinkedList<>();
+	LinkedList<Board> sellerBoardList = new LinkedList<>();
+	LinkedList<Board> integratedBoardList = new LinkedList<>();
+	LinkedList<Log> logList = new LinkedList<>();
+	LinkedList<Menu> menuList = new LinkedList<>();
+	LinkedList<Order> orderList = new LinkedList<>();
+
+	File buyerMemberListFile = new File("buyerMemberList.json");
+	File sellerMemberListFile = new File("sellerMemberList.json");
+	File buyerCommentListFile = new File("buyerCommentList.json");
+	File sellerCommentListFile = new File("sellerCommentList.json");
+	File integratedCommentListFile = new File("integratedCommentList.json");
+	File buyerBoardListFile = new File("buyerBoardList.json");
+	File sellerBoardListFile = new File("sellerBoardList.json");
+	File integratedBoardListFile = new File("integratedBoardList.json");
+	File logListFile = new File("logList.json");
+	File menuListFile = new File("menuList.json");
+	File orderListFile = new File("orderList.json");
 
 	public static void main(String[] args) {
-		System.out.println("[Sola Delivery]");
+		App app = new App();
 
-		loadObjects(buyerMemberListFile, buyerMemberList, BuyerMember[].class);
-		loadObjects(sellerMemberListFile, sellerMemberList, SellerMember[].class);
-		loadObjects(buyerCommentListFile, buyerCommentList, Comment[].class);
-		loadObjects(sellerCommentListFile, sellerCommentList, Comment[].class);
-		loadObjects(integratedCommentListFile, integratedCommentList, Comment[].class);
-		loadObjects(buyerBoardListFile, buyerBoardList, Board[].class);
-		loadObjects(sellerBoardListFile, sellerBoardList, Board[].class);
-		loadObjects(integratedBoardListFile, integratedBoardList, Board[].class);
-		loadObjects(logListFile, logList, Log[].class);
-		loadObjects(menuListFile, menuList, Menu[].class);
-		loadObjects(orderListFile, orderList, Order[].class);
+		app.service();
+	}
+
+	public void addApplicationContextListener(ApplicationContextListener listener) {
+		listeners.add(listener);
+	}
+
+	public void removeApplicationContextListener(ApplicationContextListener listener) {
+		listeners.remove(listener);
+	}
+
+	public void service() {
+
+		notifyOnServiceStarted();
+
+		loadObjects(buyerMemberListFile, buyerMemberList, BuyerMember.class);
+		loadObjects(sellerMemberListFile, sellerMemberList, SellerMember.class);
+		loadObjects(buyerCommentListFile, buyerCommentList, Comment.class);
+		loadObjects(sellerCommentListFile, sellerCommentList, Comment.class);
+		loadObjects(integratedCommentListFile, integratedCommentList, Comment.class);
+		loadObjects(buyerBoardListFile, buyerBoardList, Board.class);
+		loadObjects(sellerBoardListFile, sellerBoardList, Board.class);
+		loadObjects(integratedBoardListFile, integratedBoardList, Board.class);
+		loadObjects(logListFile, logList, Log.class);
+		loadObjects(menuListFile, menuList, Menu.class);
+		loadObjects(orderListFile, orderList, Order.class);
 
 		HashMap<String, Command> commandMap = new HashMap<>();
 		MemberValidatorHandler memberValidatorHandler = new MemberValidatorHandler(buyerMemberList, sellerMemberList);
@@ -305,11 +326,26 @@ public class App {
 		saveObjects(menuListFile, menuList);
 		saveObjects(orderListFile, orderList);
 
+
+		notifyOnServiceStopped();
 		Prompt.close();
 	}
 
-	static void printCommandHistory(Iterator<String> iterator) {
 
+	void notifyOnServiceStarted() {
+		for(ApplicationContextListener listener : listeners) {
+			listener.contextInitialized();
+		}
+	}
+
+	void notifyOnServiceStopped() {
+		for(ApplicationContextListener listener : listeners) {
+			listener.contextDestroyed();
+		}
+	}
+
+
+	static void printCommandHistory(Iterator<String> iterator) {
 		int count = 0;
 		while (iterator.hasNext()) {
 			System.out.println(iterator.next());
@@ -322,7 +358,7 @@ public class App {
 		}
 	}
 
-	static <T> void loadObjects(File file, List<T> list, Class<T[]> arrType) {
+	static <T> void loadObjects(File file, List<T> list, Class<T> elementType) {
 		try(BufferedReader in = new BufferedReader(new FileReader(file))) {
 
 			StringBuilder strBuilder = new StringBuilder();
@@ -331,10 +367,11 @@ public class App {
 				strBuilder.append(str);
 			}
 
-			Gson gson = new Gson();
 
-			T[] arr = gson.fromJson(strBuilder.toString(), arrType);
-			list.addAll(Arrays.asList(arr));
+			Type collectionType = TypeToken.getParameterized(Collection.class, elementType).getType();
+			Collection<T> collection = new Gson().fromJson(strBuilder.toString(), collectionType);
+
+			list.addAll(collection);
 
 			System.out.printf("%s 파일 데이터 로딩\n", file.getName());
 		}
