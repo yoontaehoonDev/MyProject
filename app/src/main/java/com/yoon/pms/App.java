@@ -1,21 +1,13 @@
 package com.yoon.pms;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.lang.reflect.Type;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.yoon.context.ApplicationContextListener;
 import com.yoon.pms.domain.Board;
 import com.yoon.pms.domain.BuyerMember;
@@ -62,7 +54,8 @@ import com.yoon.pms.handler.SellerBoardMyListHandler;
 import com.yoon.pms.handler.SellerBoardReturnHandler;
 import com.yoon.pms.handler.SellerBoardServiceHandler;
 import com.yoon.pms.handler.Temp;
-import com.yoon.util.CsvObject;
+import com.yoon.pms.listener.AppListener;
+import com.yoon.pms.listener.FileListener;
 import com.yoon.util.Prompt;
 
 public class App {
@@ -73,32 +66,13 @@ public class App {
 
 	List<ApplicationContextListener> listeners = new ArrayList<>();
 
-	LinkedList<BuyerMember> buyerMemberList = new LinkedList<>();
-	LinkedList<SellerMember> sellerMemberList = new LinkedList<>();
-	LinkedList<Comment> buyerCommentList = new LinkedList<>();
-	LinkedList<Comment> sellerCommentList = new LinkedList<>();
-	LinkedList<Comment> integratedCommentList = new LinkedList<>();
-	LinkedList<Board> buyerBoardList = new LinkedList<>();
-	LinkedList<Board> sellerBoardList = new LinkedList<>();
-	LinkedList<Board> integratedBoardList = new LinkedList<>();
-	LinkedList<Log> logList = new LinkedList<>();
-	LinkedList<Menu> menuList = new LinkedList<>();
-	LinkedList<Order> orderList = new LinkedList<>();
-
-	File buyerMemberListFile = new File("buyerMemberList.json");
-	File sellerMemberListFile = new File("sellerMemberList.json");
-	File buyerCommentListFile = new File("buyerCommentList.json");
-	File sellerCommentListFile = new File("sellerCommentList.json");
-	File integratedCommentListFile = new File("integratedCommentList.json");
-	File buyerBoardListFile = new File("buyerBoardList.json");
-	File sellerBoardListFile = new File("sellerBoardList.json");
-	File integratedBoardListFile = new File("integratedBoardList.json");
-	File logListFile = new File("logList.json");
-	File menuListFile = new File("menuList.json");
-	File orderListFile = new File("orderList.json");
+	Map<String,Object> appContext = new HashMap<>();
 
 	public static void main(String[] args) {
 		App app = new App();
+
+		app.addApplicationContextListener(new AppListener());
+		app.addApplicationContextListener(new FileListener());
 
 		app.service();
 	}
@@ -111,21 +85,22 @@ public class App {
 		listeners.remove(listener);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void service() {
 
 		notifyOnServiceStarted();
 
-		loadObjects(buyerMemberListFile, buyerMemberList, BuyerMember.class);
-		loadObjects(sellerMemberListFile, sellerMemberList, SellerMember.class);
-		loadObjects(buyerCommentListFile, buyerCommentList, Comment.class);
-		loadObjects(sellerCommentListFile, sellerCommentList, Comment.class);
-		loadObjects(integratedCommentListFile, integratedCommentList, Comment.class);
-		loadObjects(buyerBoardListFile, buyerBoardList, Board.class);
-		loadObjects(sellerBoardListFile, sellerBoardList, Board.class);
-		loadObjects(integratedBoardListFile, integratedBoardList, Board.class);
-		loadObjects(logListFile, logList, Log.class);
-		loadObjects(menuListFile, menuList, Menu.class);
-		loadObjects(orderListFile, orderList, Order.class);
+		List<BuyerMember> buyerMemberList = (List<BuyerMember>) appContext.get("buyerMemberList");
+		List<SellerMember> sellerMemberList = (List<SellerMember>) appContext.get("sellerMemberList");
+		List<Comment> buyerCommentList = (List<Comment>) appContext.get("buyerCommentList");
+		List<Comment> sellerCommentList = (List<Comment>) appContext.get("sellerCommentList");
+		List<Comment> integratedCommentList = (List<Comment>) appContext.get("integratedCommentList");
+		List<Board> buyerBoardList = (List<Board>) appContext.get("buyerBoardList");
+		List<Board> sellerBoardList = (List<Board>) appContext.get("sellerBoardList");
+		List<Board> integratedBoardList = (List<Board>) appContext.get("integratedBoardList");
+		List<Log> logList = (List<Log>) appContext.get("logList");
+		List<Menu> menuList = (List<Menu>) appContext.get("menuList");
+		List<Order> orderList = (List<Order>) appContext.get("orderList");
 
 		HashMap<String, Command> commandMap = new HashMap<>();
 		MemberValidatorHandler memberValidatorHandler = new MemberValidatorHandler(buyerMemberList, sellerMemberList);
@@ -314,33 +289,20 @@ public class App {
 				}
 			}
 
-		saveObjects(buyerMemberListFile, buyerMemberList);
-		saveObjects(sellerMemberListFile, sellerMemberList);
-		saveObjects(buyerCommentListFile, buyerCommentList);
-		saveObjects(sellerCommentListFile, sellerCommentList);
-		saveObjects(integratedCommentListFile, integratedCommentList);
-		saveObjects(buyerBoardListFile, buyerBoardList);
-		saveObjects(sellerBoardListFile, sellerBoardList);
-		saveObjects(integratedBoardListFile, integratedBoardList);
-		saveObjects(logListFile, logList);
-		saveObjects(menuListFile, menuList);
-		saveObjects(orderListFile, orderList);
-
-
-		notifyOnServiceStopped();
 		Prompt.close();
+		notifyOnServiceStopped();
 	}
 
 
 	void notifyOnServiceStarted() {
 		for(ApplicationContextListener listener : listeners) {
-			listener.contextInitialized();
+			listener.contextInitialized(appContext);
 		}
 	}
 
 	void notifyOnServiceStopped() {
 		for(ApplicationContextListener listener : listeners) {
-			listener.contextDestroyed();
+			listener.contextDestroyed(appContext);
 		}
 	}
 
@@ -355,40 +317,6 @@ public class App {
 					break;
 				}
 			}
-		}
-	}
-
-	static <T> void loadObjects(File file, List<T> list, Class<T> elementType) {
-		try(BufferedReader in = new BufferedReader(new FileReader(file))) {
-
-			StringBuilder strBuilder = new StringBuilder();
-			String str = null;
-			while((str = in.readLine()) != null) {
-				strBuilder.append(str);
-			}
-
-
-			Type collectionType = TypeToken.getParameterized(Collection.class, elementType).getType();
-			Collection<T> collection = new Gson().fromJson(strBuilder.toString(), collectionType);
-
-			list.addAll(collection);
-
-			System.out.printf("%s 파일 데이터 로딩\n", file.getName());
-		}
-		catch (Exception e) {
-			System.out.printf("%s 파일 데이터 로딩 실패\n", file.getName());
-			e.printStackTrace();
-		}
-	}
-
-	static <T extends CsvObject> void saveObjects(File file, List<T> list) {
-		try(BufferedWriter out = new BufferedWriter(new FileWriter(file))) {
-			out.write(new Gson().toJson(list));
-			System.out.printf("%s 파일 데이터 로딩\n", file.getName());
-		}
-		catch (Exception e) {
-			System.out.printf("%s 파일 데이터 로딩 실패\n", file.getName());
-			e.printStackTrace();
 		}
 	}
 
