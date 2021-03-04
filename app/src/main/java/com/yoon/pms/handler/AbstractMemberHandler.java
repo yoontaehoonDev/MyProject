@@ -23,13 +23,10 @@ public abstract class AbstractMemberHandler implements Command {
   public static int logStatus = -1;
   public static boolean loginCheck = false;
   public static int point;
-  public static int buyerIndex = 1;
-  public static int sellerIndex = 1;
-  public static int hashNum = 1;
-  public static int temp;
 
 
   public String findByBuyerId(String message) {
+    System.out.println("find 접근");
     String id;
     while(true) {
       int flag = 0;
@@ -40,9 +37,10 @@ public abstract class AbstractMemberHandler implements Command {
         flag = 1;
       }
       else {
-        Object[] list = buyerMemberList.toArray();
-        for(Object obj : list) {
-          BuyerMember b = (BuyerMember) obj;
+        // 정지된 부분
+        Iterator<BuyerMember> iterator = buyerMemberList.iterator();
+        while(iterator.hasNext()) {
+          BuyerMember b = iterator.next();
           if(id.equalsIgnoreCase(b.getId())) {
             System.out.println("이미 사용중인 아이디 입니다.\n");
             flag = 1;

@@ -25,12 +25,16 @@ public class MemberAddHandler extends AbstractMemberHandler {
         System.out.println("메뉴로 돌아갑니다.\n");
         return;
       }
+
+      System.out.println("service 접근");
       if(choice.equals("1")) {
 
         BuyerMember b = new BuyerMember();
+        System.out.println("멤버 접근");
         b.setDivision(false);
         b.setHash(b.getHash() + 1);
         b.setNumber(b.getNumber() + 1);
+        System.out.println("해쉬 적용");
         b.setId(findByBuyerId("아이디 입력 : "));
         b.setPassword(memberHandler.minimumLength("비밀번호 입력 : "));
         memberHandler.checkPassword(b.getPassword());
