@@ -104,7 +104,6 @@ public class App {
     MemberValidatorHandler memberValidatorHandler = new MemberValidatorHandler(buyerMemberList, sellerMemberList);
 
     commandMap.put("관리자로그인", new MemberAdminLoginHandler(buyerMemberList, sellerMemberList));
-
     loop:
       while(true) {
         if(location == -1) /* 메인 메뉴 */ {

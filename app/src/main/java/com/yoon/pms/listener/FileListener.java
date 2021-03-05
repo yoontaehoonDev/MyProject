@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
@@ -102,7 +102,7 @@ public class FileListener implements ApplicationContextListener {
         strBuilder.append(str);
       }
 
-      Type listType = TypeToken.getParameterized(ArrayList.class, elementType).getType();
+      Type listType = TypeToken.getParameterized(LinkedList.class, elementType).getType();
       List<T> list = new Gson().fromJson(strBuilder.toString(), listType);
       System.out.printf("%s 파일 데이터 로딩\n", file.getName());
 
@@ -111,7 +111,7 @@ public class FileListener implements ApplicationContextListener {
     catch (Exception e) {
       System.out.printf("%s 파일 데이터 로딩 실패\n", file.getName());
       e.printStackTrace();
-      return null;
+      return new LinkedList<T>();
     }
   }
 
