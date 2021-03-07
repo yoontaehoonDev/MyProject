@@ -41,32 +41,46 @@ public class OrderProcessHandler extends AbstractMemberHandler {
 		int id =  AbstractOrderHandler.categoryId = Prompt.inputInt("가게 선택 : ");
 
 		Iterator<Menu> menu = menuList.iterator();
-
-		flag = 0;
 		while(menu.hasNext()) {
 			Menu m = menu.next();
 			if(num == m.getCategoryId()) {
 				if(id == m.getId()) {
 					System.out.printf("메뉴번호 : %d  메뉴명 : %s  메뉴가격 : %d  메뉴설명 : %s\n", 
 							m.getNumber(), m.getName(), m.getPrice(), m.getExplain());
-					flag = 1;
 				}
 			}
 		}
-		if(flag == 1) {
-			System.out.println("등록된 메뉴가 없습니다.");
-			return;
-		}
+
+		//		if(flag == 1) {
+		//			System.out.println("등록된 메뉴가 없습니다.");
+		//			return;
+		//		}
+		int sum = 0;
 		while(true) {
 			// 메뉴 리스트 출력
 			int choice = Prompt.inputInt("메뉴 선택 : ");
 
+			Iterator<Menu> list = menuList.iterator();
+			while(list.hasNext()) {
+				Menu m = list.next();
+				if(num == m.getCategoryId() && id == m.getId()) {
+					// 위 두 조건문 분리시켜서 실행하기
+					if(choice == m.getNumber()) {
+						sum += m.getPrice();
+					}
+				}
+				System.out.printf("금액 : %d\n", sum);
 
-			String repeat = Prompt.inputString("계속 추가하시겠습니까?[Y/N] : ");
-			if(repeat.equalsIgnoreCase("n")) {
-				break;
+				// 계산 코드 구현 (취소 코드 포함)
+				// 메뉴 개수 세기
+				// 
+
+				String repeat = Prompt.inputString("계속 추가하시겠습니까?[Y/N] : ");
+				if(repeat.equalsIgnoreCase("n")) {
+					break;
+				}
 			}
-		}
 
+		}
 	}
 }
