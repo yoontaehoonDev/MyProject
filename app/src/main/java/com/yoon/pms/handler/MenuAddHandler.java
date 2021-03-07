@@ -21,7 +21,7 @@ public class MenuAddHandler extends AbstractMenuHandler {
 			System.out.println("[메뉴 추가]\n");
 			Menu m = new Menu();
 			SellerMember s = AbstractMemberHandler.sellerMemberNumber;
-
+			m.setCategoryId(s.getCategoryId());
 			m.setId(s.getHash());
 			m.setOwner(s.getBusinessName());
 			countMenuIndex();
@@ -29,18 +29,13 @@ public class MenuAddHandler extends AbstractMenuHandler {
 			m.setName(Prompt.inputString("메뉴명 : "));
 			m.setPrice(Prompt.inputInt("가격 : "));
 			m.setExplain(Prompt.inputString("메뉴 설명 : "));
-
+			System.out.printf("메뉴 업종 번호 : %d\n", m.getCategoryId());
 			menuList.add(m);
 
 			String repeat = Prompt.inputString("계속 추가하시겠습니까?[Y/N] : ");
-			while(true) {
 
-				if(repeat.equalsIgnoreCase("y")) {
-					break;
-				}
-				else {System.out.println("메뉴로 돌아갑니다.");
-				return;
-				}
+			if(repeat.equalsIgnoreCase("n")) {
+				break;
 			}
 		}
 	}

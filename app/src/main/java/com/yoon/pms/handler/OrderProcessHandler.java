@@ -21,7 +21,7 @@ public class OrderProcessHandler extends AbstractMemberHandler {
 	public void service() {
 		System.out.println("■ 메뉴 - 주문 - 가게 목록 ■");
 		int num = Integer.parseInt(AbstractOrderHandler.categoryNumber);
-		int count = 0;
+		int flag = 0;
 
 		Iterator<SellerMember> iterator = sellerMemberList.iterator();
 		while(iterator.hasNext()) {
@@ -29,28 +29,44 @@ public class OrderProcessHandler extends AbstractMemberHandler {
 			if(s.getCategoryId() == num) {
 				System.out.printf("가게 번호 : [%d]  업종 : [%s]  상호명 : [%s]  전화번호 : [%s]\n",
 						s.getNumber(), s.getCategory(), s.getBusinessName(), s.getBusinessNumber());
-				count++;
+				flag = 1;
 			}
 		}
-		if(count == 0) {
+		if(flag == 0) {
 			System.out.println("등록된 가게가 없습니다.");
 			return;
 		}
 
 		System.out.println();
-		AbstractOrderHandler.categoryId = Prompt.inputInt("가게 선택 : ");
+		int id =  AbstractOrderHandler.categoryId = Prompt.inputInt("가게 선택 : ");
 
-		int id = AbstractOrderHandler.categoryId;
 		Iterator<Menu> menu = menuList.iterator();
 
+		flag = 0;
 		while(menu.hasNext()) {
 			Menu m = menu.next();
-			if(m.getId() == num) {
-				System.out.printf("메뉴번호 : %d  메뉴명 : %s  메뉴가격 : %d  메뉴설명 : %s\n", 
-						m.getNumber(), m.getName(), m.getPrice(), m.getExplain());
+			if(num == m.getCategoryId()) {
+				if(id == m.getId()) {
+					System.out.printf("메뉴번호 : %d  메뉴명 : %s  메뉴가격 : %d  메뉴설명 : %s\n", 
+							m.getNumber(), m.getName(), m.getPrice(), m.getExplain());
+					flag = 1;
+				}
+			}
+		}
+		if(flag == 1) {
+			System.out.println("등록된 메뉴가 없습니다.");
+			return;
+		}
+		while(true) {
+			// 메뉴 리스트 출력
+			int choice = Prompt.inputInt("메뉴 선택 : ");
+
+
+			String repeat = Prompt.inputString("계속 추가하시겠습니까?[Y/N] : ");
+			if(repeat.equalsIgnoreCase("n")) {
+				break;
 			}
 		}
 
 	}
-
 }

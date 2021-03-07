@@ -31,8 +31,8 @@ public class OrderAddHandler extends AbstractOrderHandler {
 			System.out.println("1. 한식 2. 양식 3. 일식 4. 중식 5. 분식");
 			System.out.println("6. 치킨 7. 피자 8. 디저트 9. 야식\n");
 			categoryNumber = Prompt.inputString("선택 : ");
-			OrderProcessHandler list = new OrderProcessHandler(buyerMemberList, sellerMemberList, menuList);
-			list.service();
+			OrderProcessHandler process = new OrderProcessHandler(buyerMemberList, sellerMemberList, menuList);
+			process.service();
 
 
 			System.out.println("1. 배달 주문   2. 포장 주문");

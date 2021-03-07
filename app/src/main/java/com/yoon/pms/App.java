@@ -277,8 +277,6 @@ public class App {
 						}
 						else {
 							commandHandler.service();
-							// 이제 명령어와 그 명령어를 처리하는 핸들러를 추가할 때마다
-							// case 문을 추가할 필요가 없다.
 						}
 					}
 				} catch (Exception e) {
@@ -319,5 +317,4 @@ public class App {
 			}
 		}
 	}
-
 }

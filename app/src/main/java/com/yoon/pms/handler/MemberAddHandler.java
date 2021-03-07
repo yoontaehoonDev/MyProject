@@ -44,7 +44,6 @@ public class MemberAddHandler extends AbstractMemberHandler {
 				b.setPhone(memberHandler.phoneFormat("휴대폰 입력 : "));
 				b.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 				buyerMemberList.add(b);
-				System.out.printf("현재 바이어 해쉬 값 : %d\n", b.getHash());
 				break;
 			}
 			else if (choice.equals("2")) {
@@ -67,7 +66,6 @@ public class MemberAddHandler extends AbstractMemberHandler {
 				category(s); // 업종 입력 메소드
 				s.setRegisteredDate(new java.sql.Date(System.currentTimeMillis()));
 				sellerMemberList.add(s);
-				System.out.printf("현재 셀러 해쉬 값 : %d\n", s.getHash());
 				break;
 			}
 			else {

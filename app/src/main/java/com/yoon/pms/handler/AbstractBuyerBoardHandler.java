@@ -107,6 +107,7 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 		int i = 0;
 		while(iterator.hasNext()) {
 			Comment c = iterator.next();
+			// 아래 두 조건문 합치기
 			if(b.getNumber() == c.getCommentId()) {
 				if(c.getCommentNumber() == commentNum) {
 					return i + 1;
