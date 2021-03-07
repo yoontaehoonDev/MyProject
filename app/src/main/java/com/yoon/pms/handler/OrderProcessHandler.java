@@ -57,7 +57,8 @@ public class OrderProcessHandler extends AbstractMemberHandler {
 		}
 		int sum = 0;
 		while(true) {
-			// 메뉴 리스트 출력
+			// 메뉴 당 개수 세기
+			// 배열 or 연결리스트로 만들기
 			int choice = Prompt.inputInt("메뉴 선택 : ");
 			flag = 0;
 			Iterator<Menu> list = menuList.iterator();
