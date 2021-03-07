@@ -14,6 +14,7 @@ public abstract class AbstractOrderHandler implements Command {
 	}
 
 	public static String categoryNumber;
+	public static int categoryId;
 
 	public Order findByNum(int orderNum) {
 
@@ -25,8 +26,10 @@ public abstract class AbstractOrderHandler implements Command {
 				return o;
 			}
 		}
+
 		return null;
 	}
+
 
 	public void list(String number) {
 		categoryNumber = number;

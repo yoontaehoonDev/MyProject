@@ -24,8 +24,6 @@ public class MenuAddHandler extends AbstractMenuHandler {
 
 			m.setId(s.getHash());
 			m.setOwner(s.getBusinessName());
-			//			MenuIndexCount count = new MenuIndexCount(menuList, sellerMemberList);
-			//			count.service();
 			countMenuIndex();
 			m.setNumber(menuIndex);
 			m.setName(Prompt.inputString("메뉴명 : "));

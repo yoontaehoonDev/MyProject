@@ -122,6 +122,7 @@ public class App {
 					commandMap.put("4", new SellerBoardServiceHandler(sellerBoardList, sellerCommentList));
 					commandMap.put("5", new IntegratedBoardServiceHandler(integratedBoardList, integratedCommentList));
 					commandMap.put("6", new Temp());
+					//					commandMap.put("7", return);
 				}
 				else if(location == 0) /*구매자 로그인 상태 */ {
 					System.out.println("■ 메뉴 - 구매자 ■");
@@ -132,7 +133,7 @@ public class App {
 					System.out.println("5. 고객센터");
 					System.out.println("6. 로그아웃");
 					System.out.println("7. 종료\n");
-					commandMap.put("1", new OrderAddHandler(orderList, buyerMemberList, sellerMemberList));
+					commandMap.put("1", new OrderAddHandler(orderList, buyerMemberList, sellerMemberList, menuList));
 					commandMap.put("2", new BuyerBoardServiceHandler(buyerBoardList, buyerCommentList));
 					commandMap.put("3", new IntegratedBoardServiceHandler(integratedBoardList, integratedCommentList));
 					commandMap.put("4", new MemberSettingHandler(buyerMemberList, sellerMemberList, buyerBoardList, buyerCommentList, sellerBoardList, sellerCommentList, memberValidatorHandler));
