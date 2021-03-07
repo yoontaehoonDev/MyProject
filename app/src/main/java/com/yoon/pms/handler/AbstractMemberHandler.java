@@ -17,15 +17,15 @@ public abstract class AbstractMemberHandler implements Command {
 		this.sellerMemberList = sellerMemberList;
 	} 
 
-	public static boolean logCount = false;
-	public static int adminNumber = 0;
 	public static BuyerMember buyerMemberNumber;
 	public static SellerMember sellerMemberNumber;
+	public static int adminNumber = 0;
 	public static int logStatus = -1;
+	public static boolean logCount = false;
 	public static boolean loginCheck = false;
-	public static int point;
 	public static int memberNumber;
 	public static int memberHash;
+	public static int point;
 
 
 	public void countBuyerMemberNumber() {

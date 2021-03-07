@@ -19,12 +19,21 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 	}
 
 	public static boolean boardAuthorization = false;
-	public static int boardIndex = 1;
+	public static int boardIndex;
 	public static int commentCount = 0;
 	public static int likeCount = 0;
 
 	@Override
 	public void service() {
+	}
+
+	public void countBuyerBoardNumber() {
+		Iterator<Board> buyerBoard = buyerBoardList.iterator();
+
+		boardIndex = 1;
+		for(; buyerBoard.hasNext(); buyerBoard.next()) {
+			boardIndex++;
+		}
 	}
 
 	public void update(Board b) {

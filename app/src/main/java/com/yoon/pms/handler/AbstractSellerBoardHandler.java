@@ -19,9 +19,18 @@ public abstract class AbstractSellerBoardHandler implements Command {
 	}
 
 	public static boolean boardAuthorization = false;
-	public static int boardIndex = 1;
+	public static int boardIndex;
 	public static int commentCount = 0;
 	public static int likeCount = 0;
+
+	public void countSellerBoardNumber() {
+		Iterator<Board> sellerBoard = sellerBoardList.iterator();
+
+		boardIndex = 1;
+		for(; sellerBoard.hasNext(); sellerBoard.next()) {
+			boardIndex++;
+		}
+	}
 
 	public void update(Board b) {
 		System.out.println("■ 메뉴 - 구매회원 게시판 - 게시글 수정 ■");
