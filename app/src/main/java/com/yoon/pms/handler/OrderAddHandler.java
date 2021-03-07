@@ -31,7 +31,7 @@ public class OrderAddHandler extends AbstractOrderHandler {
 			System.out.println("1. 한식 2. 양식 3. 일식 4. 중식 5. 분식");
 			System.out.println("6. 치킨 7. 피자 8. 디저트 9. 야식\n");
 			categoryNumber = Prompt.inputString("선택 : ");
-			OrderProcessHandler process = new OrderProcessHandler(buyerMemberList, sellerMemberList, menuList);
+			OrderProcessHandler process = new OrderProcessHandler(buyerMemberList, sellerMemberList, menuList, orderList);
 			process.service();
 
 
@@ -40,7 +40,6 @@ public class OrderAddHandler extends AbstractOrderHandler {
 
 			if(order.equals("1")) {
 				System.out.println("[배달 주문]");
-
 
 			}
 			else if(order.equals("2")) {
@@ -52,6 +51,7 @@ public class OrderAddHandler extends AbstractOrderHandler {
 			}
 			break;
 		}
+		// 현재 주소 사용 or 새 주소 입력
 
 
 	}

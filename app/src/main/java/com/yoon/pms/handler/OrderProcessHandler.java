@@ -5,16 +5,19 @@ import java.util.List;
 
 import com.yoon.pms.domain.BuyerMember;
 import com.yoon.pms.domain.Menu;
+import com.yoon.pms.domain.Order;
 import com.yoon.pms.domain.SellerMember;
 import com.yoon.util.Prompt;
 
 public class OrderProcessHandler extends AbstractMemberHandler {
 
 	protected List<Menu> menuList;
+	protected List<Order> orderList;
 
-	public OrderProcessHandler(List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, List<Menu> menuList) {
+	public OrderProcessHandler(List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, List<Menu> menuList, List<Order> orderList) {
 		super(buyerMemberList, sellerMemberList);
 		this.menuList = menuList;
+		this.orderList = orderList;
 	}
 
 	@Override
@@ -50,15 +53,18 @@ public class OrderProcessHandler extends AbstractMemberHandler {
 				flag = 1;
 			}
 		}
-
+		// 메뉴 개수 만큼 연결리스트 생성 후,
+		// 메뉴 선택할 때, 카운트를 세고, 영수증에 개수 기입하기
+		//		LinkedList a = new LinkedList();
+		//		a.add(menu)
 		if(flag == 0) {
 			System.out.println("등록된 메뉴가 없습니다.");
 			return;
 		}
 		int sum = 0;
 		while(true) {
-			// 메뉴 당 개수 세기
-			// 배열 or 연결리스트로 만들기
+			// 1. 메뉴 당 개수 세기
+			//    배열 or 연결리스트로 만들기
 			int choice = Prompt.inputInt("메뉴 선택 : ");
 			flag = 0;
 			Iterator<Menu> list = menuList.iterator();
@@ -76,13 +82,14 @@ public class OrderProcessHandler extends AbstractMemberHandler {
 				System.out.println("유효한 번호를 선택하세요.");
 			}
 			else {
-				System.out.printf("금액 : %d원\n", sum);
+				System.out.printf("현재 금액 : %d원\n", sum);
 				String repeat = Prompt.inputString("계속 추가하시겠습니까?[Y/N] : ");
 				if(repeat.equalsIgnoreCase("n")) {
+					// 총 금액 합계
+
 					break;
 				}
 			}
-
 		}
 	}
 }
