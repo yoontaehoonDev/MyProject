@@ -269,6 +269,8 @@ public class App {
 						m.service();
 						System.out.println("프로그램 종료");
 						break loop;
+					case "exit":
+						break loop;
 					default:
 						// commandHandler에 명령어를 해쉬맵의 값에서 꺼내고 비교하며, 값이 null이면 실행 X, 아니면 실행 O 
 						Command commandHandler = commandMap.get(menu);
