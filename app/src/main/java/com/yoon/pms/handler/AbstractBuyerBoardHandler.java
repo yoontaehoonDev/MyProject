@@ -74,9 +74,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 		b.setCommentCount(b.getCommentCount() + 1);
 		c.setCommentNumber(b.getCommentCount());
 
-		//		b.setCount(b.getCount() + 1);
-		//		s.setNumber(b.getCount());
-
 		this.buyerCommentList.add(c);
 	}
 
@@ -95,8 +92,6 @@ public abstract class AbstractBuyerBoardHandler implements Command {
 		c.setCommentId(b.getNumber());
 		c.setCommentWriter(m.getNickname());
 		c.setComment(Prompt.inputString("대댓글 : "));
-
-		//    c.setNestedCommentNumber(b.getCommentCount());
 
 		this.buyerCommentList.add(insert, c); 
 	}

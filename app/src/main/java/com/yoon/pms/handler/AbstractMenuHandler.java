@@ -19,11 +19,11 @@ public abstract class AbstractMenuHandler implements Command {
 		Iterator<Menu> menu = menuList.iterator();
 		SellerMember s = AbstractMemberHandler.sellerMemberNumber;
 
-		AbstractMenuHandler.menuIndex = 1;
+		menuIndex = 1;
 		while(menu.hasNext()) {
 			Menu m = menu.next();
 			if(s.getHash() == m.getId()) {
-				AbstractMenuHandler.menuIndex++;
+				menuIndex++;
 			}
 		}
 	}
