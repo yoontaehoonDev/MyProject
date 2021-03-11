@@ -34,7 +34,7 @@ public class MemberAddHandler extends AbstractMemberHandler {
         b.setHash(AbstractMemberHandler.memberHash);
         countBuyerMemberNumber();
         //        b.setNumber(buyerMemberList.get(buyerMemberList.size() - 1).getNumber() + 1);
-        b.setNumber(AbstractMemberHandler.finalNumber);
+        b.setNumber(AbstractMemberHandler.memberNumber);
         b.setId(findByBuyerId("아이디 입력 : "));
         b.setPassword(memberHandler.minimumLength("비밀번호 입력 : "));
         memberHandler.checkPassword(b.getPassword());

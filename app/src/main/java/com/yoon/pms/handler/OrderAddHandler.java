@@ -12,6 +12,7 @@ public class OrderAddHandler extends AbstractOrderHandler {
   List<BuyerMember> buyerMemberList;
   List<SellerMember> sellerMemberList;
   List<Menu> menuList;
+  List<String> menus;
 
   public OrderAddHandler(List<Order> orderList, List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, List<Menu> menuList) {
     super(orderList);
@@ -30,7 +31,7 @@ public class OrderAddHandler extends AbstractOrderHandler {
       System.out.println("1. 한식 2. 양식 3. 일식 4. 중식 5. 분식");
       System.out.println("6. 치킨 7. 피자 8. 디저트 9. 야식\n");
       categoryNumber = Prompt.inputString("선택 : ");
-      OrderProcessHandler process = new OrderProcessHandler(orderList, buyerMemberList, sellerMemberList, menuList);
+      OrderProcessHandler process = new OrderProcessHandler(orderList, buyerMemberList, sellerMemberList, menuList, menus);
       process.service();
 
 

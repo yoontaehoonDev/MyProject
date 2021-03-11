@@ -14,12 +14,14 @@ public class OrderProcessHandler extends AbstractOrderHandler {
   protected List<BuyerMember> buyerMemberList;
   protected List<SellerMember> sellerMemberList;
   protected List<Menu> menuList;
+  protected List<String> menus;
 
-  public OrderProcessHandler(List<Order> orderList, List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, List<Menu> menuList) {
+  public OrderProcessHandler(List<Order> orderList, List<BuyerMember> buyerMemberList, List<SellerMember> sellerMemberList, List<Menu> menuList, List<String> menus) {
     super(orderList);
     this.buyerMemberList = buyerMemberList;
     this.sellerMemberList = sellerMemberList;
     this.menuList = menuList;
+    this.menus = menus;
   }
 
   @Override
@@ -71,41 +73,52 @@ public class OrderProcessHandler extends AbstractOrderHandler {
       int choice = Prompt.inputInt("메뉴 선택 : ");
       flag = 0;
       // 임시 연결리스트 생성
-      LinkedList temp = new LinkedList();
-      int count = 0;
+      //      LinkedList<String> menuTemp = new LinkedList<>();
+      //      LinkedList<Integer> countTemp = new LinkedList<>();
       Iterator<Menu> list = menuList.iterator();
       while(list.hasNext()) {
         Menu m = list.next();
         if(num == m.getCategoryId() && id == m.getId()) {
           if(choice == m.getNumber()) {
+            menus = new LinkedList<>();
+            menus.add(m.getName());
+            menus.add(Integer.toString(m.getPrice()));
             sum += m.getPrice();
+            //            menuTemp.add(m.getName());
+            //            countTemp.add(m.get)
             // 임시로 문자열 저장
-            temp.add(new String("adsf"));
-            temp.add(count++);
+
+            Iterator<String> ttt = menus.iterator();
+            while(ttt.hasNext()) {
+              System.out.println(ttt.next());
+            }
             flag = 1;
             break;
           }
         }
       }
+      if(flag == 0) {
+        System.out.println("유효한 번호를 선택하세요.");
+      }
+
 
       // 조리 시작 시, 주문자에게 메시지 전달하기
       // 조리 시작 전에 메뉴 변경 가능 여부 고려
       // 최종 주문 완료 전, 메뉴 변경과 메뉴 개수 수정 기능 구현
       // 영수증이 발행되면, 기존에 저장된 모든 데이터 삭제
-      temp.removeAll(temp);
-      if(flag == 0) {
-        System.out.println("유효한 번호를 선택하세요.");
-      }
+      //      temp.removeAll(temp);
       else {
         System.out.printf("현재 금액 : %d원\n", sum);
         String repeat = Prompt.inputString("계속 추가하시겠습니까?[Y/N] : ");
         if(repeat.equalsIgnoreCase("n")) {
           // 총 금액 합계
 
+
           break;
         }
       }
     }
+
 
   }
 }

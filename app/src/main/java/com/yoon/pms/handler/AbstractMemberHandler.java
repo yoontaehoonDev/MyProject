@@ -22,32 +22,37 @@ public abstract class AbstractMemberHandler implements Command {
   public static int logStatus = -1;
   public static boolean logCount = false;
   public static boolean loginCheck = false;
-  public static int memberNumber;
-  public static int finalNumber;
+  public static int temp;
+  public static int memberNumber = 0;
   public static int memberHash;
   public static int point;
 
 
   public void countBuyerMemberNumber() {
     Iterator<BuyerMember> buyerIterator = buyerMemberList.iterator();
-    memberNumber = 1;
-    for(; buyerIterator.hasNext(); buyerIterator.next()) {
-      memberNumber++;
+    // 처음에 딱 1번만 실행하고, 다음부터 35라인만 실행하게 하는 코드 작성하기
+    if(memberNumber >= 1) {
+      memberNumber = (buyerMemberList.get(buyerMemberList.size() - 1).getNumber() + 1);
+      System.out.printf("memberNumber : %d\n", memberNumber);
     }
-    System.out.printf("memberNumber : %d\n", memberNumber);
-    finalNumber = memberNumber;
-    if(memberNumber > 1) {
-      finalNumber = (buyerMemberList.get(buyerMemberList.size() - 1).getNumber() + 1);
+    //    if(memberNumber < 1)
+    else {
+      temp = 1;
+      for(; buyerIterator.hasNext(); buyerIterator.next()) {
+        temp++;
+      }
+      System.out.printf("temp : %d\n", temp);
+      memberNumber = temp;
     }
   }
 
   public void countSellerMemberNumber() {
     Iterator<SellerMember> sellerIterator = sellerMemberList.iterator();
-    memberNumber = 1;
+    temp = 1;
     for(; sellerIterator.hasNext(); sellerIterator.next()) {
-      memberNumber++;
+      temp++;
     }
-    System.out.printf("memberNumber : %d\n", memberNumber);
+    System.out.printf("memberNumber : %d\n", temp);
     //    finalNumber = (sellerMemberList.get(sellerMemberList.size() - 1).getNumber() + 1);
     //    System.out.printf("마지막 수 : %d\n", finalNumber);
   }
