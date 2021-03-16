@@ -1,0 +1,32 @@
+
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'application'
+}
+
+eclipse {
+    project {
+        name = 'MyProject-Server'
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+
+    implementation 'com.google.code.gson:gson:2.8.6'
+    testImplementation 'junit:junit:4.13'
+
+    implementation 'com.google.guava:guava:29.0-jre'
+}
+
+application {
+    mainClass = 'com.yoon.pms.ServerApp'
+}

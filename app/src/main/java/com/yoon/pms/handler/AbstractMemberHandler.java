@@ -29,47 +29,41 @@ public abstract class AbstractMemberHandler implements Command {
 
 
   public void countBuyerMemberNumber() {
-    Iterator<BuyerMember> buyerIterator = buyerMemberList.iterator();
-    // 처음에 딱 1번만 실행하고, 다음부터 35라인만 실행하게 하는 코드 작성하기
-    if(memberNumber >= 1) {
+
+    if(buyerMemberList.size() > 0) {
       memberNumber = (buyerMemberList.get(buyerMemberList.size() - 1).getNumber() + 1);
-      System.out.printf("memberNumber : %d\n", memberNumber);
     }
-    //    if(memberNumber < 1)
     else {
-      temp = 1;
-      for(; buyerIterator.hasNext(); buyerIterator.next()) {
-        temp++;
-      }
-      System.out.printf("temp : %d\n", temp);
-      memberNumber = temp;
+      memberNumber = 1;
     }
   }
 
   public void countSellerMemberNumber() {
-    Iterator<SellerMember> sellerIterator = sellerMemberList.iterator();
-    temp = 1;
-    for(; sellerIterator.hasNext(); sellerIterator.next()) {
-      temp++;
+
+    if(sellerMemberList.size() > 0) {
+      memberNumber = (sellerMemberList.get(sellerMemberList.size() - 1).getNumber() + 1);
     }
-    System.out.printf("memberNumber : %d\n", temp);
-    //    finalNumber = (sellerMemberList.get(sellerMemberList.size() - 1).getNumber() + 1);
-    //    System.out.printf("마지막 수 : %d\n", finalNumber);
+    else {
+      memberNumber = 1;
+    }
+
   }
 
   public void countBuyerMemberHash() {
-    Iterator<BuyerMember> buyerIterator = buyerMemberList.iterator();
-    memberHash = 1;
-    for(; buyerIterator.hasNext(); buyerIterator.next()) {
-      memberHash++;
+    if(buyerMemberList.size() > 0) {
+      memberHash = (buyerMemberList.get(buyerMemberList.size() - 1).getNumber() + 1);
+    }
+    else {
+      memberHash = 1;
     }
   }
 
   public void countSellerMemberHash() {
-    Iterator<SellerMember> sellerIterator = sellerMemberList.iterator();
-    memberHash = 1;
-    for(; sellerIterator.hasNext(); sellerIterator.next()) {
-      memberHash++;
+    if(sellerMemberList.size() > 0) {
+      memberHash = (sellerMemberList.get(sellerMemberList.size() - 1).getNumber() + 1);
+    }
+    else {
+      memberHash = 1;
     }
   }
 
