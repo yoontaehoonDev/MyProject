@@ -81,11 +81,19 @@ public class BuyerMemberTable implements DataTable {
 			buyer = verifyBuyerId(id);
 
 			if(buyer != null) {
-				response.appendData(id);
+				response.appendData(String.format("%d,%s,%s,%s,%s,%s", 
+						buyer.getNumber(),
+						buyer.getId(),
+						buyer.getName(),
+						buyer.getNickname(),
+						buyer.getEmail(),
+						buyer.getPhone(),
+						buyer.getRegisteredDate()));
 			}
 			else {
 				throw new Exception("존재하지 않는 ID입니다.");
 			}
+
 			break;
 		case "buyerMember/select":
 			int num = Integer.parseInt(request.getDataList().get(0));

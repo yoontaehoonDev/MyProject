@@ -53,38 +53,39 @@ public class MemberLoginHandler implements Command {
 							System.out.println("메인 메뉴로 돌아갑니다.\n");
 							return;
 						}
+						stmt.executeQuery("buyerMember/verifyId", id);
+						BuyerMember idCheck = 
 
-						BuyerMember idCheck = verifyBuyerId(id);
+								if(idCheck != null) {
+									while(true) {
+										password = Prompt.inputString("비밀번호 입력(엔터 - 나가기) : ");
+										if(password.length() == 0) {
+											System.out.println("메인 메뉴로 돌아갑니다.\n");
+											return;
+										}
 
-						if(idCheck != null) {
-							while(true) {
-								password = Prompt.inputString("비밀번호 입력(엔터 - 나가기) : ");
-								if(password.length() == 0) {
-									System.out.println("메인 메뉴로 돌아갑니다.\n");
-									return;
-								}
+										pswCheck = verifyBuyerPassword(password, idCheck);
 
-								pswCheck = verifyBuyerPassword(password, idCheck);
+										if(pswCheck) {
+											Log log = new Log();
 
-								if(pswCheck) {
-									Log log = new Log();
+											temp =  idCheck.getId() + login.format(cal.getTime());
+											log.setLoginTime(temp);
 
-									temp =  idCheck.getId() + login.format(cal.getTime());
-									log.setLoginTime(temp);
-
-									System.out.println("로그인 성공\n");
-									MemberValidator.logStatus = true;
-									App.location = 0;
-									return;
+											System.out.println("로그인 성공\n");
+											MemberValidator.logStatus = true;
+											MemberValidator.buyerMember = idCheck;
+											App.location = 0;
+											return;
+										}
+										else {
+											System.out.println("비밀번호가 틀렸습니다.\n");
+										}
+									}
 								}
 								else {
-									System.out.println("비밀번호가 틀렸습니다.\n");
+									System.out.println("존재하지 않는 ID 입니다.");
 								}
-							}
-						}
-						else {
-							System.out.println("존재하지 않는 ID 입니다.");
-						}
 					}
 				}
 
