@@ -24,3 +24,57 @@
  - 쿠폰 시스템 구현
  - 정산 시스템 구현
 
+
+ ■ 설계도
+    - 선택 메뉴 정렬 알고리즘
+    ```
+    Temp - menu, price, explain;
+    List<Temp> temp;
+        sum = 0;
+        count = 0;
+    while(true) {
+        int choice = Prompt.inputInt("메뉴 선택 : ");
+        if(choice == -1) {
+            break;
+        }
+        
+        Iterator<Menu> list = menuList.iterator();
+
+        while(list.hasNext()) {
+            Menu m = list.next();
+            if(CategoryNumber == m.getCategoryId() && ResNumber == m.getId()) {
+                if(choice == m.getNumber()) {
+                    Temp t = new Temp();
+                    t.setMenu(m.getName());
+                    t.setPrice(m.getPrice());
+                    t.setExplain(m.getExplain());
+                    temp.add(t);
+                    sum += m.getPrice();
+                    count++;
+                }
+            }
+        }
+    }
+
+    sort();
+
+    // 가게 메뉴 개수 카운트 후,
+    // 카운트 수 만큼, 임시 리스트 생성
+
+    private void sort() {
+        Iterator<Temp> temp = tempList.iterator();
+        
+        while(temp.hasNext()) {
+            Temp t = temp.next();
+            
+            if(메뉴.equals(t.getName())) {
+                first++;
+                firstSum += t.getPrice();
+            }
+            
+            if(t.getName.equal())
+
+        }
+    }
+    ```
+    
