@@ -89,6 +89,7 @@ public class OrderProcessHandler extends AbstractOrderHandler {
             // 임시로 문자열 저장
 
             Iterator<String> ttt = menus.iterator();
+
             while(ttt.hasNext()) {
               System.out.println(ttt.next());
             }
