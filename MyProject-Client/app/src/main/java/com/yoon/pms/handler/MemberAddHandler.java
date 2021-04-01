@@ -33,7 +33,6 @@ public class MemberAddHandler implements Command {
       if(choice.equals("1")) {
 
         BuyerMember b = new BuyerMember();
-        b.setNumber(b.getNumber() + 1);
         b.setId(Prompt.inputString("아이디 입력 : "));
         b.setPassword(memberValidator.minimumLength("비밀번호 입력 : "));
         b.setNickname(memberValidator.nickNameFormat("닉네임 입력 : "));

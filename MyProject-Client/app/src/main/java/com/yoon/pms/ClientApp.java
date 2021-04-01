@@ -28,6 +28,7 @@ import com.yoon.pms.dao.mariadb.SellerBoardDaoImpl;
 import com.yoon.pms.dao.mariadb.SellerMemberDaoImpl;
 import com.yoon.pms.handler.Command;
 import com.yoon.pms.handler.MemberAddHandler;
+import com.yoon.pms.handler.MemberDetailHandler;
 import com.yoon.pms.handler.MemberValidator;
 import com.yoon.pms.handler.Temp;
 import com.yoon.util.Prompt;
@@ -94,6 +95,7 @@ public class ClientApp {
           System.out.println("6. 고객센터");
           System.out.println("7. 사이트 종료\n");
           commandMap.put("1", new MemberAddHandler(buyerMemberDao, sellerMemberDao, memberValidator));
+          commandMap.put("2", new MemberDetailHandler(buyerMemberDao, sellerMemberDao));
           //          commandMap.put("2", new MemberLoginHandler());
           //          commandMap.put("3", new BuyerBoardServiceHandler());
           //          commandMap.put("4", new SellerBoardServiceHandler());

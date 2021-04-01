@@ -114,7 +114,8 @@ create table order_content(
 
 alter table memb
     add CONSTRAINT memb_PK PRIMARY KEY(m_no),
-    add CONSTRAINT memb_UK UNIQUE(tel, nick_name, email);
+    add CONSTRAINT memb_UK UNIQUE(tel, nick_name, email),
+    modify column m_no int auto_increment;
     
 alter table seller
     add CONSTRAINT seller_PK PRIMARY KEY(m_no),
